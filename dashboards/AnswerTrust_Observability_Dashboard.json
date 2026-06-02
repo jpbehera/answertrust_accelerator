@@ -1,0 +1,633 @@
+{
+  "schema_version": 63,
+  "title": "AnswerTrust Observability Dashboard",
+  "autoRefresh": {
+    "enabled": true,
+    "defaultInterval": "1m",
+    "minInterval": "30s"
+  },
+  "dataSources": [
+    {
+      "kind": "kusto-trident",
+      "scopeId": "kusto-trident",
+      "clusterUri": "https://<YOUR_EVENTHOUSE>.z<N>.kusto.fabric.microsoft.com",
+      "database": "<YOUR_DATABASE_ID>",
+      "name": "answer_ledger_db",
+      "id": "f930d384-96d1-478e-a880-7c3a4ecc5e81",
+      "workspace": "<YOUR_WORKSPACE_ID>"
+    }
+  ],
+  "pages": [
+    {
+      "id": "c64fd252-91ef-4334-826b-8adabb9e4bfb",
+      "name": "Trust Scorecard"
+    },
+    {
+      "id": "431b745a-36ee-4ada-a6d7-2c8e2325b90f",
+      "name": "DQ Health"
+    },
+    {
+      "id": "cd34e7c8-bdc2-48d2-b792-2d335e969cb6",
+      "name": "Cost & Performance"
+    },
+    {
+      "id": "a060d590-1a6a-4f99-8a00-c05b68816761",
+      "name": "Security Signals"
+    }
+  ],
+  "parameters": [],
+  "baseQueries": [],
+  "queries": [
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| where timestamp > ago(1d)\n| summarize AvgAnswerTrust = round(avg(answertrust_score), 3)",
+      "id": "f7a1ba33-48d9-4e4d-bea3-37c4b4e1eb0a",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| where timestamp > ago(1d)\n| summarize TrustworthyPct = round(countif(trustworthy) * 100.0 / count(), 1)",
+      "id": "a0e878ec-c612-44c9-9982-0338c265409a",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize AvgScore = round(avg(answertrust_score), 3) by agent_id\n| order by AvgScore asc",
+      "id": "6291b7ed-9edd-4cf7-94bd-210721a13a55",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize AvgScore = round(avg(answertrust_score), 3) by bin(timestamp, 1h)\n| order by timestamp asc",
+      "id": "bb87d65a-fb41-4ec3-971a-e83d64b76404",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize AvgDQ = round(avg(dq_score), 3) by bin(timestamp, 1h)\n| order by timestamp asc",
+      "id": "9bba7daf-9a47-4e31-9baa-e8f0c99f4f9e",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize Answers = count() by dlp_decision\n| order by Answers desc",
+      "id": "5cb9bc3f-ee0d-49ca-b999-5d3f502c1dbd",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "dq_runs_failed_rows\n| where timestamp > ago(7d)\n| project timestamp, trace_id, table_name, rule, dimension, failed_value\n| order by timestamp desc\n| take 100",
+      "id": "1ec4c6b3-74f8-43e1-972b-e7eb71aaa8fc",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize TotalCostUSD = round(sum(cost_usd), 2) by bin(timestamp, 1d)\n| order by timestamp asc",
+      "id": "a2f0f5c5-cae6-4280-82a2-f75546554747",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize P95LatencyMs = percentile(latency_ms, 95) by bin(timestamp, 1h)\n| order by timestamp asc",
+      "id": "675ad86f-8245-488d-babe-8f6e8f2c9f1b",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize Tokens = sum(tokens_used), CostUSD = round(sum(cost_usd), 2) by agent_id\n| order by Tokens desc",
+      "id": "0e3ec2bc-08a7-4225-8d33-29e289b6196b",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| where array_length(red_team_flags) > 0\n| project timestamp, user_upn, agent_id, prompt, red_team_flags\n| order by timestamp desc\n| take 100",
+      "id": "21168a33-4614-46b7-9fc7-cb0fcdb97ffb",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| where dlp_decision == \"BLOCK\"\n| summarize Blocks = count() by bin(timestamp, 1h)\n| order by timestamp asc",
+      "id": "2cd00123-16c9-4522-8c44-26dd20007009",
+      "usedVariables": []
+    },
+    {
+      "dataSource": {
+        "kind": "inline",
+        "dataSourceId": "f930d384-96d1-478e-a880-7c3a4ecc5e81"
+      },
+      "text": "AnswerLedger\n| summarize AvgRows = avg(row_count), MaxRows = max(row_count) by agent_id\n| extend OversharingRatio = round(MaxRows / AvgRows, 1)\n| order by OversharingRatio desc",
+      "id": "442b9a32-e967-4a33-8c49-04aa5a03e3e1",
+      "usedVariables": []
+    }
+  ],
+  "tiles": [
+    {
+      "id": "c9f9ab0c-2b31-4a25-9c54-2a90c91e10dd",
+      "title": "AnswerTrust Score (Avg Last 24h)",
+      "visualType": "stat",
+      "pageId": "c64fd252-91ef-4334-826b-8adabb9e4bfb",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 4,
+        "height": 4
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "f7a1ba33-48d9-4e4d-bea3-37c4b4e1eb0a"
+      },
+      "visualOptions": {
+        "colorStyle": "light",
+        "colorRulesDisabled": false,
+        "colorRules": [],
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "29868029-70c6-47ba-8694-7ce2934945b4",
+      "title": "Trustworthy Answers %",
+      "visualType": "stat",
+      "pageId": "c64fd252-91ef-4334-826b-8adabb9e4bfb",
+      "layout": {
+        "x": 4,
+        "y": 0,
+        "width": 4,
+        "height": 4
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "a0e878ec-c612-44c9-9982-0338c265409a"
+      },
+      "visualOptions": {
+        "colorStyle": "light",
+        "colorRulesDisabled": false,
+        "colorRules": [],
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "a09a508d-27e7-462c-92b9-a7b9ecd52365",
+      "title": "AnswerTrust by Agent",
+      "visualType": "bar",
+      "pageId": "c64fd252-91ef-4334-826b-8adabb9e4bfb",
+      "layout": {
+        "x": 8,
+        "y": 0,
+        "width": 4,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "6291b7ed-9edd-4cf7-94bd-210721a13a55"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "64631f11-933e-45d8-b326-dea4a0fa8def",
+      "title": "Trust Score Trend (1h bins)",
+      "visualType": "timechart",
+      "pageId": "c64fd252-91ef-4334-826b-8adabb9e4bfb",
+      "layout": {
+        "x": 0,
+        "y": 4,
+        "width": 8,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "bb87d65a-fb41-4ec3-971a-e83d64b76404"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "95b3ef65-03a8-486c-9251-32b4f250aa79",
+      "title": "DQ Pass Rate Trend",
+      "visualType": "timechart",
+      "pageId": "431b745a-36ee-4ada-a6d7-2c8e2325b90f",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "9bba7daf-9a47-4e31-9baa-e8f0c99f4f9e"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "96ff95d2-3f84-4380-b67a-1d67e93ae1d4",
+      "title": "DLP Decision Mix",
+      "visualType": "pie",
+      "pageId": "431b745a-36ee-4ada-a6d7-2c8e2325b90f",
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "width": 4,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "5cb9bc3f-ee0d-49ca-b999-5d3f502c1dbd"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "e60ee8cf-8fb5-4ac1-9ef9-240deb57e320",
+      "title": "Failed Rows (Last 7d)",
+      "visualType": "table",
+      "pageId": "431b745a-36ee-4ada-a6d7-2c8e2325b90f",
+      "layout": {
+        "x": 4,
+        "y": 8,
+        "width": 8,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "1ec4c6b3-74f8-43e1-972b-e7eb71aaa8fc"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": true,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": []
+      }
+    },
+    {
+      "id": "c075bb56-2971-4573-b0b4-10af5beed242",
+      "title": "Cost per Day",
+      "visualType": "timechart",
+      "pageId": "cd34e7c8-bdc2-48d2-b792-2d335e969cb6",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 6,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "a2f0f5c5-cae6-4280-82a2-f75546554747"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "019e542a-8c08-429b-8da0-6ba7840702f3",
+      "title": "Agent Latency P95",
+      "visualType": "timechart",
+      "pageId": "cd34e7c8-bdc2-48d2-b792-2d335e969cb6",
+      "layout": {
+        "x": 6,
+        "y": 0,
+        "width": 6,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "675ad86f-8245-488d-babe-8f6e8f2c9f1b"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "a32c6746-ef95-415c-85e6-2663befe9ac1",
+      "title": "Tokens & Cost by Agent",
+      "visualType": "table",
+      "pageId": "cd34e7c8-bdc2-48d2-b792-2d335e969cb6",
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "width": 12,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "0e3ec2bc-08a7-4225-8d33-29e289b6196b"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": true,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": []
+      }
+    },
+    {
+      "id": "5d78ab8d-3d56-4ce7-9c69-970199984336",
+      "title": "Red Team Flags",
+      "visualType": "table",
+      "pageId": "a060d590-1a6a-4f99-8a00-c05b68816761",
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "width": 12,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "21168a33-4614-46b7-9fc7-cb0fcdb97ffb"
+      },
+      "visualOptions": {
+        "table__enableRenderLinks": true,
+        "colorRulesDisabled": true,
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": [],
+        "table__renderLinks": [],
+        "colorRules": []
+      }
+    },
+    {
+      "id": "aea9cd03-1b1b-4224-9e18-a77b80332399",
+      "title": "DLP Blocks (1h bins)",
+      "visualType": "timechart",
+      "pageId": "a060d590-1a6a-4f99-8a00-c05b68816761",
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "width": 6,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "2cd00123-16c9-4522-8c44-26dd20007009"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    },
+    {
+      "id": "ea058383-a1af-4c9a-94f6-809ae53cdadd",
+      "title": "Oversharing Ratio by Agent",
+      "visualType": "bar",
+      "pageId": "a060d590-1a6a-4f99-8a00-c05b68816761",
+      "layout": {
+        "x": 6,
+        "y": 8,
+        "width": 6,
+        "height": 8
+      },
+      "queryRef": {
+        "kind": "query",
+        "queryId": "442b9a32-e967-4a33-8c49-04aa5a03e3e1"
+      },
+      "visualOptions": {
+        "multipleYAxes": {
+          "base": {
+            "id": "-1",
+            "columns": [],
+            "label": "",
+            "yAxisMinimumValue": null,
+            "yAxisMaximumValue": null,
+            "yAxisScale": "linear",
+            "horizontalLines": []
+          },
+          "additional": [],
+          "showMultiplePanels": false
+        },
+        "hideLegend": false,
+        "legendLocation": "bottom",
+        "xColumnTitle": "",
+        "xColumn": null,
+        "yColumns": null,
+        "seriesColumns": null,
+        "xAxisScale": "linear",
+        "verticalLine": "",
+        "crossFilterDisabled": true,
+        "drillthroughDisabled": false,
+        "crossFilter": [],
+        "drillthrough": []
+      }
+    }
+  ]
+}

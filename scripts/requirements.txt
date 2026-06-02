@@ -1,0 +1,10 @@
+# Dependencies for the AnswerTrust data generator (local validation).
+pandas>=2.0
+numpy>=1.24
+Faker>=24.0
+
+# M3 Unified Trace Fabric (OTel + Azure Monitor). Installed in-notebook on Fabric,
+# listed here for local import/lint of scripts/foundry_wrapper.py.
+opentelemetry-api>=1.24
+azure-monitor-opentelemetry>=1.6
+requests>=2.31

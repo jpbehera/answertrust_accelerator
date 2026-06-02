@@ -1,0 +1,31 @@
+// M7 Analytic Rule 3: Anomalous Label Access
+// Fires when a user touches more highly-classified (Confidential / Highly Confidential)
+// rows than their own 30-day baseline, indicating possible label-boundary probing.
+// Source: M2 governance gate emits a customEvent ("LabelAccess") per answer with
+// user_id, max_label, confidential_rows. Workspace-based App Insights surfaces
+// customEvents as AppEvents in the LAW: customEvents->AppEvents,
+// timestamp->TimeGenerated, name->Name, customDimensions->Properties,
+// customMeasurements->Measurements.
+let lookback = 1d;
+let baselineWindow = 30d;
+let baseline =
+    AppEvents
+    | where TimeGenerated between (ago(baselineWindow) .. ago(lookback))
+    | where Name == "LabelAccess"
+    | extend user_id = tostring(Properties.user_id),
+             confidential_rows = todouble(Measurements.confidential_rows)
+    | summarize avg_conf = avg(confidential_rows), stdev_conf = stdev(confidential_rows) by user_id;
+AppEvents
+| where TimeGenerated > ago(lookback)
+| where Name == "LabelAccess"
+| extend user_id   = tostring(Properties.user_id),
+         max_label = tostring(Properties.max_label),
+         trace_id  = tostring(Properties.trace_id),
+         confidential_rows = todouble(Measurements.confidential_rows)
+| where max_label in ("Confidential", "Highly Confidential")
+| summarize today_conf = sum(confidential_rows), traces = make_set(trace_id, 50) by user_id, max_label
+| join kind=inner baseline on user_id
+| extend z = iff(isnull(stdev_conf) or stdev_conf == 0, 0.0, (today_conf - avg_conf) / stdev_conf)
+| where z >= 3.0
+| project user_id, max_label, today_conf, avg_conf, z, traces
+| order by z desc

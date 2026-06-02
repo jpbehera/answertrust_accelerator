@@ -1,0 +1,19 @@
+# Local generator output (not committed — regenerated deterministically from seed).
+scripts/_local_output/
+**/_local_output/
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Local environment config (real tenant values — never commit). Use .env.example as the template.
+.env
+.env.*
+!.env.example
+
+# azd environment state (contains resolved env values).
+.azure/
+
+# macOS
+.DS_Store

@@ -1,0 +1,1055 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AnswerTrust Dashboard — Live Demo</title>
+<style>
+  :root {
+    --purple:#3a2070; --purple-light:#8060c0; --purple-bg:#f0e8ff;
+    --navy:#1a3a5c; --teal:#0a4060;
+    --orange:#e8742a; --amber:#fff5e0; --amber-text:#6a3a10;
+    --ink:#1a2330; --muted:#5a6a85; --line:#d0dae5;
+    --bg:#f4f6fb; --panel:#ffffff;
+    --green:#2a8c7a; --green-light:#d5ede7;
+    --red:#d4407a; --red-light:#fde0ec;
+    --amber-pill:#c08030; --amber-pill-light:#fbeacb;
+    --blue:#3a9ad4;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; padding:0; background:#e8ecf2; font-family:'Inter','Segoe UI',-apple-system,sans-serif; color:var(--ink); font-size:14px; }
+  button { font-family:inherit; cursor:pointer; }
+
+  .frame {
+    max-width:1400px;
+    background:var(--bg);
+    margin:0 auto;
+    box-shadow:0 6px 28px rgba(40,40,80,0.18);
+    display:flex; flex-direction:column;
+    min-height:100vh;
+  }
+
+  /* ===== Top bar ===== */
+  .topbar {
+    display:flex; align-items:center; gap:14px;
+    background:linear-gradient(90deg, #1a1140 0%, #3a2070 100%);
+    color:#fff; padding:10px 20px;
+  }
+  .topbar .logo {
+    width:30px; height:30px; border-radius:6px;
+    background:linear-gradient(135deg, var(--orange) 0%, #c8581a 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:14px; color:#fff;
+  }
+  .topbar .product { font-weight:700; font-size:14px; }
+  .topbar .product .sub { color:#d0c8e8; font-weight:400; font-size:12px; margin-left:8px; }
+  .topbar .crumbs { color:#b0a8c8; font-size:12px; margin-left:6px; }
+  .topbar .crumbs b { color:#fff; font-weight:600; }
+  .topbar .spacer { flex:1; }
+  .topbar .live {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(42,140,122,0.18); border:1px solid rgba(42,140,122,0.45);
+    color:#9ae3d2; padding:4px 12px; border-radius:12px;
+    font-size:11px; font-weight:600; letter-spacing:0.5px;
+  }
+  .topbar .live .dot { width:7px; height:7px; border-radius:50%; background:#3ddca5; box-shadow:0 0 8px #3ddca5; animation:pulse 1.6s infinite; }
+  @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
+  .topbar .ts { color:#c8c0e0; font-size:11px; font-variant-numeric:tabular-nums; min-width:140px; text-align:right; }
+  .topbar .user {
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--purple-light) 0%, var(--purple) 100%);
+    color:#fff; font-weight:700; font-size:12px;
+    display:flex; align-items:center; justify-content:center;
+  }
+
+  /* ===== Filter bar ===== */
+  .filterbar {
+    display:flex; align-items:center; gap:10px;
+    background:#fff; padding:10px 20px;
+    border-bottom:1px solid var(--line);
+    flex-wrap:wrap;
+  }
+  .filterbar .title {
+    color:var(--purple); font-weight:800; font-size:18px; margin-right:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .filterbar .title .ico {
+    width:28px; height:28px; border-radius:6px;
+    background:linear-gradient(135deg, var(--purple-light) 0%, var(--purple) 100%);
+    color:#fff; font-size:14px; display:flex; align-items:center; justify-content:center;
+  }
+  .filter {
+    display:inline-flex; align-items:center; gap:6px;
+    background:#fafbfd; border:1px solid var(--line);
+    border-radius:6px; padding:6px 12px;
+    font-size:12px; color:var(--ink);
+    cursor:pointer; user-select:none;
+    transition:all 0.15s;
+  }
+  .filter:hover { border-color:var(--purple-light); background:#fff; box-shadow:0 1px 4px rgba(58,32,112,0.08); }
+  .filter.active { background:var(--purple-bg); border-color:#c8b8e0; color:var(--purple); font-weight:600; }
+  .filter .lbl { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+  .filter.active .lbl { color:var(--purple); opacity:0.7; }
+  .filter b { font-weight:600; }
+  .filter .caret { color:var(--muted); font-size:10px; margin-left:2px; }
+  .filterbar .spacer { flex:1; }
+  .filterbar .refresh {
+    color:var(--muted); font-size:11px;
+    display:inline-flex; align-items:center; gap:6px;
+  }
+  .filterbar .refresh .spin { display:inline-block; }
+  .filterbar .refresh.refreshing .spin { animation:spin 0.6s linear infinite; }
+  @keyframes spin { to { transform:rotate(360deg); } }
+
+  .filterbar .demo-controls {
+    display:flex; gap:6px; margin-left:8px;
+  }
+  .demo-btn {
+    background:linear-gradient(135deg, var(--orange) 0%, #c85a18 100%);
+    color:#fff; border:none; border-radius:6px;
+    padding:6px 14px; font-size:12px; font-weight:700;
+    letter-spacing:0.4px; box-shadow:0 1px 3px rgba(232,116,42,0.3);
+    transition:transform 0.1s, box-shadow 0.15s;
+  }
+  .demo-btn:hover { transform:translateY(-1px); box-shadow:0 3px 8px rgba(232,116,42,0.35); }
+  .demo-btn:active { transform:translateY(0); }
+  .demo-btn.ghost {
+    background:#fff; color:var(--purple); border:1px solid var(--purple-light);
+    box-shadow:none;
+  }
+  .demo-btn.ghost:hover { background:var(--purple-bg); }
+
+  /* ===== Grid ===== */
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    gap:12px; padding:14px 20px 20px;
+  }
+
+  .tile {
+    background:var(--panel);
+    border:1px solid var(--line); border-radius:8px;
+    padding:14px 16px;
+    box-shadow:0 1px 3px rgba(26,35,48,0.04);
+    display:flex; flex-direction:column;
+    min-width:0;
+    transition:box-shadow 0.15s, transform 0.15s;
+  }
+  .tile.clickable { cursor:pointer; }
+  .tile.clickable:hover { box-shadow:0 4px 14px rgba(58,32,112,0.12); transform:translateY(-1px); border-color:#c8b8e0; }
+  .tile .th {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:10px;
+  }
+  .tile .th h3 {
+    margin:0; color:var(--ink); font-size:12px; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.6px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .tile .th h3 .tico {
+    width:22px; height:22px; border-radius:4px;
+    background:var(--purple-bg); color:var(--purple);
+    font-size:13px; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .tile .th .more { color:var(--muted); font-size:11px; cursor:pointer; }
+  .tile .th .more:hover { color:var(--purple); }
+
+  /* ===== KPI ===== */
+  .kpi { padding:14px 16px; }
+  .kpi .label { color:var(--muted); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
+  .kpi .value { color:var(--ink); font-size:30px; font-weight:800; line-height:1.05; margin-top:4px; font-variant-numeric:tabular-nums; }
+  .kpi .value .unit { font-size:14px; color:var(--muted); font-weight:600; margin-left:2px; }
+  .kpi .delta { font-size:11px; font-weight:600; margin-top:4px; }
+  .kpi .delta.up { color:var(--green); }
+  .kpi .delta.down { color:var(--red); }
+  .kpi .delta.flat { color:var(--muted); }
+
+  .kpi.score .value { color:var(--purple); }
+  .kpi.score .ring { margin-left:auto; width:72px; height:72px; flex-shrink:0; }
+  .kpi.score .top { display:flex; align-items:flex-start; gap:8px; }
+  .kpi.score .left { flex:1; min-width:0; }
+
+  /* ===== Score breakdown bars ===== */
+  .breakdown { display:flex; flex-direction:column; gap:9px; }
+  .brow { display:flex; align-items:center; gap:10px; font-size:12px; }
+  .brow .name { width:90px; color:var(--ink); font-weight:600; flex-shrink:0; }
+  .brow .bar { flex:1; height:11px; background:#eef1f6; border-radius:6px; overflow:hidden; }
+  .brow .fill { height:100%; border-radius:6px; transition:width 0.6s cubic-bezier(0.4, 0, 0.2, 1); }
+  .brow .val { width:40px; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; flex-shrink:0; font-size:12px; }
+  .brow .w { width:50px; color:var(--muted); font-size:10px; flex-shrink:0; text-align:right; font-variant-numeric:tabular-nums; }
+  .formula-row {
+    margin-top:10px; padding-top:10px; border-top:1px dashed var(--line);
+    font-size:11px; color:var(--muted); font-family:'SF Mono',Menlo,monospace;
+  }
+  .formula-row b { color:var(--purple); font-size:13px; }
+
+  /* ===== Trend chart ===== */
+  .trend { flex:1; min-height:0; display:flex; flex-direction:column; }
+  .trend svg { width:100%; height:auto; display:block; }
+  .legend { display:flex; gap:14px; margin-top:6px; font-size:11px; color:var(--muted); flex-wrap:wrap; }
+  .legend .li { display:inline-flex; align-items:center; gap:5px; cursor:pointer; padding:2px 4px; border-radius:3px; }
+  .legend .li:hover { background:#f4f6fb; color:var(--ink); }
+  .legend .li.muted { opacity:0.35; }
+  .legend .sw { width:11px; height:11px; border-radius:2px; display:inline-block; }
+
+  /* ===== Table-health ===== */
+  .table-health { display:flex; flex-direction:column; gap:6px; }
+  .thr { display:grid; grid-template-columns:1.5fr 0.7fr 1fr 0.5fr; gap:8px; align-items:center; font-size:12px; padding:5px 6px; border-radius:4px; transition:background 0.1s; }
+  .thr.clickable { cursor:pointer; }
+  .thr.clickable:hover { background:#f4f6fb; }
+  .thr.head { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; font-weight:600; padding-bottom:2px; }
+  .thr .tname { color:var(--ink); font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .thr .tname code { background:#f3f0ea; padding:2px 6px; border-radius:3px; font-size:11px; color:var(--purple); }
+  .thr .pill {
+    display:inline-block; padding:2px 8px; border-radius:10px;
+    font-size:10px; font-weight:700; letter-spacing:0.3px; text-align:center;
+  }
+  .thr .pill.ok { background:var(--green-light); color:var(--green); }
+  .thr .pill.warn { background:var(--amber-pill-light); color:var(--amber-pill); }
+  .thr .pill.fail { background:var(--red-light); color:var(--red); }
+  .thr .bar { height:9px; background:#eef1f6; border-radius:4px; overflow:hidden; }
+  .thr .bar .fill { height:100%; transition:width 0.5s; }
+  .thr .num { color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; text-align:right; font-size:11px; }
+  .dq-callout {
+    margin-top:8px; padding:8px 10px;
+    background:var(--red-light); border-radius:4px;
+    font-size:11px; color:var(--red); font-weight:600;
+    display:flex; align-items:center; gap:6px;
+  }
+  .dq-callout code { background:rgba(212,64,122,0.12); padding:1px 5px; border-radius:3px; }
+
+  /* ===== Ledger feed ===== */
+  .feed { display:flex; flex-direction:column; gap:6px; max-height:400px; overflow-y:auto; }
+  .feed-head {
+    display:grid; grid-template-columns:70px 1fr 70px 90px;
+    gap:8px; padding:4px 8px;
+    font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; font-weight:600;
+  }
+  .frow {
+    display:grid; grid-template-columns:70px 1fr 70px 90px;
+    gap:8px; align-items:center;
+    padding:8px 10px; border:1px solid var(--line); border-radius:6px;
+    background:#fafbfd; cursor:pointer; font-size:11px;
+    transition:all 0.15s;
+  }
+  .frow:hover { background:#fff; border-color:var(--purple-light); box-shadow:0 2px 6px rgba(58,32,112,0.08); }
+  .frow.new {
+    animation:slideIn 0.5s ease-out;
+    border-left:3px solid var(--green);
+  }
+  @keyframes slideIn {
+    from { opacity:0; transform:translateY(-8px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .frow .ts { color:var(--muted); font-variant-numeric:tabular-nums; font-size:11px; }
+  .frow .q { color:var(--ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .frow .q .agent { color:var(--purple); font-weight:600; margin-right:4px; }
+  .frow .q .tid { background:#f3f0ea; padding:1px 5px; border-radius:3px; font-size:10px; color:var(--purple); margin-left:6px; font-family:'SF Mono',Menlo,monospace; }
+  .frow .score {
+    text-align:center; font-weight:700; font-variant-numeric:tabular-nums;
+    padding:3px 0; border-radius:4px; font-size:13px;
+  }
+  .frow .score.ok { background:var(--green-light); color:var(--green); }
+  .frow .score.warn { background:var(--amber-pill-light); color:var(--amber-pill); }
+  .frow .score.fail { background:var(--red-light); color:var(--red); }
+  .lbl-pill {
+    text-align:center; font-size:9.5px; font-weight:700; letter-spacing:0.3px;
+    padding:3px 0; border-radius:4px;
+    background:#eef1f6; color:var(--muted);
+  }
+  .lbl-pill.confidential { background:#fde6d8; color:#b04a10; }
+  .lbl-pill.internal { background:#e0eaf8; color:#1a5e8c; }
+  .lbl-pill.public { background:var(--green-light); color:var(--green); }
+  .lbl-pill.restricted { background:#fbe0ed; color:#a02060; }
+
+  /* ===== Cost donut ===== */
+  .donut { display:flex; align-items:center; gap:14px; }
+  .donut svg { width:140px; height:140px; flex-shrink:0; }
+  .donut .legend2 { display:flex; flex-direction:column; gap:7px; flex:1; min-width:0; font-size:12px; }
+  .donut .li2 { display:flex; align-items:center; gap:8px; }
+  .donut .sw { width:11px; height:11px; border-radius:2px; flex-shrink:0; }
+  .donut .nm { flex:1; color:var(--ink); }
+  .donut .vl { color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; }
+
+  /* ===== Sankey ===== */
+  .sankey { flex:1; min-height:0; }
+  .sankey svg { width:100%; height:auto; display:block; }
+
+  /* ===== Oversharing ===== */
+  .oversharing { display:flex; flex-direction:column; gap:8px; flex:1; }
+  .ovrow {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:8px 12px; background:#fafbfd;
+    border:1px solid var(--line); border-left:3px solid var(--red);
+    border-radius:4px; font-size:12px; cursor:pointer;
+    transition:all 0.15s;
+  }
+  .ovrow:hover { background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.06); }
+  .ovrow.ok { border-left-color:var(--green); }
+  .ovrow.warn { border-left-color:var(--amber-pill); }
+  .ovrow .name { font-weight:600; color:var(--ink); }
+  .ovrow .meta { color:var(--muted); font-size:11px; }
+  .ovrow .meta code { background:#f3f0ea; padding:1px 4px; border-radius:3px; font-size:10.5px; color:var(--purple); }
+  .ovrow .cnt { font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; font-size:14px; }
+  .ovrow .cnt.bad { color:var(--red); }
+  .ovrow .cnt.good { color:var(--green); }
+
+  /* ===== Footer ===== */
+  .footer {
+    border-top:1px solid var(--line); background:#fff;
+    padding:10px 20px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:11px; color:var(--muted); letter-spacing:0.4px;
+  }
+  .footer b { color:var(--purple); font-weight:700; }
+  .footer code { background:#f3f0ea; padding:2px 6px; border-radius:3px; font-size:10.5px; color:var(--purple); }
+
+  /* ===== Modal / drill-down ===== */
+  .modal-backdrop {
+    position:fixed; inset:0;
+    background:rgba(20,15,40,0.55); backdrop-filter:blur(4px);
+    display:none; align-items:center; justify-content:center;
+    z-index:100; padding:20px;
+    animation:fadeIn 0.2s ease-out;
+  }
+  .modal-backdrop.show { display:flex; }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  .modal {
+    background:#fff; border-radius:10px;
+    max-width:880px; width:100%;
+    max-height:90vh; overflow:hidden;
+    display:flex; flex-direction:column;
+    box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    animation:slideUp 0.25s ease-out;
+  }
+  @keyframes slideUp { from { transform:translateY(20px); opacity:0; } to { transform:translateY(0); opacity:1; } }
+  .modal-head {
+    display:flex; align-items:center; gap:14px;
+    padding:16px 22px; border-bottom:1px solid var(--line);
+    background:linear-gradient(90deg, var(--purple-bg) 0%, #fff 100%);
+  }
+  .modal-head h2 { margin:0; color:var(--purple); font-size:18px; flex:1; }
+  .modal-head .close {
+    background:none; border:none; color:var(--muted);
+    font-size:24px; line-height:1; padding:4px 8px; border-radius:4px;
+  }
+  .modal-head .close:hover { background:#eef1f6; color:var(--ink); }
+  .modal-body { padding:20px 22px; overflow-y:auto; }
+
+  .trace-wf {
+    display:flex; flex-direction:column; gap:0;
+    background:#fafbfd; border:1px solid var(--line); border-radius:6px;
+    padding:14px;
+  }
+  .trace-step {
+    display:grid; grid-template-columns:160px 100px 1fr 80px;
+    gap:12px; padding:8px 4px;
+    border-bottom:1px dashed var(--line);
+    font-size:12px;
+    align-items:center;
+  }
+  .trace-step:last-child { border-bottom:none; }
+  .trace-step .span-name { font-weight:600; color:var(--ink); display:flex; align-items:center; gap:6px; }
+  .trace-step .span-name .gate { display:inline-block; width:8px; height:8px; border-radius:50%; }
+  .trace-step .span-name .gate.pass { background:var(--green); }
+  .trace-step .span-name .gate.fail { background:var(--red); }
+  .trace-step .span-name .gate.warn { background:var(--amber-pill); }
+  .trace-step .dur { color:var(--muted); font-variant-numeric:tabular-nums; font-size:11px; }
+  .trace-step .timeline { height:14px; background:#eef1f6; border-radius:3px; position:relative; overflow:hidden; }
+  .trace-step .timeline .seg {
+    position:absolute; top:0; bottom:0; border-radius:3px;
+    background:linear-gradient(90deg, var(--purple-light), var(--purple));
+  }
+  .trace-step .status { font-size:10px; font-weight:700; text-align:right; letter-spacing:0.3px; }
+  .trace-step .status.ok { color:var(--green); }
+  .trace-step .status.fail { color:var(--red); }
+  .trace-step .status.warn { color:var(--amber-pill); }
+
+  .modal-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:14px; }
+  .modal-card {
+    background:#fafbfd; border:1px solid var(--line); border-radius:6px;
+    padding:12px 14px; font-size:12px;
+  }
+  .modal-card h4 { margin:0 0 8px; color:var(--purple); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; }
+  .modal-card .row { display:flex; justify-content:space-between; padding:3px 0; border-bottom:1px dashed #e0e6ee; }
+  .modal-card .row:last-child { border-bottom:none; }
+  .modal-card .row .k { color:var(--muted); }
+  .modal-card .row .v { color:var(--ink); font-weight:600; font-variant-numeric:tabular-nums; }
+  .modal-card .row .v code { background:#f3f0ea; padding:1px 5px; border-radius:3px; font-size:11px; color:var(--purple); }
+
+  .answer-box {
+    margin-top:14px; padding:12px 14px;
+    background:#fff; border:1px solid var(--line); border-radius:6px;
+    font-size:13px; line-height:1.5;
+  }
+  .answer-box .qlabel { color:var(--muted); font-size:10px; text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
+  .answer-box .qtext { color:var(--ink); margin:4px 0 10px; font-style:italic; }
+  .answer-box .alabel { color:var(--purple); font-size:10px; text-transform:uppercase; letter-spacing:0.6px; font-weight:700; }
+  .answer-box .atext { color:var(--ink); margin-top:4px; }
+  .answer-box .citation { display:inline-block; background:var(--purple-bg); color:var(--purple); font-size:10px; padding:1px 5px; border-radius:3px; margin:0 2px; vertical-align:super; }
+
+  /* ===== Toast ===== */
+  .toast-host {
+    position:fixed; right:24px; top:24px; z-index:200;
+    display:flex; flex-direction:column; gap:8px;
+  }
+  .toast {
+    background:#fff; border-left:4px solid var(--green);
+    border:1px solid var(--line); border-left-width:4px;
+    border-radius:6px; padding:10px 14px;
+    box-shadow:0 6px 20px rgba(0,0,0,0.15);
+    min-width:280px; max-width:380px;
+    font-size:12px; color:var(--ink);
+    animation:slideInR 0.3s ease-out;
+  }
+  .toast.alert { border-left-color:var(--red); }
+  .toast.warn { border-left-color:var(--amber-pill); }
+  @keyframes slideInR { from { transform:translateX(20px); opacity:0; } to { transform:translateX(0); opacity:1; } }
+  .toast .title { font-weight:700; }
+  .toast .msg { color:var(--muted); margin-top:2px; }
+</style>
+</head>
+<body>
+
+<div class="frame">
+
+  <!-- ===== Top bar ===== -->
+  <div class="topbar">
+    <div class="logo">F</div>
+    <div class="product">Microsoft Fabric <span class="sub">Real-Time Dashboard</span></div>
+    <div class="crumbs">contoso · trust-workspace · <b>AnswerTrust</b></div>
+    <div class="spacer"></div>
+    <div class="live"><span class="dot"></span>LIVE · auto-refresh 30s</div>
+    <div class="ts" id="ts">2026-05-13 14:22 PT</div>
+    <div class="user" title="Jay Behera">JB</div>
+  </div>
+
+  <!-- ===== Filter bar ===== -->
+  <div class="filterbar">
+    <div class="title"><span class="ico">🛡️</span>AnswerTrust</div>
+    <div class="filter active" data-filter="range" data-options="1h|6h|24h|7d" data-value="24h">
+      📅 <span class="lbl">Last</span><b id="f-range">24h</b><span class="caret">▾</span>
+    </div>
+    <div class="filter" data-filter="domain" data-options="All|Healthcare|Insurance|Retail" data-value="All">
+      <span class="lbl">Domain</span><b id="f-domain">All</b><span class="caret">▾</span>
+    </div>
+    <div class="filter" data-filter="agent" data-options="orchestrator-v1.4|healthcare-da|insurance-da|retail-da" data-value="orchestrator-v1.4">
+      <span class="lbl">Agent</span><b id="f-agent">orchestrator-v1.4</b><span class="caret">▾</span>
+    </div>
+    <div class="filter" data-filter="sens" data-options="Public|Internal|Confidential ≤|Restricted ≤" data-value="Confidential ≤">
+      <span class="lbl">Sensitivity</span><b id="f-sens">Confidential ≤</b><span class="caret">▾</span>
+    </div>
+    <div class="spacer"></div>
+    <div class="demo-controls">
+      <button class="demo-btn ghost" id="btn-incident">⚠️ Trigger DQ incident</button>
+      <button class="demo-btn" id="btn-refresh">⟳ Refresh now</button>
+    </div>
+    <div class="refresh" id="refresh-indicator"><span class="spin">⟳</span> refreshed <span id="refresh-ago">12s</span> ago</div>
+  </div>
+
+  <!-- ===== Grid ===== -->
+  <div class="grid">
+
+    <!-- Row 1: KPIs -->
+    <div class="tile kpi score" style="grid-column:span 4;">
+      <div class="top">
+        <div class="left">
+          <div class="label">AnswerTrust score (24h)</div>
+          <div class="value" id="kpi-score">87.4<span class="unit">/100</span></div>
+          <div class="delta up" id="kpi-score-delta">▲ 2.1 vs prior 24h · target ≥ 85</div>
+        </div>
+        <svg class="ring" viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#eef1f6" stroke-width="6"/>
+          <circle id="ring-fg" cx="30" cy="30" r="24" fill="none" stroke="url(#g1)" stroke-width="6"
+                  stroke-linecap="round" stroke-dasharray="131.9 150.8" transform="rotate(-90 30 30)"
+                  style="transition:stroke-dasharray 0.6s, stroke 0.4s;"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="60" y2="60">
+              <stop offset="0%" stop-color="#8060c0"/><stop offset="100%" stop-color="#3a2070"/>
+            </linearGradient>
+          </defs>
+          <text id="ring-text" x="30" y="34" text-anchor="middle" font-size="13" font-weight="700" fill="#3a2070" font-family="Inter">87</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">Answers (24h)</div>
+      <div class="value" id="kpi-answers">12,840</div>
+      <div class="delta up">▲ 4.7%</div>
+    </div>
+    <div class="tile kpi clickable" style="grid-column:span 2;" id="kpi-violations-tile">
+      <div class="label">Trust violations</div>
+      <div class="value" id="kpi-violations" style="color:var(--red);">7</div>
+      <div class="delta down">▲ 3 vs 24h</div>
+    </div>
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">Avg cost / convo</div>
+      <div class="value" id="kpi-cost">$0.043</div>
+      <div class="delta up">▼ 9.2%</div>
+    </div>
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">P95 latency</div>
+      <div class="value" id="kpi-p95">2.4<span class="unit">s</span></div>
+      <div class="delta flat">— stable</div>
+    </div>
+
+    <!-- Row 2: Breakdown / Trend / Cost -->
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th"><h3><span class="tico">⚖️</span>Score breakdown · weighted</h3><span class="more">⋯</span></div>
+      <div class="breakdown">
+        <div class="brow"><span class="name">Eval</span><div class="bar"><div class="fill" id="bd-eval" style="width:91%; background:linear-gradient(90deg,#8060c0,#3a2070);"></div></div><span class="val" id="bd-eval-v">91</span><span class="w">w 0.30</span></div>
+        <div class="brow"><span class="name">DQ</span><div class="bar"><div class="fill" id="bd-dq" style="width:84%; background:linear-gradient(90deg,#5ab8a8,#1a5a4e);"></div></div><span class="val" id="bd-dq-v">84</span><span class="w">w 0.25</span></div>
+        <div class="brow"><span class="name">Labels</span><div class="bar"><div class="fill" id="bd-lbl" style="width:96%; background:linear-gradient(90deg,#3a9ad4,#1a5e8c);"></div></div><span class="val" id="bd-lbl-v">96</span><span class="w">w 0.20</span></div>
+        <div class="brow"><span class="name">Freshness</span><div class="bar"><div class="fill" id="bd-fr" style="width:79%; background:linear-gradient(90deg,#c08030,#7a4a10);"></div></div><span class="val" id="bd-fr-v">79</span><span class="w">w 0.15</span></div>
+        <div class="brow"><span class="name">Red-team</span><div class="bar"><div class="fill" id="bd-rt" style="width:88%; background:linear-gradient(90deg,#d4407a,#8a1e4e);"></div></div><span class="val" id="bd-rt-v">88</span><span class="w">w 0.10</span></div>
+        <div class="formula-row" id="formula">AT = 0.30·91 + 0.25·84 + 0.20·96 + 0.15·79 − 0.10·12 = <b>87.4</b></div>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 5;">
+      <div class="th"><h3><span class="tico">📈</span>AnswerTrust score · last 24h by domain</h3><span class="more">⋯</span></div>
+      <div class="trend">
+        <svg viewBox="0 0 600 200" preserveAspectRatio="none">
+          <line x1="40" y1="20"  x2="590" y2="20"  stroke="#eef1f6"/>
+          <line x1="40" y1="60"  x2="590" y2="60"  stroke="#eef1f6"/>
+          <line x1="40" y1="100" x2="590" y2="100" stroke="#eef1f6"/>
+          <line x1="40" y1="140" x2="590" y2="140" stroke="#eef1f6"/>
+          <line x1="40" y1="20"  x2="40"  y2="160" stroke="#d0dae5"/>
+          <line x1="40" y1="160" x2="590" y2="160" stroke="#d0dae5"/>
+          <text x="34" y="24" text-anchor="end" font-size="10" fill="#5a6a85" font-family="Inter">100</text>
+          <text x="34" y="64" text-anchor="end" font-size="10" fill="#5a6a85" font-family="Inter">90</text>
+          <text x="34" y="104" text-anchor="end" font-size="10" fill="#5a6a85" font-family="Inter">80</text>
+          <text x="34" y="144" text-anchor="end" font-size="10" fill="#5a6a85" font-family="Inter">70</text>
+          <text x="40"  y="180" font-size="10" fill="#5a6a85" font-family="Inter">14:00</text>
+          <text x="180" y="180" font-size="10" fill="#5a6a85" font-family="Inter">18:00</text>
+          <text x="320" y="180" font-size="10" fill="#5a6a85" font-family="Inter">22:00</text>
+          <text x="460" y="180" font-size="10" fill="#5a6a85" font-family="Inter">06:00</text>
+          <text x="568" y="180" font-size="10" fill="#5a6a85" font-family="Inter">14:00</text>
+          <line x1="40" y1="80" x2="590" y2="80" stroke="#2a8c7a" stroke-dasharray="3 4" stroke-width="1"/>
+          <text x="585" y="76" text-anchor="end" font-size="10" fill="#2a8c7a" font-family="Inter">target 85</text>
+          <polyline id="ln-hc" fill="none" stroke="#3a2070" stroke-width="2"
+            points="40,72 80,68 120,76 160,64 200,70 240,60 280,58 320,66 360,62 400,72 440,68 480,60 520,56 560,62 590,58"/>
+          <polyline id="ln-in" fill="none" stroke="#e8742a" stroke-width="2"
+            points="40,90 80,86 120,82 160,98 200,92 240,84 280,80 320,86 360,90 400,82 440,84 480,78 520,82 560,76 590,80"/>
+          <polyline id="ln-rt" fill="none" stroke="#3a9ad4" stroke-width="2"
+            points="40,104 80,100 120,108 160,96 200,90 240,98 280,102 320,94 360,88 400,92 440,86 480,84 520,90 560,86 590,82"/>
+          <g id="incident-marker">
+            <circle cx="160" cy="98" r="5" fill="#d4407a"/>
+            <text x="170" y="95" font-size="10" fill="#d4407a" font-family="Inter" font-weight="700">DQ alert · claims_master</text>
+          </g>
+        </svg>
+        <div class="legend">
+          <span class="li" data-line="hc"><span class="sw" style="background:#3a2070;"></span>Healthcare</span>
+          <span class="li" data-line="in"><span class="sw" style="background:#e8742a;"></span>Insurance</span>
+          <span class="li" data-line="rt"><span class="sw" style="background:#3a9ad4;"></span>Retail</span>
+          <span class="li" style="margin-left:auto; cursor:default;">●&nbsp;incident</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 3;">
+      <div class="th"><h3><span class="tico">💸</span>Cost / conversation by stage</h3><span class="more">⋯</span></div>
+      <div class="donut">
+        <svg viewBox="0 0 36 36">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#eef1f6" stroke-width="5"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#3a2070" stroke-width="5" stroke-dasharray="45.7 88" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#8060c0" stroke-width="5" stroke-dasharray="21.1 88" stroke-dashoffset="-45.7" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#3a9ad4" stroke-width="5" stroke-dasharray="12.3 88" stroke-dashoffset="-66.8" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#e8742a" stroke-width="5" stroke-dasharray="8.8 88" stroke-dashoffset="-79.1" transform="rotate(-90 18 18)"/>
+          <text x="18" y="17" text-anchor="middle" font-size="5" font-weight="700" fill="#1a2330" font-family="Inter">$0.043</text>
+          <text x="18" y="22.5" text-anchor="middle" font-size="2.6" fill="#5a6a85" font-family="Inter">avg / convo</text>
+        </svg>
+        <div class="legend2">
+          <div class="li2"><span class="sw" style="background:#3a2070;"></span><span class="nm">Model inference</span><span class="vl">52%</span></div>
+          <div class="li2"><span class="sw" style="background:#8060c0;"></span><span class="nm">Retrieval</span><span class="vl">24%</span></div>
+          <div class="li2"><span class="sw" style="background:#3a9ad4;"></span><span class="nm">Gates / DLP</span><span class="vl">14%</span></div>
+          <div class="li2"><span class="sw" style="background:#e8742a;"></span><span class="nm">Eval / red-team</span><span class="vl">10%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3: DQ posture / Sankey / Oversharing -->
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th"><h3><span class="tico">🔍</span>DQ posture · top source tables</h3><span class="more">view all 47 ›</span></div>
+      <div class="table-health" id="dq-table">
+        <div class="thr head"><div>Table</div><div>Status</div><div>Pass-rate</div><div>Failed</div></div>
+        <div class="thr clickable" data-table="nursing.encounters" data-status="ok" data-rate="99" data-fail="0">
+          <div class="tname"><code>nursing.encounters</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:99%; background:var(--green);"></div></div>
+          <div class="num">0</div>
+        </div>
+        <div class="thr clickable" data-table="insurance.claims_master" data-status="fail" data-rate="62" data-fail="1284">
+          <div class="tname"><code>insurance.claims_master</code></div>
+          <div><span class="pill fail">FAIL</span></div>
+          <div class="bar"><div class="fill" style="width:62%; background:var(--red);"></div></div>
+          <div class="num" style="color:var(--red);">1,284</div>
+        </div>
+        <div class="thr clickable" data-table="insurance.policy_book" data-status="warn" data-rate="84" data-fail="147">
+          <div class="tname"><code>insurance.policy_book</code></div>
+          <div><span class="pill warn">WARN</span></div>
+          <div class="bar"><div class="fill" style="width:84%; background:var(--amber-pill);"></div></div>
+          <div class="num">147</div>
+        </div>
+        <div class="thr clickable" data-table="retail.sku_catalog" data-status="ok" data-rate="97" data-fail="12">
+          <div class="tname"><code>retail.sku_catalog</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:97%; background:var(--green);"></div></div>
+          <div class="num">12</div>
+        </div>
+        <div class="thr clickable" data-table="retail.txn_fact" data-status="ok" data-rate="96" data-fail="38">
+          <div class="tname"><code>retail.txn_fact</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:96%; background:var(--green);"></div></div>
+          <div class="num">38</div>
+        </div>
+        <div class="thr clickable" data-table="healthcare.med_orders" data-status="warn" data-rate="81" data-fail="203">
+          <div class="tname"><code>healthcare.med_orders</code></div>
+          <div><span class="pill warn">WARN</span></div>
+          <div class="bar"><div class="fill" style="width:81%; background:var(--amber-pill);"></div></div>
+          <div class="num">203</div>
+        </div>
+      </div>
+      <div class="dq-callout" id="dq-callout">⚠ <code>claims_master</code> Validity 0.62 — penalizes 412 in-flight answers · <span style="text-decoration:underline; cursor:pointer;">notify steward</span></div>
+    </div>
+
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th"><h3><span class="tico">🔀</span>Agent handoffs · Sankey</h3><span class="more">⋯</span></div>
+      <div class="sankey">
+        <svg viewBox="0 0 360 220">
+          <rect x="6" y="60" width="80" height="100" rx="6" fill="#3a2070"/>
+          <text x="46" y="105" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Inter">Orchestrator</text>
+          <text x="46" y="120" text-anchor="middle" font-size="9" fill="#d0c8e8" font-family="Inter">12,840 reqs</text>
+          <rect class="sankey-node" data-agent="healthcare-da" x="270" y="20" width="84" height="34" rx="5" fill="#3a9ad4" style="cursor:pointer;"/>
+          <text x="312" y="41" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Inter" pointer-events="none">Healthcare DA</text>
+          <rect class="sankey-node" data-agent="insurance-da" x="270" y="68" width="84" height="34" rx="5" fill="#2a8c7a" style="cursor:pointer;"/>
+          <text x="312" y="89" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Inter" pointer-events="none">Insurance DA</text>
+          <rect class="sankey-node" data-agent="retail-da" x="270" y="116" width="84" height="34" rx="5" fill="#c08030" style="cursor:pointer;"/>
+          <text x="312" y="137" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Inter" pointer-events="none">Retail DA</text>
+          <rect class="sankey-node" data-agent="fallback" x="270" y="164" width="84" height="34" rx="5" fill="#5a6a85" style="cursor:pointer;"/>
+          <text x="312" y="185" text-anchor="middle" font-size="11" font-weight="700" fill="#fff" font-family="Inter" pointer-events="none">Fallback</text>
+          <path d="M 86 78 C 178 78, 178 37, 270 37" fill="none" stroke="#3a9ad4" stroke-width="22" opacity="0.45"/>
+          <path d="M 86 100 C 178 100, 178 85, 270 85" fill="none" stroke="#2a8c7a" stroke-width="30" opacity="0.45"/>
+          <path d="M 86 122 C 178 122, 178 133, 270 133" fill="none" stroke="#c08030" stroke-width="18" opacity="0.45"/>
+          <path d="M 86 144 C 178 144, 178 181, 270 181" fill="none" stroke="#5a6a85" stroke-width="6" opacity="0.45"/>
+          <text x="178" y="34"  text-anchor="middle" font-size="10" font-weight="700" fill="#1a5e8c" font-family="Inter">4,210 (33%)</text>
+          <text x="178" y="80"  text-anchor="middle" font-size="10" font-weight="700" fill="#1a5a4e" font-family="Inter">5,680 (44%)</text>
+          <text x="178" y="128" text-anchor="middle" font-size="10" font-weight="700" fill="#7a4a10" font-family="Inter">2,420 (19%)</text>
+          <text x="178" y="178" text-anchor="middle" font-size="10" font-weight="700" fill="#5a6a85" font-family="Inter">530 (4%)</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th"><h3><span class="tico">🚨</span>Oversharing & policy denials</h3><span class="more">last 24h</span></div>
+      <div class="oversharing">
+        <div class="ovrow" data-detail="oversharing"><div><div class="name">Confidential cite in External chat</div><div class="meta">user: nora.chen@contoso · agent: insurance-da</div></div><div class="cnt bad">3</div></div>
+        <div class="ovrow warn" data-detail="dlp"><div><div class="name">EXTRACT denied · DLP for OneLake</div><div class="meta">table: <code>claims_master.ssn</code></div></div><div class="cnt">12</div></div>
+        <div class="ovrow warn" data-detail="downgrade"><div><div class="name">Label downgrade attempt blocked</div><div class="meta">Confidential → Internal · Purview policy</div></div><div class="cnt">5</div></div>
+        <div class="ovrow ok" data-detail="redteam"><div><div class="name">Red-team prompts caught</div><div class="meta">jailbreak / data-exfil / prompt-inject</div></div><div class="cnt good">28 / 28</div></div>
+        <div class="ovrow ok" data-detail="obo"><div><div class="name">OBO identity passthrough</div><div class="meta">100% of answers carry user identity</div></div><div class="cnt good">12,840</div></div>
+      </div>
+    </div>
+
+    <!-- Row 4: AnswerLedger -->
+    <div class="tile" style="grid-column:span 12;">
+      <div class="th">
+        <h3><span class="tico">📒</span>AnswerLedger · live feed (click any row to drill into trace)</h3>
+        <span class="more">open in Real-Time Hub ›</span>
+      </div>
+      <div class="feed-head"><div>Time</div><div>Question · agent · trace_id</div><div>Score</div><div>Label</div></div>
+      <div class="feed" id="feed"></div>
+    </div>
+
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <div class="footer">
+    <div><b>AnswerTrust</b> · one trace · one ledger · one score</div>
+    <div>source: <code>kql://trust-workspace/AnswerLedger</code> · <code>fabric://dq_runs</code> · <code>appinsights://otel-genai</code></div>
+    <div>Pillar P6 · Trust dashboard · v1.4 LIVE DEMO</div>
+  </div>
+
+</div>
+
+<!-- ===== Modal ===== -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal">
+    <div class="modal-head">
+      <h2 id="modal-title">Trace</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<div class="toast-host" id="toasts"></div>
+
+<script>
+// ============ Demo data ============
+const SAMPLE_QUESTIONS = [
+  {agent:"healthcare-da", q:"What are the top 5 medications driving 30-day readmissions on cardiac wards?", domain:"Healthcare", label:"Confidential", score:94, ans:"Top contributors: <b>Furosemide</b>, <b>Metoprolol</b>, <b>Lisinopril</b>, <b>Warfarin</b>, <b>Digoxin</b> — together accounting for 42% of cardiac readmits in Q1 2026.<sup class='citation'>nursing.encounters</sup><sup class='citation'>med_orders</sup>"},
+  {agent:"insurance-da", q:"Show claims with severity > $50k filed in the last 7 days by region", domain:"Insurance", label:"Confidential", score:71, ans:"7-day high-severity claims: <b>Pacific 142</b>, <b>Midwest 98</b>, <b>South 73</b>, <b>NE 51</b>. Note: claims_master DQ degraded — confidence reduced.<sup class='citation'>claims_master</sup>"},
+  {agent:"retail-da", q:"Compare SKU-level margin trend for stores in Pacific Northwest vs South", domain:"Retail", label:"Internal", score:91, ans:"PNW margin <b>+3.2pp YoY</b> driven by apparel mix; South <b>-0.8pp</b> due to fuel/grocery share.<sup class='citation'>txn_fact</sup><sup class='citation'>sku_catalog</sup>"},
+  {agent:"insurance-da", q:"Per-adjuster cycle time on auto-bodily-injury claims", domain:"Insurance", label:"Confidential", score:58, ans:"Cycle-time analysis BLOCKED — claims_master Validity 0.62 fell below 0.85 threshold. Steward notified."},
+  {agent:"healthcare-da", q:"Average documentation burden per nurse shift, ICU vs Med-Surg", domain:"Healthcare", label:"Internal", score:96, ans:"ICU: <b>2h 14m</b>/shift, Med-Surg: <b>1h 38m</b>/shift. Burden up 7% YoY in ICU.<sup class='citation'>encounters</sup>"},
+  {agent:"retail-da", q:"Top 10 returning customers by lifetime value last quarter", domain:"Retail", label:"Public", score:89, ans:"Aggregate LTV decile: top 10 customers averaged <b>$48,210</b>, +12% QoQ.<sup class='citation'>txn_fact</sup>"},
+  {agent:"healthcare-da", q:"Which units exceed 4h documentation per shift this week?", domain:"Healthcare", label:"Internal", score:88, ans:"Units exceeding 4h: <b>Cardiac ICU (4h 12m)</b>, <b>Surgical Step-Down (4h 21m)</b>.<sup class='citation'>encounters</sup>"},
+  {agent:"insurance-da", q:"Litigated claims aging over 90 days by line of business", domain:"Insurance", label:"Restricted", score:76, ans:"Auto BI: 184 · GL: 92 · Property: 47. Aging spike in Auto BI driven by Q1 batch.<sup class='citation'>policy_book</sup>"},
+];
+
+const TRACES = {
+  default: [
+    {span:"intent.classify", dur:"42ms", w:7, gate:"pass", status:"OK"},
+    {span:"purview.sensitivity", dur:"68ms", w:11, gate:"pass", status:"OK"},
+    {span:"purview.dlp.precheck", dur:"31ms", w:5, gate:"pass", status:"OK"},
+    {span:"obo.token.exchange", dur:"54ms", w:9, gate:"pass", status:"OK"},
+    {span:"retrieval.fabric.kql", dur:"312ms", w:48, gate:"pass", status:"OK · 14 rows"},
+    {span:"dq.gate.eval", dur:"41ms", w:7, gate:"pass", status:"PASS · 0.91"},
+    {span:"model.inference.gpt-4o", dur:"1.42s", w:90, gate:"pass", status:"OK · 312 tok"},
+    {span:"purview.dlp.postcheck", dur:"38ms", w:6, gate:"pass", status:"OK"},
+    {span:"redteam.evaluator", dur:"86ms", w:14, gate:"pass", status:"PASS"},
+    {span:"answerledger.write", dur:"22ms", w:4, gate:"pass", status:"OK"},
+  ],
+  fail: [
+    {span:"intent.classify", dur:"38ms", w:7, gate:"pass", status:"OK"},
+    {span:"purview.sensitivity", dur:"64ms", w:11, gate:"pass", status:"OK"},
+    {span:"obo.token.exchange", dur:"52ms", w:9, gate:"pass", status:"OK"},
+    {span:"retrieval.fabric.kql", dur:"284ms", w:48, gate:"pass", status:"OK · 8 rows"},
+    {span:"dq.gate.eval", dur:"39ms", w:7, gate:"fail", status:"FAIL · Validity 0.62"},
+    {span:"freshness.check", dur:"21ms", w:4, gate:"warn", status:"WARN · 18h stale"},
+    {span:"model.inference.gpt-4o", dur:"1.18s", w:80, gate:"pass", status:"OK · 218 tok"},
+    {span:"redteam.evaluator", dur:"82ms", w:14, gate:"pass", status:"PASS"},
+    {span:"answerledger.write", dur:"19ms", w:4, gate:"pass", status:"OK · flagged"},
+  ],
+};
+
+// ============ State ============
+let state = {
+  refreshAgo: 12,
+  mutedLines: new Set(),
+  feed: [], // populated below
+};
+
+// Seed feed with 6 rows; timestamps relative to now
+function seedFeed() {
+  const now = new Date();
+  state.feed = SAMPLE_QUESTIONS.slice(0, 6).map((q, i) => ({
+    ...q,
+    ts: new Date(now.getTime() - (i + 1) * 18000),
+    tid: `tr-9f3e…${(0xa12 - i).toString(16)}`,
+    isNew: false,
+  }));
+}
+seedFeed();
+
+// ============ Renderers ============
+function fmtTs(d) {
+  return d.toLocaleTimeString('en-US', {hour12:false, hour:'2-digit', minute:'2-digit', second:'2-digit'});
+}
+function scoreClass(s) { return s >= 85 ? 'ok' : s >= 70 ? 'warn' : 'fail'; }
+
+function renderFeed() {
+  const host = document.getElementById('feed');
+  host.innerHTML = state.feed.map(item => `
+    <div class="frow ${item.isNew ? 'new' : ''}" data-ts="${item.ts.getTime()}" data-q="${encodeURIComponent(item.q)}" data-agent="${item.agent}" data-tid="${item.tid}" data-score="${item.score}" data-label="${item.label}">
+      <div class="ts">${fmtTs(item.ts)}</div>
+      <div class="q"><span class="agent">${item.agent}</span>"${item.q}"<span class="tid">${item.tid}</span></div>
+      <div class="score ${scoreClass(item.score)}">${item.score}</div>
+      <div class="lbl-pill ${item.label.toLowerCase()}">${item.label}</div>
+    </div>
+  `).join('');
+  host.querySelectorAll('.frow').forEach(row => {
+    row.addEventListener('click', () => openTraceModal({
+      ts: parseInt(row.dataset.ts),
+      q: decodeURIComponent(row.dataset.q),
+      agent: row.dataset.agent,
+      tid: row.dataset.tid,
+      score: parseInt(row.dataset.score),
+      label: row.dataset.label,
+    }));
+  });
+}
+renderFeed();
+
+// ============ Modal ============
+function openModal(title, html) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal() { document.getElementById('modal').classList.remove('show'); }
+document.getElementById('modal').addEventListener('click', e => {
+  if (e.target.id === 'modal') closeModal();
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+function renderTrace(spans) {
+  const total = spans.reduce((a, s) => a + s.w, 0);
+  let acc = 0;
+  return `<div class="trace-wf">
+    ${spans.map(s => {
+      const offsetPct = (acc / total) * 100;
+      const widthPct  = (s.w   / total) * 100;
+      acc += s.w;
+      return `<div class="trace-step">
+        <div class="span-name"><span class="gate ${s.gate}"></span>${s.span}</div>
+        <div class="dur">${s.dur}</div>
+        <div class="timeline"><div class="seg" style="left:${offsetPct.toFixed(1)}%; width:${widthPct.toFixed(1)}%;"></div></div>
+        <div class="status ${s.gate==='pass'?'ok':s.gate==='fail'?'fail':'warn'}">${s.status}</div>
+      </div>`;
+    }).join('')}
+  </div>`;
+}
+
+function openTraceModal(item) {
+  const ans = SAMPLE_QUESTIONS.find(q => q.q === item.q) || SAMPLE_QUESTIONS[0];
+  const spans = item.score < 70 ? TRACES.fail : TRACES.default;
+  const breakdown = item.score < 70
+    ? {Eval:88, DQ:42, Labels:96, Freshness:60, RedTeam:0}
+    : {Eval:91, DQ:84, Labels:96, Freshness:79, RedTeam:0};
+
+  const html = `
+    <div class="answer-box">
+      <div class="qlabel">User question</div>
+      <div class="qtext">"${item.q}"</div>
+      <div class="alabel">Agent answer · ${item.agent}</div>
+      <div class="atext">${ans.ans}</div>
+    </div>
+    <div class="modal-grid">
+      <div class="modal-card">
+        <h4>Trace metadata</h4>
+        <div class="row"><span class="k">trace_id</span><span class="v"><code>${item.tid}</code></span></div>
+        <div class="row"><span class="k">user</span><span class="v">nora.chen@contoso</span></div>
+        <div class="row"><span class="k">timestamp</span><span class="v">${new Date(item.ts).toISOString()}</span></div>
+        <div class="row"><span class="k">agent version</span><span class="v">${item.agent}-v1.4</span></div>
+        <div class="row"><span class="k">model</span><span class="v">gpt-4o-2026-04</span></div>
+        <div class="row"><span class="k">cost</span><span class="v">$0.0${37 + (item.score % 10)}</span></div>
+        <div class="row"><span class="k">sensitivity label</span><span class="v">${item.label}</span></div>
+      </div>
+      <div class="modal-card">
+        <h4>AnswerTrust score · ${item.score}/100</h4>
+        ${Object.entries(breakdown).map(([k,v]) => `
+          <div class="row"><span class="k">${k}</span><span class="v">${v}</span></div>
+        `).join('')}
+        <div class="row" style="border-top:1px solid var(--line); margin-top:6px; padding-top:6px;">
+          <span class="k">composite</span><span class="v" style="color:var(--purple);">${item.score}</span>
+        </div>
+      </div>
+    </div>
+    <h4 style="color:var(--purple); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; margin:18px 0 8px;">OpenTelemetry trace · 10 spans</h4>
+    ${renderTrace(spans)}
+  `;
+  openModal(`Answer trace · ${item.tid}`, html);
+}
+
+// ============ Filter chips ============
+document.querySelectorAll('.filter[data-filter]').forEach(chip => {
+  chip.addEventListener('click', () => {
+    const opts = chip.dataset.options.split('|');
+    const cur = chip.dataset.value;
+    const next = opts[(opts.indexOf(cur) + 1) % opts.length];
+    chip.dataset.value = next;
+    chip.querySelector('b').textContent = next;
+    chip.classList.add('active');
+    applyFilter(chip.dataset.filter, next);
+  });
+});
+
+function applyFilter(name, value) {
+  toast({title:`Filter changed`, msg:`${name} → ${value}`, kind:''});
+  // Simulate re-fetch effect: nudge KPI score
+  if (name === 'domain' && value !== 'All') {
+    const overrides = {Healthcare:91.2, Insurance:79.4, Retail:88.1};
+    setScore(overrides[value]);
+  } else if (name === 'domain' && value === 'All') {
+    setScore(87.4);
+  }
+  if (name === 'range') {
+    const map = {'1h':89.2, '6h':88.1, '24h':87.4, '7d':84.6};
+    setScore(map[value] || 87.4);
+  }
+}
+
+function setScore(v) {
+  document.getElementById('kpi-score').innerHTML = `${v.toFixed(1)}<span class="unit">/100</span>`;
+  document.getElementById('ring-text').textContent = Math.round(v);
+  const dash = (v / 100 * 150.8).toFixed(1);
+  document.getElementById('ring-fg').setAttribute('stroke-dasharray', `${dash} 150.8`);
+  const color = v >= 85 ? 'url(#g1)' : v >= 70 ? '#c08030' : '#d4407a';
+  document.getElementById('ring-fg').setAttribute('stroke', color);
+  document.getElementById('ring-text').setAttribute('fill', v >= 85 ? '#3a2070' : v >= 70 ? '#c08030' : '#d4407a');
+}
+
+// ============ Trend legend toggle ============
+document.querySelectorAll('.legend .li[data-line]').forEach(li => {
+  li.addEventListener('click', () => {
+    const id = `ln-${li.dataset.line}`;
+    const ln = document.getElementById(id);
+    if (state.mutedLines.has(id)) {
+      state.mutedLines.delete(id);
+      ln.style.opacity = '1';
+      li.classList.remove('muted');
+    } else {
+      state.mutedLines.add(id);
+      ln.style.opacity = '0.1';
+      li.classList.add('muted');
+    }
+  });
+});
+
+// ============ DQ row drill ============
+document.querySelectorAll('#dq-table .thr.clickable').forEach(row => {
+  row.addEventListener('click', () => {
+    const t = row.dataset.table, status = row.dataset.status, rate = row.dataset.rate, fail = row.dataset.fail;
+    const html = `
+      <div class="modal-card">
+        <h4>Failed-rows preview · <code>${t}</code></h4>
+        <div class="row"><span class="k">DQ status</span><span class="v" style="color:${status==='fail'?'var(--red)':status==='warn'?'var(--amber-pill)':'var(--green)'};">${status.toUpperCase()}</span></div>
+        <div class="row"><span class="k">Pass-rate (Validity)</span><span class="v">${rate}%</span></div>
+        <div class="row"><span class="k">Failed rows (24h)</span><span class="v">${fail}</span></div>
+        <div class="row"><span class="k">DQ rule violated</span><span class="v"><code>not_null(claim_amount) AND claim_amount > 0</code></span></div>
+        <div class="row"><span class="k">Last steward notified</span><span class="v">2026-05-13 13:18 PT</span></div>
+        <div class="row"><span class="k">Affected answers (in-flight)</span><span class="v" style="color:var(--red);">412</span></div>
+      </div>
+      <h4 style="color:var(--purple); font-size:11px; text-transform:uppercase; letter-spacing:0.6px; margin:14px 0 6px;">Sample failed rows</h4>
+      <div style="background:#0f1828; color:#c0d0e8; padding:12px; border-radius:6px; font-family:'SF Mono',Menlo,monospace; font-size:11px; overflow:auto;">
+| claim_id  | filed_dt    | claim_amount | adjuster   | reason                |<br>
+|-----------|-------------|--------------|------------|-----------------------|<br>
+| C-8124093 | 2026-05-12  | <span style="color:#ff7090;">NULL</span>         | a.parker   | not_null violation    |<br>
+| C-8124119 | 2026-05-13  | <span style="color:#ff7090;">-450.00</span>      | r.singh    | range violation       |<br>
+| C-8124201 | 2026-05-13  | <span style="color:#ff7090;">NULL</span>         | (unknown)  | not_null violation    |<br>
+| C-8124277 | 2026-05-13  | <span style="color:#ff7090;">0</span>            | a.parker   | range violation       |<br>
+      </div>
+    `;
+    openModal(`DQ drill-down · ${t}`, html);
+  });
+});
+
+// ============ Sankey nodes ============
+document.querySelectorAll('.sankey-node').forEach(n => {
+  n.addEventListener('click', () => {
+    const a = n.dataset.agent;
+    const counts = {'healthcare-da':4210, 'insurance-da':5680, 'retail-da':2420, 'fallback':530};
+    const html = `
+      <div class="modal-card">
+        <h4>Agent profile · ${a}</h4>
+        <div class="row"><span class="k">Requests routed (24h)</span><span class="v">${counts[a].toLocaleString()}</span></div>
+        <div class="row"><span class="k">Avg AnswerTrust</span><span class="v">${(85 + Math.random()*8).toFixed(1)}</span></div>
+        <div class="row"><span class="k">Avg latency P95</span><span class="v">${(1.8 + Math.random()*1.2).toFixed(1)}s</span></div>
+        <div class="row"><span class="k">Avg cost / convo</span><span class="v">$0.0${30 + Math.floor(Math.random()*15)}</span></div>
+        <div class="row"><span class="k">Top failure mode</span><span class="v">${a==='insurance-da'?'DQ gate · claims_master':'—'}</span></div>
+      </div>
+    `;
+    openModal(`Agent · ${a}`, html);
+  });
+});
+
+// ============ Oversharing rows ============
+document.querySelectorAll('.ovrow[data-detail]').forEach(r => {
+  r.addEventListener('click', () => {
+    const map = {
+      oversharing: {title:'Confidential cite events', html:'<p>3 events in last 24h where Confidential-labelled content was inserted into a chat with at least one external participant. <b>Purview policy</b> auto-redacted; users notified.</p>'},
+      dlp: {title:'DLP EXTRACT denials', html:'<p>12 EXTRACT operations on <code>claims_master.ssn</code> denied by Purview DLP for OneLake. Users routed to compliance review.</p>'},
+      downgrade: {title:'Label downgrade attempts', html:'<p>5 attempts to downgrade Confidential → Internal blocked by Purview policy. Audit trail in <code>kql://AnswerLedger</code>.</p>'},
+      redteam: {title:'Red-team prompts caught', html:'<p>28 of 28 adversarial prompts (jailbreak / data-exfil / prompt-injection) blocked by Foundry red-team evaluator inline. Zero leakage.</p>'},
+      obo: {title:'OBO identity passthrough', html:'<p>100% of 12,840 answers carry on-behalf-of user identity end-to-end. RBAC enforced at retrieval-time, not at answer-time.</p>'},
+    };
+    const d = map[r.dataset.detail];
+    openModal(d.title, `<div style="font-size:13px; line-height:1.6;">${d.html}</div>`);
+  });
+});
+
+// ============ Violations KPI ============
+document.getElementById('kpi-violations-tile').addEventListener('click', () => {
+  const html = `
+    <div style="font-size:13px; line-height:1.6;">7 trust violations in the last 24h — all blocked or redacted before answer egress.</div>
+    <div class="modal-grid">
+      <div class="modal-card"><h4>By type</h4>
+        <div class="row"><span class="k">Confidential cite (external)</span><span class="v">3</span></div>
+        <div class="row"><span class="k">DLP EXTRACT denied</span><span class="v">1</span></div>
+        <div class="row"><span class="k">Label downgrade blocked</span><span class="v">2</span></div>
+        <div class="row"><span class="k">Freshness gate fail</span><span class="v">1</span></div>
+      </div>
+      <div class="modal-card"><h4>By domain</h4>
+        <div class="row"><span class="k">Insurance</span><span class="v">5</span></div>
+        <div class="row"><span class="k">Healthcare</span><span class="v">1</span></div>
+        <div class="row"><span class="k">Retail</span><span class="v">1</span></div>
+      </div>
+    </div>
+  `;
+  openModal('Trust violations · last 24h', html);
+});
+
+// ============ Demo controls ============
+document.getElementById('btn-refresh').addEventListener('click', () => {
+  document.getElementById('refresh-indicator').classList.add('refreshing');
+  setTimeout(() => {
+    document.getElementById('refresh-indicator').classList.remove('refreshing');
+    state.refreshAgo = 0;
+    pushNewAnswer();
+  }, 400);
+});
+
+document.getElementById('btn-incident').addEventListener('click', () => {
+  toast({title:'⚠ DQ incident triggered', msg:'claims_master Validity dropped to 0.58', kind:'alert'});
+  // Drop DQ score
+  document.getElementById('bd-dq').style.width = '58%';
+  document.getElementById('bd-dq-v').textContent = '58';
+  setScore(78.6);
+  document.getElementById('formula').innerHTML = 'AT = 0.30·91 + 0.25·<b style="color:var(--red);">58</b> + 0.20·96 + 0.15·79 − 0.10·12 = <b>78.6</b>';
+  // Push 2 failed answers
+  setTimeout(() => pushNewAnswer({score:54, agent:'insurance-da', label:'Confidential', q:'Aging on auto-bodily-injury claims by adjuster', forceFail:true}), 600);
+  setTimeout(() => pushNewAnswer({score:62, agent:'insurance-da', label:'Confidential', q:'Reserve adequacy by line of business this month'}), 1400);
+  // Bump violations
+  document.getElementById('kpi-violations').textContent = '11';
+});
+
+// ============ Toasts ============
+function toast({title, msg, kind=''}) {
+  const t = document.createElement('div');
+  t.className = `toast ${kind}`;
+  t.innerHTML = `<div class="title">${title}</div><div class="msg">${msg}</div>`;
+  document.getElementById('toasts').appendChild(t);
+  setTimeout(() => { t.style.transition='opacity 0.4s'; t.style.opacity='0'; setTimeout(() => t.remove(), 400); }, 3500);
+}
+
+// ============ Live feed ticker ============
+function pushNewAnswer(custom) {
+  const sample = custom || SAMPLE_QUESTIONS[Math.floor(Math.random() * SAMPLE_QUESTIONS.length)];
+  const score = custom?.score ?? sample.score + Math.floor(Math.random() * 6 - 3);
+  const tidNum = (Math.random() * 0xfff | 0).toString(16).padStart(3,'0');
+  const item = {
+    agent: sample.agent,
+    q: sample.q,
+    domain: sample.domain || 'Insurance',
+    label: sample.label,
+    score: Math.max(40, Math.min(99, score)),
+    ts: new Date(),
+    tid: `tr-9f3e…${tidNum}`,
+    isNew: true,
+  };
+  state.feed.unshift(item);
+  state.feed = state.feed.slice(0, 8);
+  renderFeed();
+  setTimeout(() => { item.isNew = false; renderFeed(); }, 1200);
+}
+
+// ============ Clock + auto-tick ============
+function tick() {
+  const now = new Date();
+  const pad = n => n.toString().padStart(2,'0');
+  document.getElementById('ts').textContent =
+    `${now.getFullYear()}-${pad(now.getMonth()+1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())} PT`;
+  state.refreshAgo += 1;
+  document.getElementById('refresh-ago').textContent = `${state.refreshAgo}s`;
+}
+setInterval(tick, 1000);
+tick();
+
+// Auto-push a new answer every ~8s
+setInterval(() => pushNewAnswer(), 8000);
+</script>
+
+</body>
+</html>

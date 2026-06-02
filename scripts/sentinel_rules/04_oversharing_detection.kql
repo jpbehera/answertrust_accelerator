@@ -1,0 +1,28 @@
+// M7 Analytic Rule 4: Oversharing Detection
+// Fires when an agent answer returns materially more rows than the historical norm for
+// that question category, indicating potential data oversharing / scope creep.
+// Source: M5 data-quality gate emits a customEvent ("AnswerResult") with
+// category and row_count. Workspace-based App Insights surfaces customEvents as
+// AppEvents in the LAW: customEvents->AppEvents, timestamp->TimeGenerated,
+// name->Name, customDimensions->Properties, customMeasurements->Measurements.
+let lookback = 1h;
+let baselineWindow = 14d;
+let baseline =
+    AppEvents
+    | where TimeGenerated between (ago(baselineWindow) .. ago(lookback))
+    | where Name == "AnswerResult"
+    | extend category = tostring(Properties.category),
+             row_count = todouble(Measurements.row_count)
+    | summarize avg_rows = avg(row_count), stdev_rows = stdev(row_count) by category;
+AppEvents
+| where TimeGenerated > ago(lookback)
+| where Name == "AnswerResult"
+| extend category  = tostring(Properties.category),
+         user_id   = tostring(Properties.user_id),
+         trace_id  = tostring(Properties.trace_id),
+         row_count = todouble(Measurements.row_count)
+| join kind=inner baseline on category
+| extend z = iff(isnull(stdev_rows) or stdev_rows == 0, 0.0, (row_count - avg_rows) / stdev_rows)
+| where z >= 4.0 and row_count > avg_rows * 2
+| project TimeGenerated, category, user_id, trace_id, row_count, avg_rows, z
+| order by z desc

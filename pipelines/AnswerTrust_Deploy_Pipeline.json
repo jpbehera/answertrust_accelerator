@@ -1,0 +1,133 @@
+{
+  "name": "AnswerTrust_Deploy_Pipeline",
+  "properties": {
+    "description": "End-to-end deployment pipeline for the AnswerTrust accelerator data plane. Runs the demo-substrate notebooks (00-04) and the M1-M7 module notebooks (05-10) in dependency order. M5 (DQ gate) forks off the substrate and rejoins at M2/M6 governance, mirroring the CrossIndustry pipeline pattern.",
+    "activities": [
+      {
+        "name": "00_Prerequisites_Check",
+        "description": "Verify Fabric/Foundry/Purview prerequisites and capacity",
+        "type": "SynapseNotebook",
+        "dependsOn": [],
+        "policy": {"timeout": "0.00:15:00", "retry": 2, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "00_Prerequisites_Check", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "01_Setup_Workspace",
+        "description": "Create Lakehouse, Warehouse, Eventhouse and KQL database",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "00_Prerequisites_Check", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:20:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "01_Setup_Workspace", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "02_Generate_Sample_Data",
+        "description": "Generate the BusinessMetrics synthetic dataset (4 tables, 10k rows)",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "01_Setup_Workspace", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:20:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "02_Generate_Sample_Data", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "03_Load_Substrate",
+        "description": "Load CSV to Delta, Warehouse and Semantic Model",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "02_Generate_Sample_Data", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:30:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "03_Load_Substrate", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "04_Deploy_Demo_Agent",
+        "description": "Deploy the BusinessMetrics Data Agent + golden questions",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "03_Load_Substrate", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:20:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "04_Deploy_Demo_Agent", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "05_M3_Trace_Fabric",
+        "description": "M3 unified trace fabric (OTel) + M1 OBO identity passthrough",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "04_Deploy_Demo_Agent", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:20:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "05_M3_Trace_Fabric", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "06_M4_AnswerLedger",
+        "description": "M4 AnswerLedger Eventstream -> KQL (one provenance row per answer)",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "05_M3_Trace_Fabric", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:25:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "06_M4_AnswerLedger", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "07_M5_DataQuality_Gate",
+        "description": "M5 data-quality gate + dq_runs Delta tables (forks off substrate)",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "03_Load_Substrate", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:25:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "07_M5_DataQuality_Gate", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "08_M2_M6_Governance_Eval",
+        "description": "M2 governance + M6 runtime DLP / continuous eval / AnswerTrust score (rejoin)",
+        "type": "SynapseNotebook",
+        "dependsOn": [
+          {"activity": "06_M4_AnswerLedger", "dependencyConditions": ["Succeeded"]},
+          {"activity": "07_M5_DataQuality_Gate", "dependencyConditions": ["Succeeded"]}
+        ],
+        "policy": {"timeout": "0.00:30:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "08_M2_M6_Governance_Eval", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "09_M7_Security_Overlay",
+        "description": "M7 security overlay (red team, Sentinel, IRM) + Activator steward alerts",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "08_M2_M6_Governance_Eval", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:25:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "09_M7_Security_Overlay", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      },
+      {
+        "name": "10_Generate_Dashboard",
+        "description": "Generate + deploy the AnswerTrust real-time observability dashboard",
+        "type": "SynapseNotebook",
+        "dependsOn": [{"activity": "09_M7_Security_Overlay", "dependencyConditions": ["Succeeded"]}],
+        "policy": {"timeout": "0.00:20:00", "retry": 1, "retryIntervalInSeconds": 30},
+        "typeProperties": {
+          "notebook": {"referenceName": "10_Generate_Dashboard", "type": "NotebookReference"},
+          "parameters": {}, "snapshot": true
+        }
+      }
+    ],
+    "annotations": ["answertrust", "accelerator", "data-plane"]
+  }
+}

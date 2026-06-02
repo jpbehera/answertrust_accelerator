@@ -1,0 +1,30 @@
+// M7 Analytic Rule 2: Anomalous Tool-Call Arguments
+// Fires when an MCP tool is invoked with argument shapes that deviate from its learned norm
+// (e.g. unusually long SQL, wildcard table scans, or unexpected tool names).
+// Source: M3 trace fabric emits a dependency per MCP tool call with
+// tool_name and tool_args (serialized). Workspace-based App Insights surfaces
+// dependencies as AppDependencies in the LAW: dependencies->AppDependencies,
+// timestamp->TimeGenerated, type->DependencyType, customDimensions->Properties.
+let lookback = 1h;
+let baselineWindow = 7d;
+let baseline =
+    AppDependencies
+    | where TimeGenerated between (ago(baselineWindow) .. ago(lookback))
+    | where DependencyType == "MCP"
+    | extend tool_name = tostring(Properties.tool_name),
+             arg_len   = strlen(tostring(Properties.tool_args))
+    | summarize avg_len = avg(arg_len), stdev_len = stdev(arg_len) by tool_name;
+AppDependencies
+| where TimeGenerated > ago(lookback)
+| where DependencyType == "MCP"
+| extend tool_name = tostring(Properties.tool_name),
+         tool_args = tostring(Properties.tool_args),
+         trace_id  = tostring(Properties.trace_id),
+         user_id   = tostring(Properties.user_id),
+         arg_len   = strlen(tostring(Properties.tool_args))
+| join kind=leftouter baseline on tool_name
+| extend z = iff(isnull(stdev_len) or stdev_len == 0, 0.0, (arg_len - avg_len) / stdev_len)
+| where z >= 3.0
+      or tool_args has_any ("DROP ", "DELETE ", "ALTER ", "; --", "1=1", "SELECT *")
+| project TimeGenerated, tool_name, user_id, trace_id, arg_len, z, tool_args
+| order by z desc

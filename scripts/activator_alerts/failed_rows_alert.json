@@ -1,0 +1,24 @@
+{
+  "displayName": "Failed DQ Rows Alert",
+  "source": {
+    "type": "Eventhouse",
+    "database": "answer_ledger_db",
+    "query": "dq_runs_failed_rows | where timestamp > ago(1h) | summarize count()"
+  },
+  "condition": {
+    "operator": "GreaterThan",
+    "threshold": 0
+  },
+  "actions": [
+    {
+      "type": "SendTeamsMessage",
+      "channelId": "<teams-channel-id>",
+      "message": "\u26a0\ufe0f Data Quality failure detected. {count} failed rows in AnswerTrustDemo_LH."
+    },
+    {
+      "type": "CreateSentinelIncident",
+      "severity": "Medium",
+      "title": "DQ Failure - AnswerTrust"
+    }
+  ]
+}

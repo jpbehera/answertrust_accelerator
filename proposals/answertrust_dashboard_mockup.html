@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AnswerTrust Dashboard — Mockup</title>
+<style>
+  :root {
+    --purple:#3a2070; --purple-light:#8060c0; --purple-bg:#f0e8ff;
+    --navy:#1a3a5c; --teal:#0a4060;
+    --orange:#e8742a; --amber:#fff5e0; --amber-text:#6a3a10;
+    --ink:#1a2330; --muted:#5a6a85; --line:#d0dae5;
+    --bg:#f4f6fb; --panel:#ffffff;
+    --green:#2a8c7a; --green-light:#d5ede7;
+    --red:#d4407a; --red-light:#fde0ec;
+    --amber-pill:#c08030; --amber-pill-light:#fbeacb;
+    --blue:#3a9ad4;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; padding:0; background:#e8ecf2; font-family:'Inter','Segoe UI',-apple-system,sans-serif; color:var(--ink); }
+
+  .frame {
+    width:13.33in; min-height:7.7in;
+    background:var(--bg);
+    margin:24px auto;
+    box-shadow:0 6px 28px rgba(40,40,80,0.18);
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* ===== Top bar (Fabric chrome) ===== */
+  .topbar {
+    display:flex; align-items:center; gap:14px;
+    background:linear-gradient(90deg, #1a1140 0%, #3a2070 100%);
+    color:#fff; padding:10px 20px;
+    border-bottom:1px solid #2a1850;
+  }
+  .topbar .logo {
+    width:28px; height:28px; border-radius:6px;
+    background:linear-gradient(135deg, var(--orange) 0%, #c8581a 100%);
+    display:flex; align-items:center; justify-content:center;
+    font-weight:800; font-size:11pt; color:#fff;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.15);
+  }
+  .topbar .product { font-weight:700; font-size:11pt; letter-spacing:0.2px; }
+  .topbar .product .sub { color:#d0c8e8; font-weight:400; font-size:9pt; margin-left:8px; }
+  .topbar .crumbs { color:#b0a8c8; font-size:9pt; margin-left:6px; }
+  .topbar .crumbs b { color:#fff; font-weight:600; }
+  .topbar .spacer { flex:1; }
+  .topbar .live {
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(42,140,122,0.18); border:1px solid rgba(42,140,122,0.45);
+    color:#9ae3d2; padding:3px 10px; border-radius:12px;
+    font-size:8.5pt; font-weight:600; letter-spacing:0.5px;
+  }
+  .topbar .live .dot { width:6px; height:6px; border-radius:50%; background:#3ddca5; box-shadow:0 0 6px #3ddca5; }
+  .topbar .ts { color:#c8c0e0; font-size:8.5pt; }
+  .topbar .user {
+    width:28px; height:28px; border-radius:50%;
+    background:linear-gradient(135deg, var(--purple-light) 0%, var(--purple) 100%);
+    color:#fff; font-weight:700; font-size:9.5pt;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 1px rgba(255,255,255,0.2);
+  }
+
+  /* ===== Filter bar ===== */
+  .filterbar {
+    display:flex; align-items:center; gap:10px;
+    background:#fff; padding:10px 20px;
+    border-bottom:1px solid var(--line);
+  }
+  .filterbar .title {
+    color:var(--purple); font-weight:800; font-size:14pt; margin-right:14px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .filterbar .title .ico {
+    width:24px; height:24px; border-radius:6px;
+    background:linear-gradient(135deg, var(--purple-light) 0%, var(--purple) 100%);
+    color:#fff; font-size:11pt; display:flex; align-items:center; justify-content:center;
+  }
+  .filter {
+    display:inline-flex; align-items:center; gap:6px;
+    background:#fafbfd; border:1px solid var(--line);
+    border-radius:6px; padding:5px 10px;
+    font-size:9pt; color:var(--ink);
+  }
+  .filter .lbl { color:var(--muted); font-size:8.5pt; text-transform:uppercase; letter-spacing:0.5px; }
+  .filter b { font-weight:600; }
+  .filter .caret { color:var(--muted); font-size:8pt; margin-left:2px; }
+  .filter.range {
+    background:var(--purple-bg); border-color:#c8b8e0; color:var(--purple);
+  }
+  .filterbar .spacer { flex:1; }
+  .filterbar .refresh {
+    color:var(--muted); font-size:8.5pt;
+  }
+
+  /* ===== Grid ===== */
+  .grid {
+    display:grid;
+    grid-template-columns:repeat(12, 1fr);
+    grid-auto-rows:minmax(0, auto);
+    gap:12px; padding:14px 20px 20px;
+  }
+
+  .tile {
+    background:var(--panel);
+    border:1px solid var(--line); border-radius:8px;
+    padding:12px 14px;
+    box-shadow:0 1px 3px rgba(26,35,48,0.04);
+    display:flex; flex-direction:column;
+    min-width:0;
+  }
+  .tile .th {
+    display:flex; align-items:center; justify-content:space-between;
+    margin-bottom:8px;
+  }
+  .tile .th h3 {
+    margin:0; color:var(--ink); font-size:9.5pt; font-weight:700;
+    text-transform:uppercase; letter-spacing:0.6px;
+    display:flex; align-items:center; gap:6px;
+  }
+  .tile .th h3 .tico {
+    width:18px; height:18px; border-radius:4px;
+    background:var(--purple-bg); color:var(--purple);
+    font-size:10pt; display:inline-flex; align-items:center; justify-content:center;
+  }
+  .tile .th .more { color:var(--muted); font-size:9pt; cursor:default; }
+
+  /* ===== KPI strip (top row) ===== */
+  .kpi { padding:12px 14px; }
+  .kpi .label { color:var(--muted); font-size:8.5pt; text-transform:uppercase; letter-spacing:0.6px; font-weight:600; }
+  .kpi .value { color:var(--ink); font-size:22pt; font-weight:800; line-height:1.05; margin-top:2px; }
+  .kpi .value .unit { font-size:11pt; color:var(--muted); font-weight:600; margin-left:2px; }
+  .kpi .delta { font-size:8.5pt; font-weight:600; margin-top:2px; }
+  .kpi .delta.up   { color:var(--green); }
+  .kpi .delta.down { color:var(--red); }
+  .kpi .delta.flat { color:var(--muted); }
+  .kpi .spark { margin-top:6px; }
+
+  .kpi.score .value { color:var(--purple); }
+  .kpi.score .ring {
+    margin-left:auto; width:54px; height:54px; flex-shrink:0;
+  }
+  .kpi.score .top { display:flex; align-items:flex-start; gap:8px; }
+  .kpi.score .left { flex:1; min-width:0; }
+
+  /* ===== Score breakdown bars ===== */
+  .breakdown { display:flex; flex-direction:column; gap:7px; }
+  .brow { display:flex; align-items:center; gap:10px; font-size:9pt; }
+  .brow .name { width:90px; color:var(--ink); font-weight:600; flex-shrink:0; }
+  .brow .bar { flex:1; height:9px; background:#eef1f6; border-radius:5px; overflow:hidden; position:relative; }
+  .brow .fill { height:100%; border-radius:5px; }
+  .brow .val { width:38px; text-align:right; color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; flex-shrink:0; }
+  .brow .w { width:34px; color:var(--muted); font-size:8pt; flex-shrink:0; text-align:right; font-variant-numeric:tabular-nums; }
+
+  /* ===== Trend chart ===== */
+  .trend { flex:1; min-height:0; display:flex; flex-direction:column; }
+  .trend svg { width:100%; height:auto; display:block; }
+  .legend { display:flex; gap:14px; margin-top:6px; font-size:8.5pt; color:var(--muted); }
+  .legend .li { display:inline-flex; align-items:center; gap:5px; }
+  .legend .sw { width:10px; height:10px; border-radius:2px; display:inline-block; }
+
+  /* ===== Table-health bars ===== */
+  .table-health { display:flex; flex-direction:column; gap:6px; }
+  .thr { display:grid; grid-template-columns:1.4fr 0.7fr 1fr 0.6fr; gap:8px; align-items:center; font-size:9pt; }
+  .thr .tname { color:var(--ink); font-weight:600; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .thr .tname code { background:#f3f0ea; padding:1px 5px; border-radius:3px; font-size:8.5pt; color:var(--purple); }
+  .thr .pill {
+    display:inline-block; padding:2px 8px; border-radius:10px;
+    font-size:8pt; font-weight:700; letter-spacing:0.3px;
+    text-align:center;
+  }
+  .thr .pill.ok    { background:var(--green-light); color:var(--green); }
+  .thr .pill.warn  { background:var(--amber-pill-light); color:var(--amber-pill); }
+  .thr .pill.fail  { background:var(--red-light); color:var(--red); }
+  .thr .bar { height:8px; background:#eef1f6; border-radius:4px; overflow:hidden; }
+  .thr .bar .fill { height:100%; }
+  .thr .num { color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; text-align:right; font-size:8.5pt; }
+
+  /* ===== Ledger feed ===== */
+  .feed { display:flex; flex-direction:column; gap:6px; overflow:hidden; }
+  .frow {
+    display:grid; grid-template-columns:60px 1fr 70px 70px;
+    gap:8px; align-items:center;
+    padding:6px 8px; border:1px solid var(--line); border-radius:6px;
+    background:#fafbfd;
+    font-size:8.5pt;
+  }
+  .frow .ts { color:var(--muted); font-variant-numeric:tabular-nums; font-size:8pt; }
+  .frow .q { color:var(--ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .frow .q .agent { color:var(--purple); font-weight:600; margin-right:4px; }
+  .frow .score {
+    text-align:center; font-weight:700; font-variant-numeric:tabular-nums;
+    padding:2px 0; border-radius:4px;
+  }
+  .frow .score.ok   { background:var(--green-light); color:var(--green); }
+  .frow .score.warn { background:var(--amber-pill-light); color:var(--amber-pill); }
+  .frow .score.fail { background:var(--red-light); color:var(--red); }
+  .frow .lbl-pill {
+    text-align:center; font-size:7.5pt; font-weight:700; letter-spacing:0.3px;
+    padding:2px 0; border-radius:4px;
+    background:#eef1f6; color:var(--muted);
+  }
+  .frow .lbl-pill.confidential { background:#fde6d8; color:#b04a10; }
+  .frow .lbl-pill.internal { background:#e0eaf8; color:#1a5e8c; }
+  .frow .lbl-pill.public { background:var(--green-light); color:var(--green); }
+
+  /* ===== Sankey-ish handoff diagram ===== */
+  .sankey { flex:1; min-height:0; display:flex; flex-direction:column; }
+  .sankey svg { width:100%; height:auto; display:block; }
+
+  /* ===== Cost donut ===== */
+  .donut { display:flex; align-items:center; gap:14px; }
+  .donut svg { width:120px; height:120px; flex-shrink:0; }
+  .donut .legend2 { display:flex; flex-direction:column; gap:6px; flex:1; min-width:0; font-size:9pt; }
+  .donut .li2 { display:flex; align-items:center; gap:8px; }
+  .donut .sw { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+  .donut .nm { flex:1; color:var(--ink); min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .donut .vl { color:var(--muted); font-variant-numeric:tabular-nums; font-weight:600; }
+
+  /* ===== Oversharing ===== */
+  .oversharing { display:flex; flex-direction:column; gap:8px; flex:1; }
+  .ovrow {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:7px 10px; background:#fafbfd;
+    border:1px solid var(--line); border-left:3px solid var(--red);
+    border-radius:4px; font-size:9pt;
+  }
+  .ovrow.ok { border-left-color:var(--green); }
+  .ovrow.warn { border-left-color:var(--amber-pill); }
+  .ovrow .name { font-weight:600; color:var(--ink); }
+  .ovrow .meta { color:var(--muted); font-size:8.5pt; }
+  .ovrow .cnt { font-weight:700; color:var(--ink); font-variant-numeric:tabular-nums; }
+  .ovrow .cnt.bad { color:var(--red); }
+
+  /* ===== Footer ===== */
+  .footer {
+    border-top:1px solid var(--line); background:#fff;
+    padding:8px 20px;
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:8.5pt; color:var(--muted); letter-spacing:0.4px;
+  }
+  .footer b { color:var(--purple); font-weight:700; }
+  .footer .src code { background:#f3f0ea; padding:1px 5px; border-radius:3px; font-size:8pt; color:var(--purple); }
+
+</style>
+</head>
+<body>
+
+<div class="frame">
+
+  <!-- ===== Top bar ===== -->
+  <div class="topbar">
+    <div class="logo">F</div>
+    <div class="product">Microsoft Fabric <span class="sub">Real-Time Dashboard</span></div>
+    <div class="crumbs">contoso · trust-workspace · <b>AnswerTrust</b></div>
+    <div class="spacer"></div>
+    <div class="live"><span class="dot"></span>LIVE · auto-refresh 30s</div>
+    <div class="ts">2026-05-13 14:22 PT</div>
+    <div class="user">JB</div>
+  </div>
+
+  <!-- ===== Filter bar ===== -->
+  <div class="filterbar">
+    <div class="title"><span class="ico">🛡️</span>AnswerTrust</div>
+    <div class="filter range">📅 <span class="lbl">Last</span><b>24h</b><span class="caret">▾</span></div>
+    <div class="filter"><span class="lbl">Domain</span><b>All (Healthcare · Insurance · Retail)</b><span class="caret">▾</span></div>
+    <div class="filter"><span class="lbl">Agent</span><b>orchestrator-v1.4</b><span class="caret">▾</span></div>
+    <div class="filter"><span class="lbl">Sensitivity</span><b>Confidential ≤</b><span class="caret">▾</span></div>
+    <div class="filter"><span class="lbl">User</span><b>All</b><span class="caret">▾</span></div>
+    <div class="spacer"></div>
+    <div class="refresh">⟳ refreshed 12s ago</div>
+  </div>
+
+  <!-- ===== Grid ===== -->
+  <div class="grid">
+
+    <!-- Row 1 — KPI strip -->
+    <div class="tile kpi score" style="grid-column:span 4;">
+      <div class="top">
+        <div class="left">
+          <div class="label">AnswerTrust score (24h)</div>
+          <div class="value">87.4<span class="unit">/100</span></div>
+          <div class="delta up">▲ 2.1 vs prior 24h · target ≥ 85</div>
+        </div>
+        <svg class="ring" viewBox="0 0 60 60">
+          <circle cx="30" cy="30" r="24" fill="none" stroke="#eef1f6" stroke-width="6"/>
+          <circle cx="30" cy="30" r="24" fill="none" stroke="url(#g1)" stroke-width="6"
+                  stroke-linecap="round" stroke-dasharray="131.9 150.8"
+                  transform="rotate(-90 30 30)"/>
+          <defs>
+            <linearGradient id="g1" x1="0" y1="0" x2="60" y2="60">
+              <stop offset="0%" stop-color="#8060c0"/>
+              <stop offset="100%" stop-color="#3a2070"/>
+            </linearGradient>
+          </defs>
+          <text x="30" y="34" text-anchor="middle" font-size="10pt" font-weight="700" fill="#3a2070" font-family="Inter">87</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">Answers (24h)</div>
+      <div class="value">12,840</div>
+      <div class="delta up">▲ 4.7%</div>
+    </div>
+
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">Trust violations</div>
+      <div class="value" style="color:var(--red);">7</div>
+      <div class="delta down">▲ 3 vs 24h</div>
+    </div>
+
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">Avg cost / convo</div>
+      <div class="value">$0.043</div>
+      <div class="delta up">▼ 9.2%</div>
+    </div>
+
+    <div class="tile kpi" style="grid-column:span 2;">
+      <div class="label">P95 latency</div>
+      <div class="value">2.4<span class="unit">s</span></div>
+      <div class="delta flat">— stable</div>
+    </div>
+
+    <!-- Row 2 — Score breakdown + Trend chart -->
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th">
+        <h3><span class="tico">⚖️</span>Score breakdown · weighted</h3>
+        <span class="more">⋯</span>
+      </div>
+      <div class="breakdown">
+        <div class="brow">
+          <span class="name">Eval</span>
+          <div class="bar"><div class="fill" style="width:91%; background:linear-gradient(90deg,#8060c0,#3a2070);"></div></div>
+          <span class="val">91</span><span class="w">w 0.30</span>
+        </div>
+        <div class="brow">
+          <span class="name">DQ</span>
+          <div class="bar"><div class="fill" style="width:84%; background:linear-gradient(90deg,#5ab8a8,#1a5a4e);"></div></div>
+          <span class="val">84</span><span class="w">w 0.25</span>
+        </div>
+        <div class="brow">
+          <span class="name">Labels</span>
+          <div class="bar"><div class="fill" style="width:96%; background:linear-gradient(90deg,#3a9ad4,#1a5e8c);"></div></div>
+          <span class="val">96</span><span class="w">w 0.20</span>
+        </div>
+        <div class="brow">
+          <span class="name">Freshness</span>
+          <div class="bar"><div class="fill" style="width:79%; background:linear-gradient(90deg,#c08030,#7a4a10);"></div></div>
+          <span class="val">79</span><span class="w">w 0.15</span>
+        </div>
+        <div class="brow">
+          <span class="name">Red-team</span>
+          <div class="bar"><div class="fill" style="width:88%; background:linear-gradient(90deg,#d4407a,#8a1e4e);"></div></div>
+          <span class="val">88</span><span class="w">w 0.10</span>
+        </div>
+        <div style="margin-top:8px; padding-top:8px; border-top:1px dashed var(--line); font-size:8.5pt; color:var(--muted); font-family:'SF Mono',Menlo,monospace;">
+          AT = 0.30·91 + 0.25·84 + 0.20·96 + 0.15·79 − 0.10·12 = <b style="color:var(--purple);">87.4</b>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 5;">
+      <div class="th">
+        <h3><span class="tico">📈</span>AnswerTrust score · last 24h by domain</h3>
+        <span class="more">⋯</span>
+      </div>
+      <div class="trend">
+        <svg viewBox="0 0 600 180" preserveAspectRatio="none">
+          <!-- gridlines -->
+          <line x1="40" y1="20"  x2="590" y2="20"  stroke="#eef1f6"/>
+          <line x1="40" y1="60"  x2="590" y2="60"  stroke="#eef1f6"/>
+          <line x1="40" y1="100" x2="590" y2="100" stroke="#eef1f6"/>
+          <line x1="40" y1="140" x2="590" y2="140" stroke="#eef1f6"/>
+          <line x1="40" y1="20"  x2="40"  y2="160" stroke="#d0dae5"/>
+          <line x1="40" y1="160" x2="590" y2="160" stroke="#d0dae5"/>
+          <!-- y labels -->
+          <text x="34" y="24" text-anchor="end" font-size="8" fill="#5a6a85" font-family="Inter">100</text>
+          <text x="34" y="64" text-anchor="end" font-size="8" fill="#5a6a85" font-family="Inter">90</text>
+          <text x="34" y="104" text-anchor="end" font-size="8" fill="#5a6a85" font-family="Inter">80</text>
+          <text x="34" y="144" text-anchor="end" font-size="8" fill="#5a6a85" font-family="Inter">70</text>
+          <!-- x labels -->
+          <text x="40" y="174" font-size="8" fill="#5a6a85" font-family="Inter">14:00</text>
+          <text x="180" y="174" font-size="8" fill="#5a6a85" font-family="Inter">18:00</text>
+          <text x="320" y="174" font-size="8" fill="#5a6a85" font-family="Inter">22:00</text>
+          <text x="460" y="174" font-size="8" fill="#5a6a85" font-family="Inter">06:00</text>
+          <text x="568" y="174" font-size="8" fill="#5a6a85" font-family="Inter">14:00</text>
+          <!-- target band 85 -->
+          <line x1="40" y1="80" x2="590" y2="80" stroke="#2a8c7a" stroke-dasharray="3 4" stroke-width="1"/>
+          <text x="585" y="76" text-anchor="end" font-size="7.5" fill="#2a8c7a" font-family="Inter">target 85</text>
+
+          <!-- Healthcare -->
+          <polyline fill="none" stroke="#3a2070" stroke-width="2"
+            points="40,72 80,68 120,76 160,64 200,70 240,60 280,58 320,66 360,62 400,72 440,68 480,60 520,56 560,62 590,58"/>
+          <!-- Insurance -->
+          <polyline fill="none" stroke="#e8742a" stroke-width="2"
+            points="40,90 80,86 120,82 160,98 200,92 240,84 280,80 320,86 360,90 400,82 440,84 480,78 520,82 560,76 590,80"/>
+          <!-- Retail -->
+          <polyline fill="none" stroke="#3a9ad4" stroke-width="2"
+            points="40,104 80,100 120,108 160,96 200,90 240,98 280,102 320,94 360,88 400,92 440,86 480,84 520,90 560,86 590,82"/>
+
+          <!-- annotation: incident -->
+          <circle cx="160" cy="98" r="4" fill="#d4407a"/>
+          <text x="166" y="96" font-size="8" fill="#d4407a" font-family="Inter" font-weight="700">DQ alert · claims_master</text>
+        </svg>
+        <div class="legend">
+          <span class="li"><span class="sw" style="background:#3a2070;"></span>Healthcare</span>
+          <span class="li"><span class="sw" style="background:#e8742a;"></span>Insurance</span>
+          <span class="li"><span class="sw" style="background:#3a9ad4;"></span>Retail</span>
+          <span class="li" style="margin-left:auto;">●&nbsp;incident</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 3;">
+      <div class="th">
+        <h3><span class="tico">💸</span>Cost / conversation by stage</h3>
+        <span class="more">⋯</span>
+      </div>
+      <div class="donut">
+        <svg viewBox="0 0 36 36">
+          <!-- background ring -->
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#eef1f6" stroke-width="5"/>
+          <!-- segments: model 52%, retrieval 24%, gates 14%, eval 10% -->
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#3a2070" stroke-width="5"
+                  stroke-dasharray="45.7 88" stroke-dashoffset="0" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#8060c0" stroke-width="5"
+                  stroke-dasharray="21.1 88"  stroke-dashoffset="-45.7" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#3a9ad4" stroke-width="5"
+                  stroke-dasharray="12.3 88"  stroke-dashoffset="-66.8" transform="rotate(-90 18 18)"/>
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#e8742a" stroke-width="5"
+                  stroke-dasharray="8.8 88"   stroke-dashoffset="-79.1" transform="rotate(-90 18 18)"/>
+          <text x="18" y="17" text-anchor="middle" font-size="4.8" font-weight="700" fill="#1a2330" font-family="Inter">$0.043</text>
+          <text x="18" y="23" text-anchor="middle" font-size="2.6" fill="#5a6a85" font-family="Inter">avg / convo</text>
+        </svg>
+        <div class="legend2">
+          <div class="li2"><span class="sw" style="background:#3a2070;"></span><span class="nm">Model inference</span><span class="vl">52%</span></div>
+          <div class="li2"><span class="sw" style="background:#8060c0;"></span><span class="nm">Retrieval</span><span class="vl">24%</span></div>
+          <div class="li2"><span class="sw" style="background:#3a9ad4;"></span><span class="nm">Gates / DLP</span><span class="vl">14%</span></div>
+          <div class="li2"><span class="sw" style="background:#e8742a;"></span><span class="nm">Eval / red-team</span><span class="vl">10%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 3 — Table health + Handoff Sankey + Oversharing -->
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th">
+        <h3><span class="tico">🔍</span>DQ posture · top source tables</h3>
+        <span class="more">view all 47 ›</span>
+      </div>
+      <div class="table-health">
+        <div class="thr" style="font-size:8pt; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; font-weight:600;">
+          <div>Table</div><div>Status</div><div>Pass-rate</div><div>Failed rows</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>nursing.encounters</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:99%; background:var(--green);"></div></div>
+          <div class="num">0</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>insurance.claims_master</code></div>
+          <div><span class="pill fail">FAIL</span></div>
+          <div class="bar"><div class="fill" style="width:62%; background:var(--red);"></div></div>
+          <div class="num" style="color:var(--red);">1,284</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>insurance.policy_book</code></div>
+          <div><span class="pill warn">WARN</span></div>
+          <div class="bar"><div class="fill" style="width:84%; background:var(--amber-pill);"></div></div>
+          <div class="num">147</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>retail.sku_catalog</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:97%; background:var(--green);"></div></div>
+          <div class="num">12</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>retail.txn_fact</code></div>
+          <div><span class="pill ok">OK</span></div>
+          <div class="bar"><div class="fill" style="width:96%; background:var(--green);"></div></div>
+          <div class="num">38</div>
+        </div>
+        <div class="thr">
+          <div class="tname"><code>healthcare.med_orders</code></div>
+          <div><span class="pill warn">WARN</span></div>
+          <div class="bar"><div class="fill" style="width:81%; background:var(--amber-pill);"></div></div>
+          <div class="num">203</div>
+        </div>
+        <div style="margin-top:6px; padding:6px 8px; background:var(--red-light); border-radius:4px; font-size:8.5pt; color:var(--red); font-weight:600;">
+          ⚠ <code style="background:rgba(212,64,122,0.12); padding:1px 4px; border-radius:3px;">claims_master</code> Validity 0.62 — drilling penalizes 412 in-flight answers · steward notified
+        </div>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th">
+        <h3><span class="tico">🔀</span>Agent handoffs · Sankey</h3>
+        <span class="more">⋯</span>
+      </div>
+      <div class="sankey">
+        <svg viewBox="0 0 360 220">
+          <!-- Source node -->
+          <rect x="6" y="60" width="80" height="100" rx="6" fill="#3a2070"/>
+          <text x="46" y="105" text-anchor="middle" font-size="9" font-weight="700" fill="#fff" font-family="Inter">Orchestrator</text>
+          <text x="46" y="120" text-anchor="middle" font-size="7.5" fill="#d0c8e8" font-family="Inter">12,840 reqs</text>
+
+          <!-- Target nodes -->
+          <rect x="270" y="20"  width="84" height="34" rx="5" fill="#3a9ad4"/>
+          <text x="312" y="41" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Inter">Healthcare DA</text>
+          <rect x="270" y="68"  width="84" height="34" rx="5" fill="#2a8c7a"/>
+          <text x="312" y="89" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Inter">Insurance DA</text>
+          <rect x="270" y="116" width="84" height="34" rx="5" fill="#c08030"/>
+          <text x="312" y="137" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Inter">Retail DA</text>
+          <rect x="270" y="164" width="84" height="34" rx="5" fill="#5a6a85"/>
+          <text x="312" y="185" text-anchor="middle" font-size="8.5" font-weight="700" fill="#fff" font-family="Inter">Fallback</text>
+
+          <!-- Flows -->
+          <path d="M 86 78 C 178 78, 178 37, 270 37"   fill="none" stroke="#3a9ad4" stroke-width="22" opacity="0.45"/>
+          <path d="M 86 100 C 178 100, 178 85, 270 85" fill="none" stroke="#2a8c7a" stroke-width="30" opacity="0.45"/>
+          <path d="M 86 122 C 178 122, 178 133, 270 133" fill="none" stroke="#c08030" stroke-width="18" opacity="0.45"/>
+          <path d="M 86 144 C 178 144, 178 181, 270 181" fill="none" stroke="#5a6a85" stroke-width="6" opacity="0.45"/>
+
+          <!-- Flow labels -->
+          <text x="178" y="34"  text-anchor="middle" font-size="7.5" font-weight="700" fill="#1a5e8c" font-family="Inter">4,210 (33%)</text>
+          <text x="178" y="80"  text-anchor="middle" font-size="7.5" font-weight="700" fill="#1a5a4e" font-family="Inter">5,680 (44%)</text>
+          <text x="178" y="128" text-anchor="middle" font-size="7.5" font-weight="700" fill="#7a4a10" font-family="Inter">2,420 (19%)</text>
+          <text x="178" y="178" text-anchor="middle" font-size="7.5" font-weight="700" fill="#5a6a85" font-family="Inter">530 (4%)</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="tile" style="grid-column:span 4;">
+      <div class="th">
+        <h3><span class="tico">🚨</span>Oversharing & policy denials</h3>
+        <span class="more">last 24h</span>
+      </div>
+      <div class="oversharing">
+        <div class="ovrow">
+          <div>
+            <div class="name">Confidential cite in External chat</div>
+            <div class="meta">user: nora.chen@contoso · agent: insurance-da</div>
+          </div>
+          <div class="cnt bad">3</div>
+        </div>
+        <div class="ovrow warn">
+          <div>
+            <div class="name">EXTRACT denied · DLP for OneLake</div>
+            <div class="meta">table: <code>claims_master.ssn</code></div>
+          </div>
+          <div class="cnt">12</div>
+        </div>
+        <div class="ovrow warn">
+          <div>
+            <div class="name">Label downgrade attempt blocked</div>
+            <div class="meta">Confidential → Internal · Purview policy</div>
+          </div>
+          <div class="cnt">5</div>
+        </div>
+        <div class="ovrow ok">
+          <div>
+            <div class="name">Red-team prompts caught</div>
+            <div class="meta">jailbreak / data-exfil / prompt-inject</div>
+          </div>
+          <div class="cnt" style="color:var(--green);">28 / 28</div>
+        </div>
+        <div class="ovrow ok">
+          <div>
+            <div class="name">OBO identity passthrough</div>
+            <div class="meta">100% of answers carry user identity</div>
+          </div>
+          <div class="cnt" style="color:var(--green);">12,840</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Row 4 — AnswerLedger live feed (full width) -->
+    <div class="tile" style="grid-column:span 12;">
+      <div class="th">
+        <h3><span class="tico">📒</span>AnswerLedger · live feed (last 6 answers · click any row to drill into trace)</h3>
+        <span class="more">open in Real-Time Hub ›</span>
+      </div>
+      <div class="feed">
+        <div class="frow" style="background:#fff; border-color:transparent; font-size:8pt; color:var(--muted); text-transform:uppercase; letter-spacing:0.4px; font-weight:600; padding:2px 8px;">
+          <div>Time</div><div>Question · agent · trace_id</div><div>Score</div><div>Label</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:22:03</div>
+          <div class="q"><span class="agent">healthcare-da</span>"What are the top 5 medications driving 30-day readmissions on cardiac wards?" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…a12</code></div>
+          <div class="score ok">94</div>
+          <div class="lbl-pill confidential">Confidential</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:21:48</div>
+          <div class="q"><span class="agent">insurance-da</span>"Show claims with severity > $50k filed in the last 7 days by region" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…a08</code></div>
+          <div class="score warn">71</div>
+          <div class="lbl-pill confidential">Confidential</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:21:30</div>
+          <div class="q"><span class="agent">retail-da</span>"Compare SKU-level margin trend for stores in Pacific Northwest vs South" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…9fd</code></div>
+          <div class="score ok">91</div>
+          <div class="lbl-pill internal">Internal</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:21:11</div>
+          <div class="q"><span class="agent">insurance-da</span>"Per-adjuster cycle time on auto-bodily-injury claims" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…9e2</code></div>
+          <div class="score fail">58</div>
+          <div class="lbl-pill confidential">Confidential</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:20:55</div>
+          <div class="q"><span class="agent">healthcare-da</span>"Average documentation burden per nurse shift, ICU vs Med-Surg" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…9c7</code></div>
+          <div class="score ok">96</div>
+          <div class="lbl-pill internal">Internal</div>
+        </div>
+        <div class="frow">
+          <div class="ts">14:20:39</div>
+          <div class="q"><span class="agent">retail-da</span>"Top 10 returning customers by lifetime value last quarter" · <code style="background:#f3f0ea;padding:1px 4px;border-radius:3px;font-size:7.5pt;color:var(--purple);">tr-9f3e…9b1</code></div>
+          <div class="score ok">89</div>
+          <div class="lbl-pill public">Public</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===== Footer ===== -->
+  <div class="footer">
+    <div><b>AnswerTrust</b> · one trace · one ledger · one score</div>
+    <div class="src">source: <code>kql://trust-workspace/AnswerLedger</code> · <code>fabric://dq_runs</code> · <code>appinsights://otel-genai</code></div>
+    <div>Pillar P6 · Trust dashboard · v1.4-mockup</div>
+  </div>
+
+</div>
+
+</body>
+</html>

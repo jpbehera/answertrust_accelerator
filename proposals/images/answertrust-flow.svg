@@ -1,0 +1,406 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1100" width="1600" height="1100">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f8f5f0"/><stop offset="50%" stop-color="#faf7f2"/><stop offset="100%" stop-color="#f2ede6"/>
+    </linearGradient>
+    <linearGradient id="cardCyan"   x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e0f5ff"/><stop offset="100%" stop-color="#c8ecff"/></linearGradient>
+    <linearGradient id="cardAmber"  x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#fff5e0"/><stop offset="100%" stop-color="#ffe8c0"/></linearGradient>
+    <linearGradient id="cardOrange" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffe8d8"/><stop offset="100%" stop-color="#ffd8c0"/></linearGradient>
+    <linearGradient id="cardGreen"  x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#dff7ef"/><stop offset="100%" stop-color="#c0eedd"/></linearGradient>
+    <linearGradient id="cardPurple" x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#f0e8ff"/><stop offset="100%" stop-color="#e0d4ff"/></linearGradient>
+    <linearGradient id="cardPink"   x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#ffe4ee"/><stop offset="100%" stop-color="#ffcfe0"/></linearGradient>
+    <linearGradient id="cardSlate"  x1="0%" y1="0%" x2="0%" y2="100%"><stop offset="0%" stop-color="#e8edf5"/><stop offset="100%" stop-color="#d4dcec"/></linearGradient>
+
+    <filter id="cardShadow" x="-8%" y="-8%" width="116%" height="125%">
+      <feGaussianBlur stdDeviation="4" result="blur"/><feFlood flood-color="#3a3a5c" flood-opacity="0.12"/><feComposite in2="blur" operator="in"/><feOffset dx="0" dy="3"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="iconShadow" x="-15%" y="-15%" width="130%" height="140%">
+      <feGaussianBlur stdDeviation="2" result="blur"/><feFlood flood-color="#3a3a5c" flood-opacity="0.1"/><feComposite in2="blur" operator="in"/><feOffset dx="0" dy="2"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+
+    <marker id="arrOrange" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#d06828" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrCyan"   markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#2d9cc5" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrGreen"  markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#2da873" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrPurple" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#8060c0" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrAmber"  markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#d4943a" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrPink"   markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#c04878" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+    <marker id="arrSlate"  markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M1,1 L9,4 L1,7" fill="none" stroke="#5a6a85" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/></marker>
+
+    <pattern id="gridDot" width="30" height="30" patternUnits="userSpaceOnUse"><circle cx="15" cy="15" r="0.6" fill="#b0c0d0" opacity="0.15"/></pattern>
+    <pattern id="grid" width="50" height="50" patternUnits="userSpaceOnUse"><path d="M 50 0 L 0 0 0 50" fill="none" stroke="#e0dcd4" stroke-width="0.4"/></pattern>
+  </defs>
+
+  <!-- BACKGROUND -->
+  <rect width="1600" height="1100" fill="url(#bgGrad)"/>
+  <rect width="1600" height="1100" fill="url(#grid)" opacity="0.2"/>
+  <rect width="1600" height="1100" fill="url(#gridDot)"/>
+  <g opacity="0.4" fill="#ffffff">
+    <ellipse cx="150" cy="60" rx="55" ry="20"/><ellipse cx="175" cy="50" rx="40" ry="17"/><ellipse cx="125" cy="53" rx="35" ry="15"/>
+  </g>
+  <g opacity="0.25" fill="#ffffff">
+    <ellipse cx="1450" cy="70" rx="50" ry="18"/><ellipse cx="1475" cy="61" rx="38" ry="15"/>
+  </g>
+  <g transform="translate(360, 55)" opacity="0.8"><path d="M0,-8 L2,-2 L8,0 L2,2 L0,8 L-2,2 L-8,0 L-2,-2 Z" fill="#e8742a" opacity="0.7"/></g>
+  <g transform="translate(1240, 50)" opacity="0.6"><path d="M0,-6 L1.5,-1.5 L6,0 L1.5,1.5 L0,6 L-1.5,1.5 L-6,0 L-1.5,-1.5 Z" fill="#3a8ab5"/></g>
+
+  <!-- TITLE BANNER -->
+  <g filter="url(#cardShadow)"><rect x="400" y="20" width="800" height="62" rx="31" fill="#ffffff" stroke="#d0dae5" stroke-width="1.5"/></g>
+  <text x="800" y="46" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="22" font-weight="800" fill="#1a3a5c" letter-spacing="1.8">ANATOMY OF ANSWERTRUST</text>
+  <text x="800" y="68" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="12" fill="#6a8aa0" letter-spacing="1.2">FABRIC · FOUNDRY · PURVIEW  ·  GOVERNED · QUALITY-GATED · OBSERVABLE · AUDITABLE</text>
+  <g filter="url(#cardShadow)"><rect x="1260" y="32" width="100" height="24" rx="12" fill="#d06828" opacity="0.9"/></g>
+  <text x="1310" y="49" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="10" fill="#ffffff" font-weight="700">FLAGSHIP</text>
+
+  <!-- ================== ROW 1: USER → AGENTS → TOOLS → FABRIC ================== -->
+  <text x="70" y="135" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">USER</text>
+  <line x1="70" y1="143" x2="150" y2="143" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <text x="280" y="135" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">AGENT LAYER</text>
+  <line x1="280" y1="143" x2="450" y2="143" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <text x="640" y="135" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">TOOLS &amp; FABRIC DATA</text>
+  <line x1="640" y1="143" x2="850" y2="143" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <text x="1010" y="135" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">PURVIEW · 6 GATES</text>
+  <line x1="1010" y1="143" x2="1200" y2="143" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <text x="1340" y="135" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">DATA QUALITY</text>
+  <line x1="1340" y1="143" x2="1520" y2="143" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <!-- USER -->
+  <g filter="url(#cardShadow)"><rect x="50" y="160" width="190" height="80" rx="14" fill="url(#cardSlate)" stroke="#9aa8c0" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(70,180)"><circle cx="14" cy="12" r="7" fill="#ffffff" stroke="#5a6a85" stroke-width="1.4"/><path d="M2,30 C2,22 8,18 14,18 C20,18 26,22 26,30" fill="#ffffff" stroke="#5a6a85" stroke-width="1.4"/></g>
+  <text x="115" y="190" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#1a3a5c">Business user</text>
+  <text x="115" y="208" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#5a6a85">"Q1 claims loss in TX?"</text>
+  <text x="115" y="224" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#5a6a85">identity · OBO passthrough</text>
+
+  <!-- AGENT LAYER container -->
+  <g filter="url(#cardShadow)"><rect x="270" y="155" width="320" height="290" rx="18" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.2" opacity="0.6"/></g>
+
+  <!-- Orchestrator -->
+  <g filter="url(#cardShadow)"><rect x="290" y="170" width="280" height="78" rx="14" fill="url(#cardPurple)" stroke="#a890d8" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(305,184)"><circle cx="14" cy="14" r="13" fill="#f0e8ff" stroke="#8060c0" stroke-width="1.4"/><circle cx="14" cy="14" r="3" fill="#8060c0"/><circle cx="6" cy="8" r="2" fill="#8060c0" opacity="0.6"/><circle cx="22" cy="8" r="2" fill="#8060c0" opacity="0.6"/><circle cx="22" cy="20" r="2" fill="#8060c0" opacity="0.6"/><circle cx="6" cy="20" r="2" fill="#8060c0" opacity="0.6"/><path d="M14,14 L6,8 M14,14 L22,8 M14,14 L22,20 M14,14 L6,20" stroke="#8060c0" stroke-width="1" opacity="0.5"/></g>
+  <text x="345" y="195" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#3a2070">Orchestrator</text>
+  <text x="345" y="212" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#5a3a90">Microsoft Agent Framework</text>
+  <text x="305" y="232" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#5a3a90">invoke_agent · execute_task · tool.call</text>
+
+  <!-- Specialist agents -->
+  <g filter="url(#cardShadow)"><rect x="290" y="262" width="135" height="78" rx="14" fill="url(#cardPurple)" stroke="#a890d8" stroke-width="1.5"/></g>
+  <text x="357" y="285" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#3a2070">Specialist Agents</text>
+  <text x="357" y="305" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#5a3a90">domain-tuned · MCP</text>
+  <text x="357" y="320" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#5a3a90">handoffs</text>
+
+  <!-- Foundry wrapper -->
+  <g filter="url(#cardShadow)"><rect x="435" y="262" width="135" height="78" rx="14" fill="url(#cardPurple)" stroke="#a890d8" stroke-width="1.5"/></g>
+  <text x="502" y="285" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#3a2070">Foundry wrapper</text>
+  <text x="502" y="305" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#5a3a90">PurviewPolicy</text>
+  <text x="502" y="320" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#5a3a90">Middleware</text>
+
+  <!-- AI Red Teaming + Continuous Eval (small lower row) -->
+  <g filter="url(#cardShadow)"><rect x="290" y="354" width="280" height="78" rx="14" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(305,367)"><path d="M14,2 L26,8 L26,18 C26,24 21,28 14,30 C7,28 2,24 2,18 L2,8 Z" fill="#ffd0e0" stroke="#c04878" stroke-width="1.4"/><path d="M9,16 L13,20 L20,11" stroke="#c04878" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="345" y="378" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#7a1a4a">Continuous Eval + Red-Team</text>
+  <text x="345" y="396" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">Foundry · groundedness · intent</text>
+  <text x="305" y="414" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">nightly golden set · AI Red Teaming Agent</text>
+
+  <text x="430" y="165" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="10" font-weight="600" fill="#6a8aa0" letter-spacing="0.5" opacity="0.7">W3C traceparent on every span</text>
+
+  <!-- TOOL LAYER container -->
+  <g filter="url(#cardShadow)"><rect x="630" y="155" width="320" height="290" rx="18" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.2" opacity="0.6"/></g>
+
+  <!-- MCP Wrapper -->
+  <g filter="url(#cardShadow)"><rect x="650" y="170" width="280" height="78" rx="14" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(665,184)"><rect x="0" y="4" width="28" height="20" rx="3" fill="#e0f5ff" stroke="#2d9cc5" stroke-width="1.4"/><path d="M4,10 L24,10 M4,14 L18,14 M4,18 L14,18" stroke="#2d9cc5" stroke-width="1.2"/></g>
+  <text x="705" y="195" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0a4060">MCP Client Wrapper</text>
+  <text x="705" y="212" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">injects traceparent · tool.call</text>
+  <text x="665" y="232" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">tool args · tool result · latency · status</text>
+
+  <!-- MCP servers -->
+  <g filter="url(#cardShadow)"><rect x="650" y="262" width="135" height="78" rx="14" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.5"/></g>
+  <text x="717" y="285" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a4060">MCP Servers</text>
+  <text x="717" y="305" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#2d6080">REST · DB · SaaS</text>
+  <text x="717" y="320" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#2d6080">tools</text>
+
+  <!-- Fabric Data Agent -->
+  <g filter="url(#cardShadow)"><rect x="795" y="262" width="135" height="78" rx="14" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1.5"/></g>
+  <text x="862" y="285" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a5a3a">Fabric Data Agent</text>
+  <text x="862" y="305" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#2a8060">SQL · KQL · SM</text>
+  <text x="862" y="320" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="8.5" fill="#2a8060">generated query</text>
+
+  <!-- OneLake source data -->
+  <g filter="url(#cardShadow)"><rect x="650" y="354" width="280" height="78" rx="14" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(665,368)"><ellipse cx="14" cy="6" rx="12" ry="4" fill="#dff7ef" stroke="#2da873" stroke-width="1.4"/><path d="M2,6 L2,22 C2,24 7,26 14,26 C21,26 26,24 26,22 L26,6" fill="#dff7ef" stroke="#2da873" stroke-width="1.4"/><path d="M2,14 C2,16 7,18 14,18 C21,18 26,16 26,14" fill="none" stroke="#2da873" stroke-width="1.2"/></g>
+  <text x="705" y="378" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0a5a3a">OneLake · Lakehouse · Warehouse · KQL</text>
+  <text x="705" y="396" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">source tables · row counts · column lineage</text>
+  <text x="665" y="414" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">Semantic Model · SQLEndpoint</text>
+
+  <!-- PURVIEW GATES container -->
+  <g filter="url(#cardShadow)"><rect x="990" y="155" width="320" height="290" rx="18" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.2" opacity="0.6"/></g>
+
+  <!-- 6 Gate cards (3x2) -->
+  <g font-family="Inter, Segoe UI, sans-serif" font-size="11" font-weight="700" fill="#6a3a10">
+    <g filter="url(#cardShadow)"><rect x="1005" y="170" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1015" y="190">G1 · Classify</text>
+    <text x="1015" y="208" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Purview Data Map</text>
+    <text x="1015" y="222" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">auto-classification</text>
+
+    <g filter="url(#cardShadow)"><rect x="1155" y="170" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1165" y="190">G2 · Inherit Label</text>
+    <text x="1165" y="208" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Bulk Set Labels API</text>
+    <text x="1165" y="222" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Fabric items</text>
+
+    <g filter="url(#cardShadow)"><rect x="1005" y="240" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1015" y="260">G3 · Label-aware</text>
+    <text x="1015" y="278" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">index · retrieval</text>
+    <text x="1015" y="292" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">label-trim chunks</text>
+
+    <g filter="url(#cardShadow)"><rect x="1155" y="240" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1165" y="260">G4 · DLP / EXTRACT</text>
+    <text x="1165" y="278" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">runtime · OneLake</text>
+    <text x="1165" y="292" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Restrict Access</text>
+
+    <g filter="url(#cardShadow)"><rect x="1005" y="310" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1015" y="330">G5 · Audit</text>
+    <text x="1015" y="348" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Purview Audit</text>
+    <text x="1015" y="362" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">unified log</text>
+
+    <g filter="url(#cardShadow)"><rect x="1155" y="310" width="145" height="62" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.3"/></g>
+    <text x="1165" y="330">G6 · DSPM for AI</text>
+    <text x="1165" y="348" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">in Fabric · IRM</text>
+    <text x="1165" y="362" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">oversharing signals</text>
+  </g>
+
+  <!-- Label Suggestion Agent -->
+  <g filter="url(#cardShadow)"><rect x="1005" y="384" width="295" height="50" rx="11" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.3"/></g>
+  <text x="1015" y="403" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a4060">Label-Suggestion Agent</text>
+  <text x="1015" y="421" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">recommends External / Confidential · one-click apply</text>
+
+  <!-- DATA QUALITY container -->
+  <g filter="url(#cardShadow)"><rect x="1330" y="155" width="220" height="290" rx="18" fill="#ffffff" stroke="#c8d2dc" stroke-width="1.2" opacity="0.6"/></g>
+
+  <g filter="url(#cardShadow)"><rect x="1345" y="170" width="190" height="78" rx="14" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(1357,184)"><circle cx="14" cy="14" r="13" fill="#dff7ef" stroke="#2da873" stroke-width="1.4"/><path d="M8,14 L12,18 L20,9" stroke="#2da873" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="1395" y="195" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0a5a3a">DQ Engine</text>
+  <text x="1395" y="213" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">generates Fabric notebook</text>
+  <text x="1357" y="232" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">Completeness · Uniqueness · Validity</text>
+
+  <g filter="url(#cardShadow)"><rect x="1345" y="260" width="190" height="78" rx="14" fill="url(#cardAmber)" stroke="#e8c878" stroke-width="1.5"/></g>
+  <text x="1440" y="282" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#7a5a20">dq_runs Lakehouse</text>
+  <text x="1440" y="302" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a7040">per-run results · thresholds</text>
+  <text x="1440" y="318" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a7040">Failed Rows drill-down</text>
+
+  <g filter="url(#cardShadow)"><rect x="1345" y="350" width="190" height="78" rx="14" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.5"/></g>
+  <text x="1440" y="372" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#7a1a4a">Steward Alerts</text>
+  <text x="1440" y="392" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">Teams · email · Sentinel</text>
+  <text x="1440" y="408" text-anchor="middle" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">on failed-rows · DQ drop</text>
+
+  <!-- ARROWS row 1 -->
+  <!-- User → Orchestrator -->
+  <line x1="240" y1="200" x2="285" y2="200" stroke="#5a6a85" stroke-width="2.2" marker-end="url(#arrSlate)"/>
+  <!-- Orchestrator → Specialist / Wrapper -->
+  <line x1="358" y1="248" x2="358" y2="258" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+  <line x1="502" y1="248" x2="502" y2="258" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+  <!-- Specialist → MCP wrapper -->
+  <path d="M425,300 C520,300 580,210 645,210" fill="none" stroke="#2d9cc5" stroke-width="2.2" marker-end="url(#arrCyan)"/>
+  <!-- MCP wrapper → MCP servers -->
+  <line x1="717" y1="248" x2="717" y2="258" stroke="#2d9cc5" stroke-width="2.2" marker-end="url(#arrCyan)"/>
+  <!-- Foundry wrapper → Fabric Data Agent -->
+  <path d="M570,300 C640,300 780,300 793,300" fill="none" stroke="#2da873" stroke-width="2.2" marker-end="url(#arrGreen)"/>
+  <!-- Fabric DA → OneLake -->
+  <line x1="862" y1="342" x2="862" y2="352" stroke="#2da873" stroke-width="2.2" marker-end="url(#arrGreen)"/>
+  <!-- Foundry wrapper → G4 (label + DLP decision) -->
+  <path d="M570,275 C800,275 920,260 1002,260" fill="none" stroke="#d06828" stroke-width="2.2" stroke-dasharray="5,4" marker-end="url(#arrOrange)"/>
+  <text x="780" y="262" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#d06828">label · DLP decision</text>
+
+  <!-- Fabric DA / OneLake → DQ -->
+  <path d="M930,395 C1100,395 1200,200 1342,200" fill="none" stroke="#2da873" stroke-width="2.2" marker-end="url(#arrGreen)"/>
+  <text x="1100" y="320" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">source tables · column lineage</text>
+
+  <!-- DQ engine → dq_runs → steward alerts -->
+  <line x1="1440" y1="250" x2="1440" y2="258" stroke="#2da873" stroke-width="2.2" marker-end="url(#arrGreen)"/>
+  <line x1="1440" y1="340" x2="1440" y2="348" stroke="#c04878" stroke-width="2.2" marker-end="url(#arrPink)"/>
+
+  <!-- ================== MIDDLE BAND: OTEL → EVENTSTREAM → ANSWERLEDGER ================== -->
+  <text x="70" y="495" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">UNIFIED TRACE FABRIC  ·  ONE TRACE_ID  ·  ONE LEDGER</text>
+  <line x1="70" y1="503" x2="1530" y2="503" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <!-- OTel Distro -->
+  <g filter="url(#cardShadow)"><rect x="50" y="520" width="230" height="90" rx="14" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(68,538)"><circle cx="14" cy="14" r="13" fill="#e0f5ff" stroke="#2d9cc5" stroke-width="1.4"/><path d="M14,4 L14,24 M4,14 L24,14 M7,7 L21,21 M7,21 L21,7" stroke="#2d9cc5" stroke-width="1.2" opacity="0.6"/></g>
+  <text x="115" y="545" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0a4060">OTel Distro</text>
+  <text x="115" y="563" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">Azure Monitor · GenAI semconv</text>
+  <text x="68" y="582" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">invoke_agent · execute_task</text>
+  <text x="68" y="598" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">tool.call · token · cost</text>
+
+  <!-- App Insights -->
+  <g filter="url(#cardShadow)"><rect x="305" y="520" width="220" height="90" rx="14" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(322,538)"><rect x="0" y="4" width="28" height="20" rx="3" fill="#e0f5ff" stroke="#2d9cc5" stroke-width="1.4"/><path d="M4,18 L9,12 L14,16 L19,9 L24,14" fill="none" stroke="#2d9cc5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="370" y="545" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#0a4060">Application Insights</text>
+  <text x="370" y="563" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">one trace store</text>
+  <text x="322" y="582" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">spans · logs · metrics</text>
+  <text x="322" y="598" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">Foundry Observability link</text>
+
+  <!-- Eventstream -->
+  <g filter="url(#cardShadow)"><rect x="550" y="520" width="220" height="90" rx="14" fill="url(#cardAmber)" stroke="#e8c878" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(567,548)"><path d="M0,7 Q7,0 14,7 T28,7" fill="none" stroke="#d4943a" stroke-width="2.2" stroke-linecap="round"/><path d="M0,14 Q7,7 14,14 T28,14" fill="none" stroke="#d4943a" stroke-width="2.2" stroke-linecap="round" opacity="0.7"/></g>
+  <text x="615" y="545" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#7a5a20">Fabric Eventstream</text>
+  <text x="615" y="563" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a7040">provenance events</text>
+  <text x="567" y="582" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a7040">DQ events · audit · eval</text>
+  <text x="567" y="598" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a7040">routing · transform</text>
+
+  <!-- AnswerLedger (big) -->
+  <g filter="url(#cardShadow)"><rect x="795" y="510" width="500" height="110" rx="16" fill="url(#cardPurple)" stroke="#8060c0" stroke-width="2"/></g>
+  <g filter="url(#iconShadow)" transform="translate(810,528)"><ellipse cx="16" cy="6" rx="14" ry="4.5" fill="#e8dcff" stroke="#6040a0" stroke-width="1.4"/><path d="M2,6 L2,28 C2,30 8,32 16,32 C24,32 30,30 30,28 L30,6" fill="#e8dcff" stroke="#6040a0" stroke-width="1.4"/><path d="M2,14 C2,16 8,18 16,18 C24,18 30,16 30,14" fill="none" stroke="#6040a0" stroke-width="1.2"/><path d="M2,22 C2,24 8,26 16,26 C24,26 30,24 30,22" fill="none" stroke="#6040a0" stroke-width="1.2"/></g>
+  <text x="860" y="540" font-family="Inter, Segoe UI, sans-serif" font-size="16" font-weight="800" fill="#3a2070">KQL AnswerLedger</text>
+  <text x="860" y="558" font-family="SF Mono, Fira Code, monospace" font-size="10" fill="#5a3a90">one row per answer · one trace_id</text>
+  <text x="810" y="582" font-family="SF Mono, Fira Code, monospace" font-size="9.5" fill="#3a2070">trace_id · user · agent_id · prompt · generated_query · source_tables ·</text>
+  <text x="810" y="598" font-family="SF Mono, Fira Code, monospace" font-size="9.5" fill="#3a2070">sensitivity_labels · dlp_decision · dq_score · row_count · model · tokens ·</text>
+  <text x="810" y="614" font-family="SF Mono, Fira Code, monospace" font-size="9.5" fill="#3a2070">cost · eval_scores · red_team_flags · irm_signals</text>
+
+  <!-- Eval feeder card on far right -->
+  <g filter="url(#cardShadow)"><rect x="1320" y="520" width="230" height="90" rx="14" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(1337,538)"><circle cx="14" cy="14" r="13" fill="#ffe4ee" stroke="#c04878" stroke-width="1.4"/><text x="14" y="19" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="800" fill="#c04878">EV</text></g>
+  <text x="1385" y="545" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#7a1a4a">Continuous Eval</text>
+  <text x="1385" y="563" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">Foundry · groundedness</text>
+  <text x="1337" y="582" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">intent · tool-call accuracy</text>
+  <text x="1337" y="598" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">retrieval F1 · drift</text>
+
+  <!-- Arrows: agents → OTel ; OTel → AI ; AI → Ledger ; ES → Ledger ; Eval → Ledger -->
+  <path d="M358,432 C200,460 160,490 160,518" fill="none" stroke="#2d9cc5" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arrCyan)"/>
+  <path d="M717,432 C400,470 280,495 280,518" fill="none" stroke="#2d9cc5" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arrCyan)"/>
+  <text x="220" y="478" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">OTel GenAI spans</text>
+
+  <line x1="282" y1="565" x2="302" y2="565" stroke="#2d9cc5" stroke-width="2.2" marker-end="url(#arrCyan)"/>
+  <line x1="527" y1="565" x2="547" y2="565" stroke="#d4943a" stroke-width="2.2" marker-end="url(#arrAmber)"/>
+  <line x1="772" y1="565" x2="793" y2="565" stroke="#d4943a" stroke-width="2.2" marker-end="url(#arrAmber)"/>
+  <line x1="1318" y1="565" x2="1297" y2="565" stroke="#c04878" stroke-width="2.2" marker-end="url(#arrPink)"/>
+
+  <!-- DQ Lakehouse → Eventstream -->
+  <path d="M1440,340 C1440,470 800,470 690,520" fill="none" stroke="#2da873" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arrGreen)"/>
+  <text x="980" y="478" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">DQ pass-rate · freshness</text>
+
+  <!-- G5 audit → Eventstream -->
+  <path d="M1080,374 C1080,470 800,478 690,518" fill="none" stroke="#d06828" stroke-width="2.2" stroke-dasharray="6,4" marker-end="url(#arrOrange)"/>
+
+  <!-- ================== BOTTOM BAND: SCORE + SURFACES ================== -->
+  <text x="70" y="660" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">ANSWERTRUST SCORE  ·  ONE NUMBER PER ANSWER</text>
+  <line x1="70" y1="668" x2="800" y2="668" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <text x="830" y="660" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#1a3a5c" letter-spacing="2">SURFACES &amp; RESPONSE</text>
+  <line x1="830" y1="668" x2="1530" y2="668" stroke="#1a3a5c" stroke-width="1" opacity="0.3"/>
+
+  <!-- Score formula card -->
+  <g filter="url(#cardShadow)"><rect x="50" y="685" width="750" height="120" rx="16" fill="#ffffff" stroke="#a890d8" stroke-width="2"/></g>
+  <text x="70" y="712" font-family="Inter, Segoe UI, sans-serif" font-size="14" font-weight="800" fill="#3a2070">AnswerTrust</text>
+  <text x="170" y="712" font-family="Inter, Segoe UI, sans-serif" font-size="14" font-weight="500" fill="#3a2070">=</text>
+  <g font-family="SF Mono, Fira Code, monospace" font-size="13" fill="#3a2070" font-weight="600">
+    <text x="190" y="712">w_e·Eval  +  w_d·DQ  +  w_l·LabelCompliance  +  w_f·Freshness  −  w_r·RedTeamFlags</text>
+  </g>
+  <g font-family="SF Mono, Fira Code, monospace" font-size="10" fill="#5a3a90">
+    <text x="70" y="740">Eval</text><text x="120" y="740" fill="#5a6a85">→ groundedness · intent-resolution · tool-call accuracy · retrieval F1</text>
+    <text x="70" y="758">DQ</text><text x="120" y="758" fill="#5a6a85">→ pass-rate of Fabric DQ rules on source tables · freshness lag</text>
+    <text x="70" y="776">LabelCompliance</text><text x="220" y="776" fill="#5a6a85">→ DLP / EXTRACT honored · no oversharing flags</text>
+    <text x="70" y="794">RedTeamFlags</text><text x="200" y="794" fill="#5a6a85">→ jailbreaks · prompt-injection · IRM Quick Data Theft signals</text>
+  </g>
+
+  <!-- Surfaces row -->
+  <g filter="url(#cardShadow)"><rect x="830" y="685" width="170" height="120" rx="14" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(848,703)"><rect x="0" y="0" width="30" height="22" rx="3" fill="#e0f5ff" stroke="#2d9cc5" stroke-width="1.4"/><path d="M4,18 L9,12 L14,16 L19,9 L26,14" fill="none" stroke="#2d9cc5" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="888" y="717" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a4060">Real-Time</text>
+  <text x="888" y="732" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a4060">Dashboard</text>
+  <text x="848" y="758" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">AnswerTrust gauge</text>
+  <text x="848" y="773" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">table-health bars</text>
+  <text x="848" y="788" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2d6080">handoff Sankey</text>
+
+  <g filter="url(#cardShadow)"><rect x="1020" y="685" width="170" height="120" rx="14" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(1038,703)"><rect x="0" y="0" width="30" height="22" rx="3" fill="#ffe8d8" stroke="#c06028" stroke-width="1.4"/><path d="M3,5 L27,5 M3,11 L20,11 M3,17 L24,17" stroke="#c06028" stroke-width="1.2"/></g>
+  <text x="1078" y="717" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#6a3a10">Azure</text>
+  <text x="1078" y="732" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#6a3a10">Workbook</text>
+  <text x="1038" y="758" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a5430">cost · tokens · diff</text>
+  <text x="1038" y="773" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a5430">version regression</text>
+  <text x="1038" y="788" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#8a5430">oversharing tile</text>
+
+  <g filter="url(#cardShadow)"><rect x="1210" y="685" width="170" height="120" rx="14" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(1228,703)"><path d="M15,2 L28,8 L28,18 C28,24 22,28 15,30 C8,28 2,24 2,18 L2,8 Z" fill="#ffd0e0" stroke="#c04878" stroke-width="1.4"/></g>
+  <text x="1268" y="717" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#7a1a4a">Sentinel</text>
+  <text x="1268" y="732" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#7a1a4a">+ IRM</text>
+  <text x="1228" y="758" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">drift · anomalous args</text>
+  <text x="1228" y="773" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">Quick Data Theft</text>
+  <text x="1228" y="788" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#9a3a6a">Lakehouse indicators</text>
+
+  <g filter="url(#cardShadow)"><rect x="1400" y="685" width="150" height="120" rx="14" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1.5"/></g>
+  <g filter="url(#iconShadow)" transform="translate(1418,703)"><rect x="0" y="2" width="28" height="20" rx="3" fill="#dff7ef" stroke="#2da873" stroke-width="1.4"/><circle cx="22" cy="8" r="3" fill="#2da873"/></g>
+  <text x="1458" y="717" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a5a3a">Activator</text>
+  <text x="1458" y="732" font-family="Inter, Segoe UI, sans-serif" font-size="12" font-weight="700" fill="#0a5a3a">+ Teams</text>
+  <text x="1418" y="758" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">block / warn / route</text>
+  <text x="1418" y="773" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">steward · approver</text>
+  <text x="1418" y="788" font-family="SF Mono, Fira Code, monospace" font-size="9" fill="#2a8060">approval card</text>
+
+  <!-- Ledger → Surfaces arrows -->
+  <path d="M1045,620 C1045,650 900,665 900,683" fill="none" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+  <path d="M1095,620 C1095,650 1095,665 1095,683" fill="none" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+  <path d="M1145,620 C1145,650 1280,665 1280,683" fill="none" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+  <path d="M1195,620 C1195,650 1470,665 1470,683" fill="none" stroke="#8060c0" stroke-width="2.2" marker-end="url(#arrPurple)"/>
+
+  <!-- ================== PILLARS STRIP ================== -->
+  <text x="800" y="845" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="13" font-weight="700" fill="#1a3a5c" letter-spacing="2">EIGHT PILLARS · ONE FABRIC WORKSPACE ITEM</text>
+
+  <g font-family="Inter, Segoe UI, sans-serif" font-size="10.5" font-weight="700" fill="#1a3a5c">
+    <g filter="url(#cardShadow)"><rect x="50" y="865" width="180" height="60" rx="11" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1.2"/></g>
+    <text x="60" y="884">P1 · Governance gates</text>
+    <text x="60" y="903" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">+ Label-Suggestion Agent</text>
+    <text x="60" y="916" font-size="9" font-weight="500" fill="#8a5430" font-family="SF Mono, Fira Code, monospace">Purview · Fabric APIs</text>
+
+    <g filter="url(#cardShadow)"><rect x="240" y="865" width="180" height="60" rx="11" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1.2"/></g>
+    <text x="250" y="884">P2 · Data Quality gate</text>
+    <text x="250" y="903" font-size="9" font-weight="500" fill="#2a8060" font-family="SF Mono, Fira Code, monospace">DQ engine · dq_runs</text>
+    <text x="250" y="916" font-size="9" font-weight="500" fill="#2a8060" font-family="SF Mono, Fira Code, monospace">Failed Rows drill-down</text>
+
+    <g filter="url(#cardShadow)"><rect x="430" y="865" width="180" height="60" rx="11" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1.2"/></g>
+    <text x="440" y="884">P3 · Unified trace</text>
+    <text x="440" y="903" font-size="9" font-weight="500" fill="#2d6080" font-family="SF Mono, Fira Code, monospace">OTel + MCP wrapper</text>
+    <text x="440" y="916" font-size="9" font-weight="500" fill="#2d6080" font-family="SF Mono, Fira Code, monospace">App Insights</text>
+
+    <g filter="url(#cardShadow)"><rect x="620" y="865" width="180" height="60" rx="11" fill="url(#cardPurple)" stroke="#a890d8" stroke-width="1.2"/></g>
+    <text x="630" y="884">P4 · AnswerLedger</text>
+    <text x="630" y="903" font-size="9" font-weight="500" fill="#5a3a90" font-family="SF Mono, Fira Code, monospace">KQL · Eventstream</text>
+    <text x="630" y="916" font-size="9" font-weight="500" fill="#5a3a90" font-family="SF Mono, Fira Code, monospace">one row per answer</text>
+
+    <g filter="url(#cardShadow)"><rect x="810" y="865" width="180" height="60" rx="11" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.2"/></g>
+    <text x="820" y="884">P5 · Continuous eval</text>
+    <text x="820" y="903" font-size="9" font-weight="500" fill="#9a3a6a" font-family="SF Mono, Fira Code, monospace">Foundry · golden set</text>
+    <text x="820" y="916" font-size="9" font-weight="500" fill="#9a3a6a" font-family="SF Mono, Fira Code, monospace">drift alarms</text>
+
+    <g filter="url(#cardShadow)"><rect x="1000" y="865" width="180" height="60" rx="11" fill="url(#cardAmber)" stroke="#e8c878" stroke-width="1.2"/></g>
+    <text x="1010" y="884">P6 · Trust dashboard</text>
+    <text x="1010" y="903" font-size="9" font-weight="500" fill="#8a7040" font-family="SF Mono, Fira Code, monospace">AnswerTrust score</text>
+    <text x="1010" y="916" font-size="9" font-weight="500" fill="#8a7040" font-family="SF Mono, Fira Code, monospace">cost · Sankey</text>
+
+    <g filter="url(#cardShadow)"><rect x="1190" y="865" width="180" height="60" rx="11" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1.2"/></g>
+    <text x="1200" y="884">P7 · Security overlay</text>
+    <text x="1200" y="903" font-size="9" font-weight="500" fill="#9a3a6a" font-family="SF Mono, Fira Code, monospace">Red-team · Sentinel</text>
+    <text x="1200" y="916" font-size="9" font-weight="500" fill="#9a3a6a" font-family="SF Mono, Fira Code, monospace">IRM · DSPM · alerts</text>
+
+    <g filter="url(#cardShadow)"><rect x="1380" y="865" width="170" height="60" rx="11" fill="url(#cardSlate)" stroke="#9aa8c0" stroke-width="1.2"/></g>
+    <text x="1390" y="884">P8 · Fabric workspace</text>
+    <text x="1390" y="903" font-size="9" font-weight="500" fill="#5a6a85" font-family="SF Mono, Fira Code, monospace">item · azd up</text>
+    <text x="1390" y="916" font-size="9" font-weight="500" fill="#5a6a85" font-family="SF Mono, Fira Code, monospace">one-click install</text>
+  </g>
+
+  <!-- ================== TAGLINE BAR ================== -->
+  <g filter="url(#cardShadow)"><rect x="200" y="960" width="1200" height="58" rx="29" fill="#ffffff" stroke="#8060c0" stroke-width="2"/></g>
+  <text x="800" y="985" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="15" font-weight="800" fill="#3a2070" letter-spacing="1">EVERY ANSWER IS A GOVERNED, QUALITY-GATED, EVALUABLE, AUDITABLE ARTIFACT</text>
+  <text x="800" y="1006" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="11" fill="#5a3a90" letter-spacing="0.8">Compose existing Microsoft primitives · one trace_id · one ledger · one score · feed Foundry Observability, Sentinel, DSPM, IRM</text>
+
+  <!-- LEGEND -->
+  <g transform="translate(60, 1040)" font-family="Inter, Segoe UI, sans-serif" font-size="10" fill="#1a3a5c">
+    <g><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardSlate)" stroke="#9aa8c0" stroke-width="1"/><text x="20" y="11">User</text></g>
+    <g transform="translate(75,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardPurple)" stroke="#a890d8" stroke-width="1"/><text x="20" y="11">Agent</text></g>
+    <g transform="translate(160,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardCyan)" stroke="#6ab8d8" stroke-width="1"/><text x="20" y="11">Trace / Telemetry</text></g>
+    <g transform="translate(310,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardGreen)" stroke="#6ac890" stroke-width="1"/><text x="20" y="11">Fabric / DQ</text></g>
+    <g transform="translate(440,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardOrange)" stroke="#d8a070" stroke-width="1"/><text x="20" y="11">Purview gate</text></g>
+    <g transform="translate(570,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardAmber)" stroke="#e8c878" stroke-width="1"/><text x="20" y="11">Eventstream / Ledger feed</text></g>
+    <g transform="translate(770,0)"><rect x="0" y="0" width="14" height="14" rx="3" fill="url(#cardPink)" stroke="#d878a0" stroke-width="1"/><text x="20" y="11">Eval / Red-team / Security</text></g>
+  </g>
+
+  <text x="800" y="1080" text-anchor="middle" font-family="Inter, Segoe UI, sans-serif" font-size="10" fill="#8a9aae" letter-spacing="1.5" opacity="0.8">THE FABRIC INTELLIGENCE SERIES  ·  ANSWERTRUST  ·  JP BEHERA</text>
+</svg>

@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "location": {
+      "value": "${AZURE_LOCATION}"
+    },
+    "namePrefix": {
+      "value": "${AT_NAME_PREFIX=answertrust}"
+    },
+    "fabricWorkspaceId": {
+      "value": "${FABRIC_WORKSPACE_ID}"
+    },
+    "foundryProjectId": {
+      "value": "${FOUNDRY_PROJECT_ID}"
+    },
+    "foundryAccountName": {
+      "value": "${FOUNDRY_ACCOUNT_NAME=}"
+    },
+    "purviewAccountName": {
+      "value": "${PURVIEW_ACCOUNT_NAME}"
+    },
+    "fabricPrincipalId": {
+      "value": "${FABRIC_PRINCIPAL_ID=}"
+    },
+    "foundryPrincipalId": {
+      "value": "${FOUNDRY_PRINCIPAL_ID=}"
+    },
+    "adminPrincipalId": {
+      "value": "${AT_ADMIN_PRINCIPAL_ID=}"
+    },
+    "adminPrincipalType": {
+      "value": "${AT_ADMIN_PRINCIPAL_TYPE=User}"
+    },
+    "deployAnalyticRules": {
+      "value": "${AT_DEPLOY_ANALYTIC_RULES=false}"
+    }
+  }
+}

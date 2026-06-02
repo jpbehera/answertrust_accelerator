@@ -1,0 +1,24 @@
+{
+  "displayName": "AnswerTrust Drift Alarm",
+  "source": {
+    "type": "Eventhouse",
+    "database": "answer_ledger_db",
+    "query": "AnswerLedger | where timestamp > ago(1h) | summarize avg_score = avg(answertrust_score) by agent_id"
+  },
+  "condition": {
+    "operator": "LessThan",
+    "threshold": 0.7
+  },
+  "actions": [
+    {
+      "type": "SendTeamsMessage",
+      "channelId": "<teams-channel-id>",
+      "message": "\u26a0\ufe0f AnswerTrust score for {agent_id} dropped to {avg_score}. Investigate eval/DQ/DLP regressions."
+    },
+    {
+      "type": "CreateSentinelIncident",
+      "severity": "High",
+      "title": "Answer Quality Degraded - AnswerTrust"
+    }
+  ]
+}

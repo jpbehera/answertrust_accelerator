@@ -1,0 +1,59 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "description": "AnswerTrust Cost & Agent Analysis \u2014 Azure Workbook over Application Insights telemetry (cost per conversation, agent hand-off topology, tool-call success matrix)."
+  },
+  "parameters": {
+    "workbookDisplayName": {
+      "type": "string",
+      "defaultValue": "AnswerTrust Cost & Agent Analysis",
+      "metadata": {
+        "description": "Display name for the workbook."
+      }
+    },
+    "workbookSourceId": {
+      "type": "string",
+      "defaultValue": "[resourceId('microsoft.insights/components', 'answertrust-appinsights')]",
+      "metadata": {
+        "description": "Resource ID of the Application Insights component the workbook queries. Override to match the deployed AppInsights resource."
+      }
+    },
+    "workbookId": {
+      "type": "string",
+      "defaultValue": "[newGuid()]",
+      "metadata": {
+        "description": "Unique GUID for the workbook resource."
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Deployment location."
+      }
+    }
+  },
+  "resources": [
+    {
+      "name": "[parameters('workbookId')]",
+      "type": "microsoft.insights/workbooks",
+      "apiVersion": "2022-04-01",
+      "location": "[parameters('location')]",
+      "kind": "shared",
+      "properties": {
+        "displayName": "[parameters('workbookDisplayName')]",
+        "serializedData": "{\"version\": \"Notebook/1.0\", \"items\": [{\"type\": 1, \"content\": {\"json\": \"## AnswerTrust \\u2014 Cost & Agent Analysis\\nCross-agent cost, hand-off topology, and tool-call reliability for agentic answers traced through Application Insights. Pair with the Fabric Real-Time **AnswerTrust Observability** dashboard for per-answer trust scoring.\"}, \"name\": \"header\"}, {\"type\": 9, \"content\": {\"version\": \"KqlParameterItem/1.0\", \"parameters\": [{\"id\": \"time-range\", \"version\": \"KqlParameterItem/1.0\", \"name\": \"TimeRange\", \"label\": \"Time range\", \"type\": 4, \"isRequired\": true, \"value\": {\"durationMs\": 604800000}, \"typeSettings\": {\"selectableValues\": [{\"durationMs\": 3600000}, {\"durationMs\": 86400000}, {\"durationMs\": 604800000}, {\"durationMs\": 2592000000}]}}]}, \"name\": \"parameters\"}, {\"type\": 3, \"content\": {\"version\": \"KqlItem/1.0\", \"query\": \"customEvents\\n| where name == 'answer_provenance'\\n| extend cost_usd = todouble(customDimensions.cost_usd)\\n| summarize TotalCostUSD = sum(cost_usd) by bin(timestamp, 1d)\\n| order by timestamp asc\", \"size\": 0, \"title\": \"Cost per Conversation (USD / day)\", \"timeContext\": {\"durationMs\": 0}, \"timeContextFromParameter\": \"TimeRange\", \"queryType\": 0, \"resourceType\": \"microsoft.insights/components\", \"visualization\": \"timechart\"}, \"name\": \"cost-per-conversation\"}, {\"type\": 3, \"content\": {\"version\": \"KqlItem/1.0\", \"query\": \"dependencies\\n| where type == 'invoke_agent'\\n| summarize HandoffCount = count() by SourceAgent = operation_Name, TargetAgent = target\\n| order by HandoffCount desc\", \"size\": 0, \"title\": \"Agent Hand-off Topology\", \"timeContext\": {\"durationMs\": 0}, \"timeContextFromParameter\": \"TimeRange\", \"queryType\": 0, \"resourceType\": \"microsoft.insights/components\", \"visualization\": \"graph\", \"graphSettings\": {\"type\": 0, \"topContent\": {\"columnMatch\": \"SourceAgent\"}, \"centerContent\": {\"columnMatch\": \"HandoffCount\", \"formatter\": 1}, \"bottomContent\": {\"columnMatch\": \"TargetAgent\"}, \"nodeIdField\": \"SourceAgent\", \"sourceIdField\": \"SourceAgent\", \"targetIdField\": \"TargetAgent\", \"graphOrientation\": 3, \"edgeColorSettings\": {\"type\": \"None\"}}}, \"name\": \"agent-handoff-sankey\"}, {\"type\": 3, \"content\": {\"version\": \"KqlItem/1.0\", \"query\": \"traces\\n| where operation_Name == 'mcp.tool.call'\\n| extend tool_name = tostring(customDimensions.tool_name),\\n         result_code = toint(customDimensions.result_code)\\n| summarize Calls = count(),\\n            SuccessRatePct = round(countif(result_code == 200) * 100.0 / count(), 1)\\n    by tool_name\\n| order by SuccessRatePct asc\", \"size\": 0, \"title\": \"Tool-Call Success Matrix\", \"timeContext\": {\"durationMs\": 0}, \"timeContextFromParameter\": \"TimeRange\", \"queryType\": 0, \"resourceType\": \"microsoft.insights/components\", \"visualization\": \"table\", \"gridSettings\": {\"formatters\": [{\"columnMatch\": \"SuccessRatePct\", \"formatter\": 8, \"formatOptions\": {\"palette\": \"greenRed\", \"min\": 0, \"max\": 100}}]}}, \"name\": \"tool-call-success-matrix\"}], \"fallbackResourceIds\": [\"Azure Monitor\"], \"$schema\": \"https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json\"}",
+        "version": "1.0",
+        "sourceId": "[parameters('workbookSourceId')]",
+        "category": "workbook"
+      }
+    }
+  ],
+  "outputs": {
+    "workbookId": {
+      "type": "string",
+      "value": "[resourceId('microsoft.insights/workbooks', parameters('workbookId'))]"
+    }
+  }
+}

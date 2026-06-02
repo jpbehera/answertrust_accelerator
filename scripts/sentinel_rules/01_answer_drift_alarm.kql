@@ -1,0 +1,30 @@
+// M7 Analytic Rule 1: Answer Drift Alarm
+// Fires when golden-question eval scores diverge materially from the rolling baseline.
+// Source: AnswerTrust M6 continuous-eval writes one customEvent ("AnswerEval") per golden
+// question run, with eval_score and trace_id / question_id.
+// Workspace-based App Insights surfaces customEvents as AppEvents in the LAW:
+//   customEvents->AppEvents, timestamp->TimeGenerated, name->Name,
+//   customDimensions->Properties, customMeasurements->Measurements.
+let lookback = 1d;
+let baselineWindow = 14d;
+let driftThreshold = 0.15; // absolute drop in mean eval score vs baseline
+let baseline =
+    AppEvents
+    | where TimeGenerated between (ago(baselineWindow) .. ago(lookback))
+    | where Name == "AnswerEval"
+    | extend question_id = tostring(Properties.question_id),
+             eval_score = todouble(Measurements.eval_score)
+    | summarize baseline_score = avg(eval_score) by question_id;
+AppEvents
+| where TimeGenerated > ago(lookback)
+| where Name == "AnswerEval"
+| extend question_id = tostring(Properties.question_id),
+         trace_id    = tostring(Properties.trace_id),
+         eval_score  = todouble(Measurements.eval_score)
+| summarize current_score = avg(eval_score), traces = make_set(trace_id, 50)
+        by question_id
+| join kind=inner baseline on question_id
+| extend drift = baseline_score - current_score
+| where drift >= driftThreshold
+| project question_id, baseline_score, current_score, drift, traces
+| order by drift desc

@@ -1,0 +1,1705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>AnswerTrust for Agents — Executive Deck</title>
+<style>
+  :root {
+    --purple:#3a2070; --purple-light:#8060c0; --purple-bg:#f0e8ff;
+    --navy:#1a3a5c; --teal:#0a4060;
+    --orange:#e8742a; --amber:#fff5e0; --amber-text:#6a3a10;
+    --ink:#1a2330; --muted:#5a6a85; --line:#d0dae5;
+    --cream:#f8f5f0; --code-bg:#f3f0ea;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; padding:0; background:#e8ecf2; font-family:'Inter','Segoe UI',-apple-system,sans-serif; color:var(--ink); }
+
+  /* Each slide is 13.33in x 7.5in (16:9) */
+  .slide {
+    width:13.33in; height:7.5in;
+    background:#ffffff;
+    margin:24px auto;
+    padding:0.55in 0.7in 0.5in 0.7in;
+    box-shadow:0 6px 28px rgba(40,40,80,0.18);
+    position:relative;
+    page-break-after:always;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+  .slide:last-child { page-break-after:auto; }
+
+  /* Header band */
+  .slide-header {
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:3px solid var(--purple-light);
+    padding-bottom:10px; margin-bottom:18px;
+  }
+  .slide-title {
+    color:var(--purple); font-size:26pt; font-weight:800; letter-spacing:-0.3px; margin:0;
+  }
+  .slide-eyebrow {
+    color:var(--muted); font-size:9.5pt; letter-spacing:2px; text-transform:uppercase;
+    margin-bottom:4px;
+  }
+  .slide-meta {
+    text-align:right; color:var(--muted); font-size:9pt; letter-spacing:1px; text-transform:uppercase;
+  }
+  .slide-meta .badge {
+    display:inline-block; background:var(--orange); color:#fff;
+    padding:4px 12px; border-radius:14px; font-size:8.5pt; font-weight:700; letter-spacing:1.5px;
+    margin-left:6px;
+  }
+
+  /* Footer */
+  .slide-footer {
+    position:absolute; left:0.7in; right:0.7in; bottom:0.32in;
+    display:flex; justify-content:space-between; align-items:center; gap:16px;
+    color:var(--muted); font-size:8.5pt; letter-spacing:1.2px; text-transform:uppercase;
+    border-top:1px solid var(--line); padding-top:8px;
+  }
+  .slide-footer > div:first-child { flex-shrink:0; }
+  .slide-footer > div:last-child {
+    text-align:right; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
+  }
+
+  /* Body */
+  .body { flex:1; display:flex; gap:24px; min-height:0; padding-bottom:0.4in; }
+
+  /* Slide 1 - problem */
+  .lead {
+    background:linear-gradient(135deg, #fffaf0 0%, #fff1d8 100%);
+    border:1px solid #f0d8a8; border-left:4px solid var(--orange);
+    color:var(--amber-text); padding:14px 20px 14px 64px; border-radius:8px;
+    font-size:12pt; line-height:1.5; font-style:normal; margin-bottom:14px;
+    position:relative; box-shadow:0 2px 6px rgba(232,116,42,0.08), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  .lead::before {
+    content:"!"; position:absolute; left:18px; top:50%; transform:translateY(-50%);
+    width:32px; height:32px; border-radius:50%;
+    background:linear-gradient(135deg, var(--orange) 0%, #c85a18 100%);
+    color:#fff; font-size:18pt; font-weight:800; font-style:normal;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 2px 5px rgba(232,116,42,0.35), inset 0 1px 0 rgba(255,255,255,0.25);
+    font-family:Georgia, serif; padding-bottom:2px;
+  }
+  .lead .lead-label {
+    display:block; font-size:8.5pt; letter-spacing:2.5px; text-transform:uppercase;
+    font-weight:700; color:var(--orange); margin-bottom:4px; font-style:normal;
+  }
+  .lead strong { font-style:normal; color:#4a2a08; font-weight:700; }
+  .lead em { font-style:italic; color:#6a3a10; background:rgba(255,255,255,0.55);
+    padding:1px 7px; border-radius:4px; border:1px solid rgba(232,116,42,0.18);
+    font-size:11.5pt; }
+  .col { flex:1; min-width:0; }
+  .col h3 {
+    color:var(--navy); font-size:13pt; margin:0 0 10px 0;
+    border-bottom:1px solid var(--line); padding-bottom:6px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .col h3 .h3-icon { font-size:15pt; line-height:1; }
+  .qbox {
+    background:linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+    border:1px solid var(--line); border-left:3px solid var(--purple-light);
+    border-radius:5px; padding:10px 14px; margin-bottom:9px;
+    font-size:10.5pt; line-height:1.4;
+    box-shadow:0 1px 2px rgba(58,32,112,0.04);
+  }
+  .qbox .qnum {
+    display:inline-block; width:22px; height:22px; line-height:22px; text-align:center;
+    background:var(--purple); color:#fff; border-radius:50%; font-size:9pt; font-weight:700;
+    margin-right:8px; vertical-align:middle;
+  }
+  .qbox strong { color:var(--navy); }
+  .qbox .qico { display:inline-block; margin-right:6px; font-size:13pt; vertical-align:-2px; }
+  /* Left col (five questions) — refined, mature treatment */
+  .body .col:first-child .qbox {
+    padding:11px 14px; font-size:11pt; line-height:1.4; margin-bottom:9px;
+    display:flex; align-items:center; gap:12px;
+    border-left-width:4px;
+    background:linear-gradient(90deg, #ffffff 0%, #f7f9fc 100%);
+    transition:none;
+  }
+  .body .col:first-child .qbox .qnum {
+    width:26px; height:26px; line-height:26px; font-size:10.5pt; margin-right:0; flex-shrink:0;
+    background:linear-gradient(135deg, var(--purple) 0%, #5040a0 100%);
+    box-shadow:0 2px 4px rgba(58,32,112,0.28), inset 0 1px 0 rgba(255,255,255,0.15);
+    border:1.5px solid rgba(255,255,255,0.9);
+  }
+  .body .col:first-child .qbox .qtext { flex:1; font-weight:600; letter-spacing:0.1px; }
+  .body .col:first-child .qbox .qico {
+    width:30px; height:30px; border-radius:7px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14pt; margin-right:0; opacity:1;
+    background:#f0eaf8; border:1px solid #e0d4f0;
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.8);
+  }
+  /* Per-question accent colors */
+  .body .col:first-child .qbox:nth-child(2) { border-left-color:#2a8c7a; }
+  .body .col:first-child .qbox:nth-child(2) .qico { background:#e6f5ef; border-color:#bfe0d2; }
+  .body .col:first-child .qbox:nth-child(3) { border-left-color:#d8a020; }
+  .body .col:first-child .qbox:nth-child(3) .qico { background:#fff5dc; border-color:#f0d890; }
+  .body .col:first-child .qbox:nth-child(4) { border-left-color:#c0344a; }
+  .body .col:first-child .qbox:nth-child(4) .qico { background:#fce8eb; border-color:#f0c0c8; }
+  .body .col:first-child .qbox:nth-child(5) { border-left-color:#5b8def; }
+  .body .col:first-child .qbox:nth-child(5) .qico { background:#e8eefc; border-color:#c8d4f0; }
+  .body .col:first-child .qbox:nth-child(6) { border-left-color:var(--orange); }
+  .body .col:first-child .qbox:nth-child(6) .qico { background:#fff0d8; border-color:#f0d0a0; }
+
+  /* Right col primitive boxes - colored chips */
+  .prim {
+    background:linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+    border:1px solid var(--line); border-left:3px solid var(--orange);
+    border-radius:5px; padding:9px 13px; margin-bottom:8px;
+    font-size:10pt; line-height:1.35;
+    display:flex; align-items:center; gap:10px;
+    box-shadow:0 1px 2px rgba(232,116,42,0.05);
+  }
+  .prim .pico {
+    width:30px; height:30px; border-radius:6px; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:14pt; background:var(--amber); color:var(--orange);
+  }
+  .prim strong { color:var(--navy); }
+  .prim .ptxt { flex:1; color:var(--ink); }
+
+  .gap-card {
+    background:linear-gradient(135deg, #fff5e0 0%, #ffd9a0 100%);
+    border:2px solid var(--orange); border-radius:8px;
+    padding:12px 14px 12px 50px; margin-top:10px; position:relative;
+    box-shadow:0 2px 6px rgba(232,116,42,0.15);
+  }
+  .gap-card::before {
+    content:"\1F50D"; position:absolute; left:14px; top:11px;
+    font-size:20pt;
+  }
+  .gap-card .label {
+    color:var(--orange); font-size:8.5pt; letter-spacing:2px; text-transform:uppercase; font-weight:700;
+  }
+  .gap-card p { margin:4px 0 0 0; font-size:9.5pt; color:var(--amber-text); line-height:1.4; }
+
+  /* Slide 2 - architecture */
+  .arch-image { flex:1; display:flex; align-items:center; justify-content:center; min-width:0; min-height:0; overflow:hidden; }
+  .arch-image img {
+    max-width:100%; max-height:100%; width:auto; height:auto; object-fit:contain;
+    border:1px solid var(--line); border-radius:6px;
+  }
+  .arch-sidebar {
+    width:3.4in; display:flex; flex-direction:column; gap:7px;
+  }
+  .arch-pillar {
+    position:relative;
+    background:linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+    border:1px solid var(--line); border-left:3px solid var(--pillar-color, var(--purple-light));
+    border-radius:6px; padding:7px 10px 7px 44px;
+    box-shadow:0 1px 2px rgba(26,35,48,0.04);
+  }
+  .arch-pillar .pnum {
+    position:absolute; left:7px; top:50%; transform:translateY(-50%);
+    width:30px; height:30px; border-radius:50%;
+    background:linear-gradient(135deg, var(--pillar-color, var(--purple-light)) 0%, var(--pillar-color-dark, var(--purple)) 100%);
+    color:#fff; font-weight:700; font-size:8.5pt;
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 0 0 2px #fff, 0 1px 3px rgba(26,35,48,0.18);
+    letter-spacing:0;
+    white-space:nowrap;
+  }
+  .arch-pillar .pnum.small { font-size:7pt; }
+  .arch-pillar .ph {
+    color:var(--pillar-color-dark, var(--purple));
+    font-weight:700; font-size:9.5pt;
+    display:flex; align-items:center; gap:6px;
+  }
+  .arch-pillar .ph .pico { font-size:10pt; line-height:1; }
+  .arch-pillar .pd { color:var(--ink); font-size:8.5pt; line-height:1.32; margin-top:2px; }
+  .arch-pillar.p1 { --pillar-color:#8060c0; --pillar-color-dark:#3a2070; }
+  .arch-pillar.p2 { --pillar-color:#3a9ad4; --pillar-color-dark:#1a5e8c; }
+  .arch-pillar.p3 { --pillar-color:#2a8c7a; --pillar-color-dark:#1a5a4e; }
+  .arch-pillar.p4 { --pillar-color:#c08030; --pillar-color-dark:#7a4a10; }
+  .arch-pillar.p5 { --pillar-color:#d4407a; --pillar-color-dark:#8a1e4e; }
+  .arch-pillar.p6 { --pillar-color:#e8742a; --pillar-color-dark:#a04410; }
+  .formula {
+    background:var(--purple-bg); border:1px solid #c8b8e0; border-radius:6px;
+    padding:7px 10px; font-family:'SF Mono','Fira Code',Menlo,monospace;
+    color:var(--purple); font-size:8.5pt; text-align:center; line-height:1.4;
+  }
+
+  /* Slide 3 - value */
+  .value-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:14px; }
+  .value-card {
+    background:linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+    border:1px solid var(--line); border-top:4px solid var(--purple-light);
+    border-radius:8px; padding:14px 16px 12px; position:relative;
+    box-shadow:0 1px 3px rgba(58,32,112,0.04);
+  }
+  .value-card.cto    { border-top-color:var(--purple); }
+  .value-card.plat   { border-top-color:#2a8c7a; }
+  .value-card.ciso   { border-top-color:var(--orange); }
+  .value-card .vc-head { display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .value-card .vc-icon {
+    width:36px; height:36px; border-radius:50%; flex-shrink:0;
+    display:flex; align-items:center; justify-content:center;
+    font-size:18pt; line-height:1;
+  }
+  .value-card.cto  .vc-icon { background:var(--purple-bg); color:var(--purple); }
+  .value-card.plat .vc-icon { background:#e3f5f0; color:#2a8c7a; }
+  .value-card.ciso .vc-icon { background:#ffe8c8; color:var(--orange); }
+  .value-card h4 {
+    font-size:12pt; margin:0; letter-spacing:0.3px;
+  }
+  .value-card.cto  h4 { color:var(--purple); }
+  .value-card.plat h4 { color:#2a8c7a; }
+  .value-card.ciso h4 { color:var(--orange); }
+  .value-card .role { color:var(--muted); font-size:8.5pt; text-transform:uppercase; letter-spacing:1.2px; margin:0 0 8px 46px; }
+  .value-card ul { margin:0; padding-left:18px; list-style:none; }
+  .value-card li { font-size:9.5pt; line-height:1.45; margin-bottom:4px; position:relative; padding-left:2px; }
+  .value-card li::before {
+    content:"\25C6"; position:absolute; left:-14px; font-size:7pt; top:3px;
+  }
+  .value-card.cto  li::before { color:var(--purple); }
+  .value-card.plat li::before { color:#2a8c7a; }
+  .value-card.ciso li::before { color:var(--orange); }
+  .value-card li strong { color:var(--navy); }
+
+  .metrics-band {
+    background:linear-gradient(135deg, #f7f4ff 0%, #fef6e8 100%);
+    border:1px solid #e0d4ef; border-radius:10px;
+    padding:12px 14px 14px; margin-top:6px;
+  }
+  .metrics-band .mb-title {
+    color:var(--navy); font-size:9.5pt; font-weight:700;
+    text-transform:uppercase; letter-spacing:1.6px;
+    margin:0 0 10px 0; display:flex; align-items:center; gap:8px;
+  }
+  .metrics-band .mb-title::before {
+    content:"\1F4CA"; font-size:13pt;
+  }
+  .metrics-band .mb-title .mb-sub {
+    margin-left:auto; font-size:8pt; font-weight:600; letter-spacing:0.5px;
+    text-transform:none; color:var(--muted);
+  }
+  .metrics { display:grid; grid-template-columns:repeat(6,1fr); gap:10px; margin:0; }
+  .metric {
+    background:#fff; border:1px solid #e6dcf2; border-radius:8px;
+    padding:12px 8px 10px; text-align:center; position:relative;
+    box-shadow:0 1px 3px rgba(58,32,112,0.06);
+    overflow:hidden;
+    display:flex; flex-direction:column; align-items:center; gap:4px;
+  }
+  .metric::before {
+    content:""; position:absolute; top:0; left:0; right:0; height:3px;
+    background:var(--purple); border-radius:8px 8px 0 0;
+  }
+  .metric.cat-coverage::before { background:linear-gradient(90deg, var(--purple), #6a3fb5); }
+  .metric.cat-eval::before     { background:linear-gradient(90deg, var(--orange), #f5a352); }
+  .metric.cat-speed::before    { background:linear-gradient(90deg, #1e7a5a, #2fb482); }
+  .metric .mico {
+    width:26px; height:26px; border-radius:50%;
+    display:inline-flex; align-items:center; justify-content:center;
+    font-size:12pt; line-height:1;
+    background:#f4eefb; color:var(--purple);
+  }
+  .metric.cat-eval .mico  { background:#fdf0e0; color:var(--orange); }
+  .metric.cat-speed .mico { background:#e3f5ec; color:#1e7a5a; }
+  .metric .v {
+    color:var(--purple); font-size:18pt; font-weight:800;
+    letter-spacing:-0.5px; line-height:1; font-variant-numeric:tabular-nums;
+  }
+  .metric.cat-eval .v  { color:var(--orange); }
+  .metric.cat-speed .v { color:#1e7a5a; }
+  .metric .l {
+    color:var(--muted); font-size:7.5pt; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.9px;
+    margin-top:2px; line-height:1.25;
+  }
+
+  .value-tagline {
+    margin-top:12px; padding:12px 18px;
+    background:linear-gradient(90deg, var(--purple) 0%, #5040a0 60%, var(--orange) 130%);
+    color:#fff; border-radius:8px; text-align:center;
+    font-size:11.5pt; font-weight:600; letter-spacing:0.3px;
+    box-shadow:0 2px 6px rgba(58,32,112,0.18);
+  }
+  .value-tagline .vt-icon { display:inline-block; margin-right:8px; font-size:13pt; vertical-align:-1px; }
+
+  /* Slide 4 - modules + next steps */
+  .section-label {
+    color:var(--purple); font-size:9pt; font-weight:700; letter-spacing:1.6px;
+    text-transform:uppercase; margin:0 0 6px 0; padding-bottom:3px;
+    border-bottom:1px solid var(--line);
+    display:flex; align-items:center; gap:6px;
+  }
+  .section-label .sl-icon { font-size:11pt; line-height:1; }
+  .section-label .sl-rule { flex:1; height:1px; background:linear-gradient(90deg, var(--purple-light) 0%, transparent 100%); margin-left:6px; }
+  .modules { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin-bottom:8px; }
+  .mod {
+    background:linear-gradient(180deg, #ffffff 0%, #fafbfd 100%);
+    border:1px solid var(--line); border-top:3px solid var(--purple-light);
+    border-radius:6px; padding:8px 12px 9px; position:relative;
+    box-shadow:0 1px 2px rgba(58,32,112,0.04);
+  }
+  .mod .mhead { display:flex; align-items:center; gap:6px; margin-bottom:3px; }
+  .mod .mnum {
+    display:inline-block; background:linear-gradient(135deg, var(--purple) 0%, #5040a0 100%);
+    color:#fff; padding:1px 7px; border-radius:9px;
+    font-size:7pt; font-weight:700; letter-spacing:1px;
+    box-shadow:0 1px 2px rgba(58,32,112,0.25);
+  }
+  .mod .mico { font-size:11pt; line-height:1; margin-left:auto; opacity:0.85; }
+  .mod h4 { color:var(--navy); font-size:9pt; margin:0 0 2px 0; line-height:1.2; }
+  .mod p { margin:0; font-size:8pt; line-height:1.3; color:var(--ink); }
+  .mod .tech { margin-top:4px; color:var(--muted); font-size:7.2pt; letter-spacing:0.3px; font-style:italic; }
+  /* Category color accents */
+  .mod.cat-foundation { border-top-color:#5b8def; }
+  .mod.cat-foundation .mnum { background:linear-gradient(135deg, #3a6dd8 0%, #5b8def 100%); }
+  .mod.cat-governance { border-top-color:var(--purple); }
+  .mod.cat-trace { border-top-color:#2a8c7a; }
+  .mod.cat-trace .mnum { background:linear-gradient(135deg, #1f7060 0%, #2a8c7a 100%); }
+  .mod.cat-ledger { border-top-color:#a060c0; }
+  .mod.cat-ledger .mnum { background:linear-gradient(135deg, #7040a0 0%, #a060c0 100%); }
+  .mod.cat-dq { border-top-color:#d8a020; }
+  .mod.cat-dq .mnum { background:linear-gradient(135deg, #b88010 0%, #d8a020 100%); }
+  .mod.cat-runtime { border-top-color:var(--orange); }
+  .mod.cat-runtime .mnum { background:linear-gradient(135deg, #c85a10 0%, var(--orange) 100%); }
+  .mod.cat-security { border-top-color:#c0344a; }
+  .mod.cat-security .mnum { background:linear-gradient(135deg, #a02038 0%, #c0344a 100%); }
+
+  .mod.span2 { grid-column:span 2; border-top-color:var(--orange); }
+  .mod.optional {
+    grid-column:span 4; background:linear-gradient(90deg, var(--cream) 0%, #fff5e0 100%);
+    border-top-color:var(--orange);
+    display:flex; align-items:center; gap:10px; padding:7px 14px;
+    box-shadow:0 1px 2px rgba(232,116,42,0.08);
+  }
+  .mod.optional .mnum { background:linear-gradient(135deg, #c85a10 0%, var(--orange) 100%); }
+  .mod.optional .o-ico { font-size:14pt; line-height:1; }
+  .mod.optional h4 { margin:0; flex-shrink:0; color:var(--orange); }
+  .mod.optional p { flex:1; color:var(--amber-text); }
+
+  /* Next-steps pipeline */
+  .pipeline {
+    display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-bottom:5px;
+    align-items:stretch;
+  }
+  .pstep {
+    border:1px solid var(--line); border-radius:4px;
+    padding:5px 14px 5px 26px; position:relative; margin-right:-10px;
+    clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%, 10px 50%);
+    color:var(--ink);
+  }
+  .pstep:nth-child(1) { background:linear-gradient(90deg, #eef2ff 0%, #f8f9ff 100%); border-color:#c8d4f0; }
+  .pstep:nth-child(2) { background:linear-gradient(90deg, #f0e8ff 0%, #faf6ff 100%); border-color:#d8c8f0; }
+  .pstep:nth-child(3) { background:linear-gradient(90deg, #e6f5ef 0%, #f6fcf9 100%); border-color:#bfe0d2; }
+  .pstep:nth-child(4) { background:linear-gradient(90deg, #fff0d8 0%, #fff8eb 100%); border-color:#f0d0a0; }
+  .pstep:first-child { clip-path:polygon(0 0, calc(100% - 10px) 0, 100% 50%, calc(100% - 10px) 100%, 0 100%); padding-left:16px; }
+  .pstep:last-child { clip-path:polygon(0 0, 100% 0, 100% 100%, 0 100%, 10px 50%); margin-right:0; }
+  .pstep .pn { color:var(--purple); font-size:7pt; font-weight:700; letter-spacing:1.4px; text-transform:uppercase; margin-bottom:2px; }
+  .pstep h4 { color:var(--navy); font-size:9.5pt; margin:0 0 3px 0; display:flex; align-items:center; gap:6px; }
+  .pstep h4 .picon { font-size:12pt; line-height:1; }
+  .pstep p { margin:0; font-size:7.8pt; line-height:1.3; color:var(--ink); }
+
+  .leadership-ask {
+    background:linear-gradient(135deg, #fff5e0 0%, #ffe8c8 100%);
+    border:2px solid var(--orange); border-radius:6px;
+    padding:5px 12px; display:flex; gap:10px; align-items:flex-start;
+    margin-top:16px;
+  }
+  .leadership-ask .la-icon {
+    font-size:13pt; line-height:1; flex-shrink:0;
+  }
+  .leadership-ask .la-body { flex:1; }
+  .leadership-ask h4 {
+    color:var(--orange); margin:0 0 2px 0; font-size:8pt; letter-spacing:1.2px; text-transform:uppercase;
+  }
+  .leadership-ask p { margin:0 0 2px 0; font-size:7.6pt; line-height:1.25; color:var(--amber-text); }
+  .leadership-ask p strong { color:var(--purple); }
+  .leadership-ask ul { margin:1px 0 0 0; padding-left:15px; }
+  .leadership-ask li { font-size:7.4pt; line-height:1.25; color:var(--amber-text); margin-bottom:0; }
+  .leadership-ask li strong { color:var(--navy); }
+
+  /* Print: one slide per page, landscape */
+  @page { size:13.33in 7.5in; margin:0; }
+  @media print {
+    html, body { background:#ffffff; }
+    .slide { margin:0; box-shadow:none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ SLIDE 1 — WELCOME / TITLE ============ -->
+<section class="slide" id="slide-welcome">
+  <style>
+    #slide-welcome {
+      padding:0;
+      background:
+        radial-gradient(circle at 18% 22%, rgba(232,116,42,0.18), transparent 42%),
+        radial-gradient(circle at 82% 78%, rgba(58,32,112,0.32), transparent 48%),
+        linear-gradient(135deg, #1a3a5c 0%, #3a2070 60%, #2a1858 100%);
+      color:#fff;
+      overflow:hidden;
+    }
+    #slide-welcome::before {
+      content:""; position:absolute; inset:0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size:48px 48px;
+      mask-image:radial-gradient(ellipse at center, black 35%, transparent 75%);
+      -webkit-mask-image:radial-gradient(ellipse at center, black 35%, transparent 75%);
+      pointer-events:none;
+    }
+    #slide-welcome .wel-wrap {
+      position:relative; z-index:2;
+      flex:1; display:flex; flex-direction:column;
+      padding:0.85in 1in 0.7in 1in;
+    }
+    #slide-welcome .wel-eyebrow {
+      display:inline-flex; align-items:center; gap:10px;
+      background:rgba(255,255,255,0.08);
+      border:1px solid rgba(255,255,255,0.18);
+      backdrop-filter:blur(6px);
+      padding:6px 16px; border-radius:30px;
+      font-size:9pt; letter-spacing:3px; text-transform:uppercase;
+      color:#ffd9b8; font-weight:700;
+      align-self:flex-start;
+      animation: wel-fade 0.8s ease-out 0.1s both;
+    }
+    #slide-welcome .wel-eyebrow .dot {
+      width:8px; height:8px; border-radius:50%;
+      background:var(--orange);
+      box-shadow:0 0 0 0 rgba(232,116,42,0.6);
+      animation: wel-pulse 1.8s ease-in-out infinite;
+    }
+    #slide-welcome h1 {
+      font-size:56pt; line-height:1.02; font-weight:800; letter-spacing:-1.2px;
+      margin:28px 0 18px 0; color:#fff;
+      animation: wel-rise 0.9s cubic-bezier(0.2,0.8,0.2,1) 0.25s both;
+    }
+    #slide-welcome h1 .accent {
+      background:linear-gradient(120deg, #ff9a55 0%, #ffcc88 60%, #ff9a55 100%);
+      -webkit-background-clip:text; background-clip:text;
+      -webkit-text-fill-color:transparent;
+      background-size:200% 100%;
+      animation: wel-shimmer 4s ease-in-out infinite;
+    }
+    #slide-welcome .wel-sub {
+      font-size:18pt; line-height:1.45; color:#dbe4f0; max-width:10.5in;
+      font-weight:400; margin:0 0 36px 0;
+      animation: wel-rise 0.9s cubic-bezier(0.2,0.8,0.2,1) 0.45s both;
+    }
+    #slide-welcome .wel-sub strong { color:#ffd9b8; font-weight:700; }
+    #slide-welcome .wel-pillars {
+      display:flex; gap:14px; margin-top:auto;
+      animation: wel-rise 0.9s cubic-bezier(0.2,0.8,0.2,1) 0.65s both;
+    }
+    #slide-welcome .wel-pill {
+      flex:1;
+      background:rgba(255,255,255,0.07);
+      border:1px solid rgba(255,255,255,0.14);
+      border-left:3px solid var(--orange);
+      border-radius:8px;
+      padding:14px 18px;
+      backdrop-filter:blur(8px);
+    }
+    #slide-welcome .wel-pill .pill-num {
+      font-size:9pt; letter-spacing:2px; text-transform:uppercase;
+      color:#ffb380; font-weight:700; margin-bottom:4px;
+    }
+    #slide-welcome .wel-pill .pill-text {
+      font-size:11.5pt; line-height:1.4; color:#fff; font-weight:500;
+    }
+    #slide-welcome .wel-presenter {
+      position:absolute; right:1in; top:0.85in; z-index:3;
+      text-align:right;
+      animation: wel-fade 0.8s ease-out 0.4s both;
+    }
+    #slide-welcome .wel-presenter .pl-label {
+      font-size:8.5pt; letter-spacing:2.5px; text-transform:uppercase;
+      color:#ffb380; font-weight:700; margin-bottom:4px;
+    }
+    #slide-welcome .wel-presenter .pl-name {
+      font-size:11pt; color:#fff; font-weight:600;
+    }
+    #slide-welcome .wel-footer {
+      position:absolute; left:1in; right:1in; bottom:0.42in; z-index:3;
+      display:flex; justify-content:space-between; align-items:center;
+      color:rgba(255,255,255,0.55);
+      font-size:8.5pt; letter-spacing:1.6px; text-transform:uppercase;
+      border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;
+    }
+
+    @keyframes wel-fade { from { opacity:0; } to { opacity:1; } }
+    @keyframes wel-rise {
+      from { opacity:0; transform:translateY(22px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes wel-pulse {
+      0%,100% { box-shadow:0 0 0 0 rgba(232,116,42,0.55); }
+      50%     { box-shadow:0 0 0 10px rgba(232,116,42,0); }
+    }
+    @keyframes wel-shimmer {
+      0%,100% { background-position:0% 50%; }
+      50%     { background-position:100% 50%; }
+    }
+  </style>
+
+  <div class="wel-wrap">
+    <div class="wel-eyebrow"><span class="dot"></span>CSU Pace Setters</div>
+    <h1>AnswerTrust for Agents<br><span class="accent">The Trust Layer for Agentic AI</span></h1>
+    <div class="wel-sub">
+      Governed AI demands unified observability.
+    </div>
+
+    <div class="wel-pillars">
+      <div class="wel-pill">
+        <div class="pill-num">01 · The Gap</div>
+        <div class="pill-text">Why agentic AI stalls without connective tissue</div>
+      </div>
+      <div class="wel-pill">
+        <div class="pill-num">02 · The Stack</div>
+        <div class="pill-text">Five pillars on one governed substrate</div>
+      </div>
+      <div class="wel-pill">
+        <div class="pill-num">03 · The Value</div>
+        <div class="pill-text">CTO · Platform · CISO &mdash; one artifact, three answers</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wel-footer">
+    <div>AnswerTrust for Agents</div>
+    <div>Welcome &middot; Executive Deck</div>
+  </div>
+</section>
+
+<!-- ============ SLIDE 1B — OPTION A · CONFIDENCE GAP (compare candidate) ============ -->
+<section class="slide" id="slide-1b-anim" data-step="1" onclick="(function(s){var n=parseInt(s.dataset.step||1,10);s.dataset.step=String(Math.min(n+1,3));})(this)" style="cursor:pointer;">
+  <style>
+    /* Option 2 — Speech bubble from Risk & Audit */
+    #slide-1b-anim .gap-banner {
+      position:relative;
+      background:#fff;
+      border:2.5px solid #1a2330; border-radius:18px;
+      padding:10px 22px 10px 130px; margin:4px auto 12px auto;
+      max-width:11in;
+      box-shadow:5px 5px 0 #1a2330, 0 4px 12px rgba(0,0,0,0.08);
+      min-height:74px; display:flex; flex-direction:column; justify-content:center;
+    }
+    /* Speech-bubble tail pointing bottom-left toward the speakers */
+    #slide-1b-anim .gap-banner::before {
+      content:""; position:absolute;
+      left:-2px; bottom:-22px;
+      width:0; height:0;
+      border-style:solid;
+      border-width:0 28px 24px 0;
+      border-color:transparent #1a2330 transparent transparent;
+      transform:rotate(0deg);
+    }
+    #slide-1b-anim .gap-banner::after {
+      content:""; position:absolute;
+      left:2px; bottom:-15px;
+      width:0; height:0;
+      border-style:solid;
+      border-width:0 22px 18px 0;
+      border-color:transparent #fff transparent transparent;
+    }
+    /* Avatar stack — Risk & Audit speaking */
+    #slide-1b-anim .speakers {
+      position:absolute; left:-16px; top:50%; transform:translateY(-50%);
+      width:128px; display:flex; flex-direction:column; gap:6px; align-items:flex-start;
+    }
+    #slide-1b-anim .speaker {
+      display:flex; align-items:center; gap:8px;
+      background:#1a2330; color:#fff;
+      padding:5px 11px 5px 5px; border-radius:30px;
+      box-shadow:3px 3px 0 #d6202c;
+      font-size:8.5pt; font-weight:800; letter-spacing:0.6px;
+      text-transform:uppercase;
+    }
+    #slide-1b-anim .speaker .av {
+      width:26px; height:26px; border-radius:50%;
+      background:#fff; color:#1a2330;
+      display:flex; align-items:center; justify-content:center;
+      font-size:13pt; line-height:1;
+    }
+    #slide-1b-anim .speaker.audit { box-shadow:3px 3px 0 #e8742a; }
+    #slide-1b-anim .gap-banner .label {
+      color:#d6202c; font-size:8.5pt; letter-spacing:2.5px; text-transform:uppercase;
+      font-weight:800; display:block; margin-bottom:4px;
+    }
+    #slide-1b-anim .gap-banner .gap-text {
+      font-size:11.5pt; line-height:1.4; color:#1a2330; font-weight:600; margin:0;
+    }
+    #slide-1b-anim .gap-banner .gap-text em {
+      font-style:italic; color:#d6202c; background:#fff5e0;
+      padding:1px 7px; border-radius:4px; border:1px dashed rgba(214,32,44,0.4);
+    }
+    #slide-1b-anim .body { padding-bottom:0.2in; padding-top:0.7in; gap:200px; max-width:13.2in; margin-left:auto; margin-right:auto; align-items:stretch; }
+    #slide-1b-anim .body .col:first-child { flex:0 0 36%; }
+    #slide-1b-anim .body .col:last-child { flex:1; display:flex; flex-direction:column; }
+    #slide-1b-anim .body .col:first-child .qbox {
+      padding:7px 12px; font-size:10.5pt; margin-bottom:6px;
+    }
+    #slide-1b-anim .body .col:first-child .qbox .qnum {
+      width:22px; height:22px; line-height:22px; font-size:9.5pt;
+    }
+    #slide-1b-anim .body .col:first-child .qbox .qico {
+      width:26px; height:26px; font-size:12pt;
+    }
+    #slide-1b-anim .prim { padding:7px 12px; margin-bottom:6px; font-size:9.5pt; }
+    #slide-1b-anim .prim .pico { width:26px; height:26px; font-size:12pt; }
+    #slide-1b-anim .col h3 { font-size:12pt; margin-bottom:8px; padding-bottom:5px; }
+    #slide-1b-anim .lead { padding:10px 18px 10px 56px; font-size:11pt; margin-bottom:10px; }
+    #slide-1b-anim .lead::before { width:28px; height:28px; font-size:16pt; left:16px; }
+
+    /* === Right-column illustration: 4 primitives → AnswerTrust === */
+    #slide-1b-anim .tissue {
+      position:relative; flex:1;
+      display:flex; flex-direction:column; align-items:center; justify-content:center;
+      padding:0;
+    }
+    #slide-1b-anim .tissue-svg { width:100%; max-width:5.8in; height:auto; display:block; }
+    #slide-1b-anim .tissue-svg .pillar { opacity:0; transform:translateY(-6px); transform-origin:center; transition:opacity 0.5s ease, transform 0.5s ease; }
+    #slide-1b-anim .tissue-svg.revealed .pillar { opacity:1; transform:translateY(0); }
+    #slide-1b-anim .tissue-svg .pillar:nth-of-type(1) { transition-delay:0.05s; }
+    #slide-1b-anim .tissue-svg .pillar:nth-of-type(2) { transition-delay:0.20s; }
+    #slide-1b-anim .tissue-svg .pillar:nth-of-type(3) { transition-delay:0.35s; }
+    #slide-1b-anim .tissue-svg .pillar:nth-of-type(4) { transition-delay:0.50s; }
+    #slide-1b-anim .tissue-svg .hub-hit { cursor:pointer; }
+    #slide-1b-anim .tissue-svg .hub-hit > circle:first-child { transition:filter 0.2s ease; }
+    #slide-1b-anim .tissue-svg .hub-hit:hover > circle:first-child { filter:drop-shadow(0 0 14px rgba(232,116,42,0.7)); }
+    #slide-1b-anim .tissue-hint { font-size:9.5pt; color:#7a8896; margin-top:6px; font-style:italic; text-align:center; }
+    #slide-1b-anim .tissue-svg.revealed ~ .tissue-hint { opacity:0; }
+    #slide-1b-anim .tissue-caption {
+      margin-top:8px; text-align:center; font-size:10pt; color:#1a3a5c;
+      max-width:5in; line-height:1.4;
+    }
+    #slide-1b-anim .tissue-caption strong { color:#e8742a; }
+
+    /* Flow strip: Pilot impresses → Production stalls → Risk asks */
+    #slide-1b-anim .flow-strip {
+      display:flex; align-items:stretch; gap:0;
+      margin:2px auto 8px auto; max-width:11in;
+      font-family:'Segoe UI', sans-serif;
+    }
+    #slide-1b-anim .flow-strip .step {
+      flex:1; display:flex; flex-direction:column; justify-content:center;
+      padding:8px 14px; background:#fff;
+      border:2px solid #1a2330; border-radius:12px;
+      box-shadow:3px 3px 0 #1a2330;
+      position:relative;
+    }
+    #slide-1b-anim .flow-strip .step .step-icon {
+      font-size:16pt; line-height:1; margin-bottom:2px;
+    }
+    #slide-1b-anim .flow-strip .step .step-label {
+      font-size:7.5pt; letter-spacing:2px; text-transform:uppercase;
+      font-weight:700; color:#7a8290; margin-bottom:2px;
+    }
+    #slide-1b-anim .flow-strip .step .step-text {
+      font-size:10.5pt; font-weight:700; color:#1a2330; line-height:1.2;
+    }
+    #slide-1b-anim .flow-strip .step.s2 { border-color:#e8742a; box-shadow:3px 3px 0 #e8742a; }
+    #slide-1b-anim .flow-strip .step.s2 .step-text { color:#c85a18; }
+    #slide-1b-anim .flow-strip .step.s3 { border-color:#d6202c; box-shadow:3px 3px 0 #d6202c; }
+    #slide-1b-anim .flow-strip .step.s3 .step-text { color:#d6202c; }
+    #slide-1b-anim .flow-strip .arrow {
+      align-self:center; padding:0 8px;
+      font-size:18pt; font-weight:900; color:#1a2330; line-height:1;
+    }
+
+    /* === Click-to-reveal staging === */
+    #slide-1b-anim .body .col:first-child,
+    #slide-1b-anim .body .col:last-child { transition: opacity 0.5s ease, transform 0.5s ease; }
+    #slide-1b-anim[data-step="1"] .body .col:first-child,
+    #slide-1b-anim[data-step="1"] .body .col:last-child,
+    #slide-1b-anim[data-step="2"] .body .col:last-child {
+      opacity:0; transform:translateY(14px); pointer-events:none;
+    }
+    #slide-1b-anim[data-step="1"] .body, #slide-1b-anim[data-step="2"] .body { min-height:3.2in; }
+    #slide-1b-anim .reveal-hint {
+      position:absolute; bottom:0.45in; right:0.55in;
+      background:#1a2330; color:#fff; padding:6px 14px; border-radius:30px;
+      font-size:9.5pt; font-weight:700; letter-spacing:0.5px;
+      box-shadow:3px 3px 0 #e8742a;
+      animation: rh-pulse 1.6s ease-in-out infinite;
+      pointer-events:none; z-index:10;
+    }
+    #slide-1b-anim[data-step="3"] .reveal-hint { display:none; }
+    @keyframes rh-pulse {
+      0%,100% { transform:translateY(0); opacity:0.95; }
+      50% { transform:translateY(-3px); opacity:1; }
+    }
+  </style>
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 2 of 7</div>
+      <h1 class="slide-title">🧬 Agentic AI’s Missing Connective Tissue</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge">THE GAP</span>
+    </div>
+  </div>
+
+  <div class="flow-strip">
+    <div class="step s1">
+      <div class="step-icon">🚀</div>
+      <div class="step-label">Pilot</div>
+      <div class="step-text">Agentic AI development</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step s2">
+      <div class="step-icon">🛑</div>
+      <div class="step-label">Production</div>
+      <div class="step-text">Rollouts pause, net-new agents freeze</div>
+    </div>
+    <div class="arrow">→</div>
+    <div class="step s3">
+      <div class="step-icon">❓</div>
+      <div class="step-label">Risk &amp; Audit</div>
+      <div class="step-text">"Prove this answer"</div>
+    </div>
+  </div>
+
+  <div class="body" style="padding-bottom:0.3in;">
+    <div class="col">
+      <style>
+        /* === Left lane card (matches Slide 2 lane visual) === */
+        #slide-1b-anim .qlane {
+          display:flex; flex-direction:column;
+          border-radius:9px; overflow:hidden;
+          border:1px solid var(--line);
+          background:#fff;
+          box-shadow:0 2px 6px rgba(40,40,80,0.06);
+          transition:transform 0.2s, box-shadow 0.2s;
+        }
+        #slide-1b-anim .qlane:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(40,40,80,0.14); }
+        #slide-1b-anim .qlane-head {
+          padding:9px 14px; color:#fff;
+          display:flex; align-items:center; gap:10px;
+          background:linear-gradient(135deg, #3a9ad4 0%, #1a5e8c 100%);
+        }
+        #slide-1b-anim .qlane-head .ico {
+          width:28px; height:28px; border-radius:6px; flex-shrink:0;
+          background:rgba(255,255,255,0.22);
+          display:flex; align-items:center; justify-content:center;
+          font-size:14pt;
+        }
+        #slide-1b-anim .qlane-head .nm { font-size:12pt; font-weight:800; letter-spacing:-0.2px; line-height:1.1; }
+        #slide-1b-anim .qlane-head .sub { font-size:8pt; opacity:0.9; letter-spacing:0.4px; margin-top:2px; }
+        #slide-1b-anim .qlane-body { padding:8px 11px; display:flex; flex-direction:column; gap:5px; }
+        #slide-1b-anim .qrow {
+          display:flex; align-items:center; gap:10px;
+          padding:6px 10px; border-radius:6px;
+          background:#fafbfd; border:1px solid var(--line);
+          transition:all 0.15s;
+          position:relative;
+        }
+        #slide-1b-anim .qrow:hover { background:#fff; border-color:#a8d4ee; box-shadow:0 2px 6px rgba(58,154,212,0.18); }
+        #slide-1b-anim .qrow .qn {
+          width:22px; height:22px; line-height:22px; flex-shrink:0;
+          font-size:9.5pt; font-weight:800; color:#fff; text-align:center;
+          border-radius:50%;
+          background:linear-gradient(135deg, var(--purple) 0%, #5040a0 100%);
+          box-shadow:0 2px 4px rgba(58,32,112,0.28), inset 0 1px 0 rgba(255,255,255,0.15);
+          border:1.5px solid rgba(255,255,255,0.9);
+        }
+        #slide-1b-anim .qrow .qb {
+          width:26px; height:26px; border-radius:5px; flex-shrink:0;
+          display:flex; align-items:center; justify-content:center;
+          font-size:12pt; line-height:1;
+          background:linear-gradient(135deg, #fff 0%, #f0f3f8 100%);
+          border:1px solid var(--line);
+        }
+        #slide-1b-anim .qrow .qt { flex:1; font-size:10pt; font-weight:700; color:var(--ink); line-height:1.25; }
+
+        /* === Reveal/stagger animations === */
+        @keyframes ql-slide-in {
+          0% { opacity:0; transform:translateX(-22px); }
+          100% { opacity:1; transform:translateX(0); }
+        }
+        @keyframes ql-num-pop {
+          0% { transform:scale(0.4) rotate(-90deg); opacity:0; }
+          70% { transform:scale(1.15) rotate(8deg); opacity:1; }
+          100% { transform:scale(1) rotate(0deg); opacity:1; }
+        }
+        @keyframes ql-ico-bounce {
+          0%, 100% { transform:translateY(0) rotate(0); }
+          40% { transform:translateY(-3px) rotate(-8deg); }
+          70% { transform:translateY(0) rotate(4deg); }
+        }
+        #slide-1b-anim .qrow {
+          opacity:0;
+          animation: ql-slide-in 0.55s cubic-bezier(0.2,0.8,0.2,1) forwards;
+        }
+        #slide-1b-anim .qrow:nth-child(1) { animation-delay:0.20s; }
+        #slide-1b-anim .qrow:nth-child(2) { animation-delay:0.40s; }
+        #slide-1b-anim .qrow:nth-child(3) { animation-delay:0.60s; }
+        #slide-1b-anim .qrow:nth-child(4) { animation-delay:0.80s; }
+        #slide-1b-anim .qrow:nth-child(5) { animation-delay:1.00s; }
+        #slide-1b-anim .qrow .qn { animation: ql-num-pop 0.5s cubic-bezier(0.2,1.5,0.4,1) both; }
+        #slide-1b-anim .qrow:nth-child(1) .qn { animation-delay:0.35s; }
+        #slide-1b-anim .qrow:nth-child(2) .qn { animation-delay:0.55s; }
+        #slide-1b-anim .qrow:nth-child(3) .qn { animation-delay:0.75s; }
+        #slide-1b-anim .qrow:nth-child(4) .qn { animation-delay:0.95s; }
+        #slide-1b-anim .qrow:nth-child(5) .qn { animation-delay:1.15s; }
+        #slide-1b-anim .qrow .qb { animation: ql-ico-bounce 0.7s ease-out both; }
+        #slide-1b-anim .qrow:nth-child(1) .qb { animation-delay:0.50s; }
+        #slide-1b-anim .qrow:nth-child(2) .qb { animation-delay:0.70s; }
+        #slide-1b-anim .qrow:nth-child(3) .qb { animation-delay:0.90s; }
+        #slide-1b-anim .qrow:nth-child(4) .qb { animation-delay:1.10s; }
+        #slide-1b-anim .qrow:nth-child(5) .qb { animation-delay:1.30s; }
+      </style>
+      <div class="qlane">
+        <div class="qlane-head">
+          <div class="ico">❓</div>
+          <div><div class="nm">The five questions</div><div class="sub">Risk &amp; Audit always ask</div></div>
+        </div>
+        <div class="qlane-body">
+          <div class="qrow"><div class="qn">1</div><div class="qb">✅</div><div class="qt">Is the answer correct?</div></div>
+          <div class="qrow"><div class="qn">2</div><div class="qb">📊</div><div class="qt">Was the data fit for use?</div></div>
+          <div class="qrow"><div class="qn">3</div><div class="qb">🔐</div><div class="qt">Was the user allowed to see those rows?</div></div>
+          <div class="qrow"><div class="qn">4</div><div class="qb">🔍</div><div class="qt">What exactly happened?</div></div>
+          <div class="qrow"><div class="qn">5</div><div class="qb">📈</div><div class="qt">When do we intervene?</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col">
+      <h3><span class="h3-icon">🧩</span>Our proposal — build the connective tissue</h3>
+      <div class="tissue">
+        <svg class="tissue-svg" viewBox="0 0 560 360" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="flowP" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3a2070" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#e8742a" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="flowF" x1="0" y1="0" x2="0.4" y2="1">
+              <stop offset="0" stop-color="#3a2070" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#e8742a" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="flowFb" x1="0.6" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#3a2070" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#e8742a" stop-opacity="0.9"/>
+            </linearGradient>
+            <linearGradient id="flowS" x1="1" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#3a2070" stop-opacity="0.9"/>
+              <stop offset="1" stop-color="#e8742a" stop-opacity="0.9"/>
+            </linearGradient>
+            <radialGradient id="hubGlow" cx="0.5" cy="0.5" r="0.5">
+              <stop offset="0" stop-color="#fff5e0"/>
+              <stop offset="1" stop-color="#e8742a"/>
+            </radialGradient>
+          </defs>
+
+          <!-- Flow lines (drawn first, behind nodes) -->
+          <path class="pillar" d="M 70 95 Q 180 220 280 235" stroke="url(#flowP)" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <path class="pillar" d="M 215 75 Q 240 170 280 220" stroke="url(#flowF)" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <path class="pillar" d="M 345 75 Q 320 170 280 220" stroke="url(#flowFb)" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.85"/>
+          <path class="pillar" d="M 490 95 Q 380 220 280 235" stroke="url(#flowS)" stroke-width="6" fill="none" stroke-linecap="round" opacity="0.85"/>
+
+          <!-- Primitive nodes — 4 across the top -->
+          <g class="pillar">
+            <circle cx="60" cy="80" r="42" fill="#fff" stroke="#3a2070" stroke-width="3"/>
+            <text x="60" y="92" text-anchor="middle" font-size="34">🛡️</text>
+            <text x="60" y="142" text-anchor="middle" font-size="12" font-weight="800" fill="#3a2070">Purview</text>
+          </g>
+          <g class="pillar">
+            <circle cx="205" cy="60" r="42" fill="#fff" stroke="#3a2070" stroke-width="3"/>
+            <text x="205" y="72" text-anchor="middle" font-size="34">🧠</text>
+            <text x="205" y="122" text-anchor="middle" font-size="12" font-weight="800" fill="#3a2070">Foundry</text>
+          </g>
+          <g class="pillar">
+            <circle cx="355" cy="60" r="42" fill="#fff" stroke="#3a2070" stroke-width="3"/>
+            <image href="images/fabric-logo.svg" x="335" y="40" width="40" height="40"/>
+            <text x="355" y="122" text-anchor="middle" font-size="12" font-weight="800" fill="#3a2070">Fabric</text>
+          </g>
+          <g class="pillar">
+            <circle cx="500" cy="80" r="42" fill="#fff" stroke="#3a2070" stroke-width="3"/>
+            <text x="500" y="92" text-anchor="middle" font-size="34">🚨</text>
+            <text x="500" y="142" text-anchor="middle" font-size="12" font-weight="800" fill="#3a2070">Security</text>
+          </g>
+
+          <!-- Central AnswerTrust hub (click to reveal pillars) -->
+          <g class="hub-hit" onclick="this.closest('svg').classList.toggle('revealed')">
+            <circle cx="280" cy="265" r="78" fill="url(#hubGlow)" stroke="#e8742a" stroke-width="4"/>
+            <circle cx="280" cy="265" r="84" fill="none" stroke="#e8742a" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.5"/>
+            <text x="280" y="258" text-anchor="middle" font-size="32">✓</text>
+            <text x="280" y="288" text-anchor="middle" font-size="15" font-weight="900" fill="#1a3a5c" letter-spacing="1">ANSWER<tspan x="280" dy="16">TRUST</tspan></text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="slide-footer">
+    <div>Problem Statement</div>
+    <div></div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 2 — TRUST STACK · SERVICE MAPPING ============ -->
+<section class="slide" id="slide-stack" data-step="1" onclick="(function(s){var n=parseInt(s.dataset.step||1,10);s.dataset.step=String(Math.min(n+1,2));})(this)" style="cursor:pointer;">
+  <style>
+    /* === Click-to-reveal staging (top first → bottom on click) === */
+    #slide-stack .trust-formula { transition: opacity 0.55s ease, transform 0.55s ease; }
+    #slide-stack[data-step="1"] .trust-formula {
+      opacity:0; transform:translateY(18px); pointer-events:none;
+    }
+    #slide-stack .reveal-hint {
+      position:absolute; bottom:0.45in; right:0.55in;
+      background:#1a2330; color:#fff; padding:6px 14px; border-radius:30px;
+      font-size:9.5pt; font-weight:700; letter-spacing:0.5px;
+      box-shadow:3px 3px 0 #e8742a;
+      animation: ss-rh-pulse 1.6s ease-in-out infinite;
+      pointer-events:none; z-index:10;
+    }
+    #slide-stack[data-step="2"] .reveal-hint { display:none; }
+    @keyframes ss-rh-pulse {
+      0%,100% { transform:translateY(0); opacity:0.95; }
+      50% { transform:translateY(-3px); opacity:1; }
+    }
+
+    #slide-stack .stack-body { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; flex:1; min-height:0; padding-bottom:6px; }
+    #slide-stack .lane {
+      display:flex; flex-direction:column;
+      border-radius:9px; overflow:hidden;
+      border:1px solid var(--line);
+      background:#fff;
+      box-shadow:0 2px 6px rgba(40,40,80,0.06);
+      transition:transform 0.2s, box-shadow 0.2s;
+    }
+    #slide-stack .lane:hover { transform:translateY(-3px); box-shadow:0 8px 22px rgba(40,40,80,0.14); }
+    #slide-stack .lane-head {
+      padding:11px 14px; color:#fff;
+      display:flex; align-items:center; gap:10px;
+    }
+    #slide-stack .lane-head .ico {
+      width:30px; height:30px; border-radius:6px; flex-shrink:0;
+      background:rgba(255,255,255,0.22);
+      display:flex; align-items:center; justify-content:center;
+      font-size:16pt;
+    }
+    #slide-stack .lane-head .nm { font-size:13pt; font-weight:800; letter-spacing:-0.2px; line-height:1; }
+    #slide-stack .lane-head .sub { font-size:8.5pt; opacity:0.85; letter-spacing:0.4px; margin-top:3px; }
+    #slide-stack .lane.obs   .lane-head { background:linear-gradient(135deg, #3a9ad4 0%, #1a5e8c 100%); }
+    #slide-stack .lane.gov   .lane-head { background:linear-gradient(135deg, #8060c0 0%, #3a2070 100%); }
+    #slide-stack .lane.sec   .lane-head { background:linear-gradient(135deg, #d4407a 0%, #8a1e4e 100%); }
+    #slide-stack .lane.qual  .lane-head { background:linear-gradient(135deg, #2a8c7a 0%, #0a4060 100%); }
+
+    #slide-stack .lane-body { padding:10px 12px; display:flex; flex-direction:column; gap:7px; flex:1; }
+    #slide-stack .svc {
+      display:flex; align-items:flex-start; gap:9px;
+      padding:7px 10px; border-radius:6px;
+      background:#fafbfd; border:1px solid var(--line);
+      cursor:pointer; transition:all 0.15s;
+      position:relative;
+    }
+    #slide-stack .svc:hover { background:#fff; border-color:var(--purple-light); box-shadow:0 2px 6px rgba(58,32,112,0.10); }
+    #slide-stack .svc .badge {
+      width:26px; height:26px; border-radius:5px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center;
+      font-size:13pt; line-height:1;
+      background:linear-gradient(135deg, #fff 0%, #f0f3f8 100%);
+      border:1px solid var(--line);
+    }
+    #slide-stack .svc .text { min-width:0; flex:1; }
+    #slide-stack .svc .nm { font-size:9.5pt; font-weight:700; color:var(--ink); line-height:1.2; }
+    #slide-stack .svc .role { font-size:8.5pt; color:var(--muted); line-height:1.3; margin-top:2px; }
+    #slide-stack .svc .pmark {
+      position:absolute; top:6px; right:8px;
+      font-size:7.5pt; font-weight:700; color:var(--purple);
+      background:var(--purple-bg); padding:1px 5px; border-radius:3px; letter-spacing:0.4px;
+    }
+
+    #slide-stack .conv-strip {
+      margin-top:10px; padding:11px 16px;
+      background:linear-gradient(90deg, var(--purple-bg) 0%, #fff8e8 50%, var(--purple-bg) 100%);
+      border:1px solid #d8c8f0; border-radius:8px;
+      display:flex; align-items:center; gap:14px;
+      font-size:10pt; color:var(--ink);
+    }
+    #slide-stack .conv-strip .arrow {
+      font-size:18pt; color:var(--purple); flex-shrink:0;
+    }
+    #slide-stack .conv-strip .ledger-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      background:#3a2070; color:#fff;
+      padding:5px 12px; border-radius:14px;
+      font-weight:700; font-size:9.5pt; letter-spacing:0.4px;
+      box-shadow:0 2px 6px rgba(58,32,112,0.25);
+    }
+    #slide-stack .conv-strip .score-pill {
+      display:inline-flex; align-items:center; gap:6px;
+      background:linear-gradient(135deg, var(--orange) 0%, #c85a18 100%); color:#fff;
+      padding:5px 12px; border-radius:14px;
+      font-weight:700; font-size:9.5pt; letter-spacing:0.4px;
+      box-shadow:0 2px 6px rgba(232,116,42,0.3);
+    }
+
+    /* ========== AnswerTrust formula visual ========== */
+    #slide-stack .trust-formula {
+      margin-top:8px; padding:8px 14px;
+      background:linear-gradient(90deg, var(--purple-bg) 0%, #fff8e8 50%, var(--purple-bg) 100%);
+      border:1px solid #d8c8f0; border-radius:8px;
+      display:grid; grid-template-columns: 1.4fr auto 0.7fr; align-items:center; gap:14px;
+      position:relative; overflow:hidden;
+    }
+    #slide-stack .trust-formula::before {
+      content:""; position:absolute; top:0; left:-100%; width:100%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(232,116,42,0.08), transparent);
+      animation: tf-sweep 6s ease-in-out infinite;
+    }
+    @keyframes tf-sweep {
+      0%, 100% { left:-100%; } 50% { left:100%; }
+    }
+    #slide-stack .tf-signals {
+      display:flex; flex-direction:column; gap:3px;
+      position:relative; z-index:2;
+    }
+    #slide-stack .tf-sig {
+      display:grid; grid-template-columns: 42px 1fr auto; align-items:center; gap:10px;
+      padding:3px 8px; background:#fff;
+      border:1px solid #e6dcf2; border-left:3px solid var(--purple);
+      border-radius:4px; font-size:8.5pt;
+      box-shadow:0 1px 2px rgba(58,32,112,0.05);
+      opacity:0; transform:translateX(-12px);
+      animation: tf-in 0.6s ease-out forwards;
+    }
+    #slide-stack .tf-sig:nth-child(1) { animation-delay:0.2s; }
+    #slide-stack .tf-sig:nth-child(2) { animation-delay:0.5s; }
+    #slide-stack .tf-sig:nth-child(3) { animation-delay:0.8s; }
+    #slide-stack .tf-sig:nth-child(4) { animation-delay:1.1s; }
+    #slide-stack .tf-sig:nth-child(5) { animation-delay:1.4s; border-left-color:var(--red); }
+    @keyframes tf-in {
+      to { opacity:1; transform:translateX(0); }
+    }
+    #slide-stack .tf-sig .tf-w {
+      font-family:"SF Mono", "Fira Code", monospace; font-weight:800;
+      font-size:9pt; color:var(--purple); text-align:center;
+      background:#f4eefb; border-radius:3px; padding:2px 0;
+    }
+    #slide-stack .tf-sig.minus .tf-w { color:var(--red); background:#fdecec; }
+    #slide-stack .tf-sig .tf-nm { font-weight:700; color:var(--navy); font-size:9pt; line-height:1.1; }
+    #slide-stack .tf-sig .tf-src { color:var(--muted); font-size:7.5pt; line-height:1.2; }
+    #slide-stack .tf-sig .tf-mid { display:flex; flex-direction:column; gap:2px; min-width:0; }
+    #slide-stack .tf-sig .tf-bar {
+      height:4px; background:#eee5f5; border-radius:2px; overflow:hidden; position:relative;
+    }
+    #slide-stack .tf-sig .tf-bar::after {
+      content:""; position:absolute; top:0; left:0; height:100%;
+      background:linear-gradient(90deg, var(--purple), #6a3fb5);
+      animation: tf-fill 2s ease-out forwards; width:0;
+    }
+    #slide-stack .tf-sig:nth-child(1) .tf-bar::after { animation-delay:0.4s; --w:92%; }
+    #slide-stack .tf-sig:nth-child(2) .tf-bar::after { animation-delay:0.7s; --w:88%; }
+    #slide-stack .tf-sig:nth-child(3) .tf-bar::after { animation-delay:1.0s; --w:100%; }
+    #slide-stack .tf-sig:nth-child(4) .tf-bar::after { animation-delay:1.3s; --w:75%; }
+    #slide-stack .tf-sig:nth-child(5) .tf-bar::after { animation-delay:1.6s; --w:18%; background:linear-gradient(90deg, var(--red), #ff5c66); }
+    @keyframes tf-fill { to { width:var(--w, 80%); } }
+
+    #slide-stack .tf-arrow {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      position:relative; z-index:2;
+    }
+    #slide-stack .tf-arrow svg { width:42px; height:auto; }
+    #slide-stack .tf-arrow .tf-op {
+      font-family:"SF Mono", monospace; font-weight:800;
+      font-size:9pt; color:var(--purple); letter-spacing:1px;
+    }
+
+    #slide-stack .tf-score {
+      display:flex; flex-direction:column; align-items:center; gap:4px;
+      position:relative; z-index:2;
+    }
+    #slide-stack .tf-gauge {
+      position:relative; width:90px; height:90px;
+    }
+    #slide-stack .tf-gauge svg { width:100%; height:100%; transform:rotate(-90deg); }
+    #slide-stack .tf-gauge .tf-track { fill:none; stroke:#eee5f5; stroke-width:10; }
+    #slide-stack .tf-gauge .tf-prog {
+      fill:none; stroke:url(#tfGrad); stroke-width:10; stroke-linecap:round;
+      stroke-dasharray: 377; stroke-dashoffset: 377;
+      animation: tf-arc 2.4s ease-out 1.6s forwards;
+    }
+    @keyframes tf-arc { to { stroke-dashoffset: 64; } /* ~83% */ }
+    #slide-stack .tf-gauge .tf-num {
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+    }
+    #slide-stack .tf-gauge .tf-val {
+      font-size:20pt; font-weight:800; color:var(--purple);
+      letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums;
+      opacity:0; animation: tf-pop 0.5s ease-out 3.6s forwards;
+    }
+    #slide-stack .tf-gauge .tf-pct { display:none; }
+    #slide-stack .tf-gauge .tf-lbl {
+      font-size:6.5pt; font-weight:700; color:var(--orange);
+      text-transform:uppercase; letter-spacing:1.2px; margin-top:1px;
+      opacity:0; animation: tf-pop 0.5s ease-out 3.8s forwards;
+    }
+    @keyframes tf-pop {
+      from { opacity:0; transform:scale(0.7); }
+      to   { opacity:1; transform:scale(1); }
+    }
+    #slide-stack .tf-score .tf-tag {
+      font-size:8.5pt; color:var(--muted); letter-spacing:0.4px; text-align:center;
+    }
+    #slide-stack .tf-score .tf-tag b { color:var(--purple); }
+
+    /* tooltip */
+    #slide-stack .tip {
+      display:none;
+      position:absolute; z-index:50; left:50%; bottom:calc(100% + 8px);
+      transform:translateX(-50%);
+      width:240px; padding:9px 12px;
+      background:#1a1140; color:#fff; border-radius:6px;
+      font-size:9pt; line-height:1.4; font-weight:400;
+      box-shadow:0 8px 20px rgba(0,0,0,0.3);
+    }
+    #slide-stack .tip::after {
+      content:""; position:absolute; left:50%; top:100%;
+      transform:translateX(-50%);
+      border:6px solid transparent; border-top-color:#1a1140;
+    }
+    #slide-stack .tip b { color:#ffd9b8; }
+    #slide-stack .svc.open .tip { display:block; }
+  </style>
+
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 3 of 7</div>
+      <h1 class="slide-title">Trust Stack — Microsoft Services Powering AnswerTrust</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge" style="background:var(--teal);">WHO DOES WHAT</span>
+    </div>
+  </div>
+
+  <div class="body" style="flex-direction:column; padding-bottom:0.4in;">
+    <div style="font-size:10pt; color:var(--muted); margin-bottom:10px;">
+      Four capability lanes · every service plugs into the same <b style="color:var(--purple);">trace fabric → AnswerLedger → AnswerTrust score</b>. <i>Click any tile for what it does.</i>
+    </div>
+
+    <div class="stack-body">
+
+      <!-- OBSERVABILITY -->
+      <div class="lane obs">
+        <div class="lane-head">
+          <div class="ico">📡</div>
+          <div><div class="nm">Observability</div><div class="sub">see every hop · every answer</div></div>
+        </div>
+        <div class="lane-body">
+          <div class="svc"><div class="badge">📊</div><div class="text"><div class="nm">App Insights · OTel</div><div class="role">W3C traceparent · GenAI spans</div></div><div class="tip"><b>App Insights (OTel)</b> — captures every span: intent → retrieval → model → DLP → red-team. One trace_id stitches user, agent, and data hops.</div></div>
+          <div class="svc"><div class="badge">📒</div><div class="text"><div class="nm">Real-Time Hub · KQL</div><div class="role">AnswerLedger · sub-sec queries</div></div><div class="tip"><b>Eventhouse / KQL DB</b> — one row per answer, append-only, queryable in milliseconds. Powers the Trust Dashboard.</div></div>
+          <div class="svc"><div class="badge">🌊</div><div class="text"><div class="nm">Eventstream · RT Dashboard</div><div class="role">live ingest · drill-to-trace · alerts</div></div><div class="tip"><b>Eventstream + RT Dashboard + Azure Monitor</b> — streams OTel spans into the AnswerLedger, powers live KPI tiles, and fires alerts on AnswerTrust / DQ / latency drift.</div></div>
+        </div>
+      </div>
+
+      <!-- GOVERNANCE -->
+      <div class="lane gov">
+        <div class="lane-head">
+          <div class="ico">⚖️</div>
+          <div><div class="nm">Governance</div><div class="sub">labels · lineage · ownership</div></div>
+        </div>
+        <div class="lane-body">
+          <div class="svc"><div class="badge">🏷️</div><div class="text"><div class="nm">Microsoft Purview</div><div class="role">sensitivity · DLP · catalog · lineage</div></div><div class="tip"><b>Purview</b> — sensitivity labels propagate from source to answer; DLP for OneLake blocks egress; catalog gives every dataset an owner.</div></div>
+          <div class="svc"><div class="badge">🆔</div><div class="text"><div class="nm">Entra ID · OBO</div><div class="role">on-behalf-of identity end-to-end</div></div><div class="tip"><b>Entra ID</b> — On-Behalf-Of token flow carries the human identity through agent → retriever → data plane. RBAC enforced at source.</div></div>
+          <div class="svc"><div class="badge">🗂️</div><div class="text"><div class="nm">Fabric Workspaces · OneLake</div><div class="role">domain isolation · Azure Policy gates</div></div><div class="tip"><b>OneLake + Workspaces + Azure Policy</b> — domain-aligned isolation, shortcuts instead of copies, and Policy enforces DLP / OBO / evaluator config across every Foundry project.</div></div>
+        </div>
+      </div>
+
+      <!-- SECURITY -->
+      <div class="lane sec">
+        <div class="lane-head">
+          <div class="ico">🛡️</div>
+          <div><div class="nm">Security</div><div class="sub">block · detect · respond</div></div>
+        </div>
+        <div class="lane-body">
+          <div class="svc"><div class="badge">🚨</div><div class="text"><div class="nm">Defender for Cloud · AI</div><div class="role">runtime threat detection on agents</div></div><div class="tip"><b>Defender for Cloud (AI workloads)</b> — detects prompt-injection, data-exfil, jailbreak attempts at the model edge.</div></div>
+          <div class="svc"><div class="badge">🧠</div><div class="text"><div class="nm">Microsoft Sentinel</div><div class="role">SIEM · agent abuse correlation</div></div><div class="tip"><b>Sentinel</b> — correlates AnswerLedger events with sign-in/Purview/Defender signals for SOC investigation and SOAR playbooks.</div></div>
+          <div class="svc"><div class="badge">⚔️</div><div class="text"><div class="nm">Foundry Red-Team · IRM · Key Vault</div><div class="role">PyRIT · insider risk · secrets</div></div><div class="tip"><b>Red-Team + Purview IRM/DSPM + Key Vault</b> — adversarial suites pre-deploy and in prod, insider-risk + data-exposure signals, and centrally managed model keys / secrets with rotation.</div></div>
+        </div>
+      </div>
+
+      <!-- QUALITY & EVAL -->
+      <div class="lane qual">
+        <div class="lane-head">
+          <div class="ico">🧪</div>
+          <div><div class="nm">Quality &amp; Eval</div><div class="sub">measure · catch · improve</div></div>
+        </div>
+        <div class="lane-body">
+          <div class="svc"><div class="badge">🔍</div><div class="text"><div class="nm">Fabric DQ Notebook</div><div class="role">Validity · Completeness · Freshness</div></div><div class="tip"><b>DQ Notebook</b> — runs rules per source table, writes pass-rates to <code>dq_runs</code>, gates retrieval when below threshold.</div></div>
+          <div class="svc"><div class="badge">🎯</div><div class="text"><div class="nm">Foundry Evaluators</div><div class="role">groundedness · relevance · safety</div></div><div class="tip"><b>Foundry Evaluators</b> — built-in + custom evaluators score every answer for groundedness, relevance, harmfulness.</div></div>
+          <div class="svc"><div class="badge">📚</div><div class="text"><div class="nm">Golden-set · AnswerTrust · azd</div><div class="role">PR-gated regression · composite score · 1-cmd deploy</div></div><div class="tip"><b>Golden-set harness + AnswerTrust composite + azd/Bicep/Actions</b> — versioned evals block PRs on score drop; <code>azd up</code> bootstraps Fabric + Foundry + Purview + dashboards with CI eval gates.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="trust-formula">
+      <div class="tf-signals">
+        <div class="tf-sig"><div class="tf-w">0.30</div><div class="tf-mid"><div class="tf-nm">Eval <span class="tf-src" style="font-weight:500;">· Foundry · groundedness · retrieval</span></div><div class="tf-bar"></div></div></div>
+        <div class="tf-sig"><div class="tf-w">0.25</div><div class="tf-mid"><div class="tf-nm">DQ <span class="tf-src" style="font-weight:500;">· Fabric DQ pass-rate</span></div><div class="tf-bar"></div></div></div>
+        <div class="tf-sig"><div class="tf-w">0.20</div><div class="tf-mid"><div class="tf-nm">LabelCompliance <span class="tf-src" style="font-weight:500;">· labels ⊆ EXTRACT rights</span></div><div class="tf-bar"></div></div></div>
+        <div class="tf-sig"><div class="tf-w">0.15</div><div class="tf-mid"><div class="tf-nm">Freshness <span class="tf-src" style="font-weight:500;">· OneLake staleness vs. SLA</span></div><div class="tf-bar"></div></div></div>
+        <div class="tf-sig minus"><div class="tf-w">−0.10</div><div class="tf-mid"><div class="tf-nm">RedTeamFlags <span class="tf-src" style="font-weight:500;">· Red Team · Sentinel hits</span></div><div class="tf-bar"></div></div></div>
+      </div>
+
+      <div class="tf-arrow">
+        <span class="tf-op">Σ</span>
+        <svg viewBox="0 0 60 30" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <marker id="tfArrowHead" markerWidth="6" markerHeight="6" refX="5" refY="3" orient="auto">
+              <path d="M0,0 L6,3 L0,6 z" fill="#3a2070"/>
+            </marker>
+          </defs>
+          <line x1="2" y1="15" x2="50" y2="15" stroke="#3a2070" stroke-width="2.5" marker-end="url(#tfArrowHead)" stroke-dasharray="4 4">
+            <animate attributeName="stroke-dashoffset" from="16" to="0" dur="0.8s" repeatCount="indefinite"/>
+          </line>
+        </svg>
+        <span class="tf-op" style="font-size:7.5pt; color:var(--muted); letter-spacing:0.4px;">weighted sum</span>
+      </div>
+
+      <div class="tf-score">
+        <div class="tf-tag" style="font-size:8pt;"><b>AnswerTrust</b> · per answer</div>
+        <div class="tf-gauge">
+          <svg viewBox="0 0 140 140">
+            <defs>
+              <linearGradient id="tfGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#3a2070"/>
+                <stop offset="100%" stop-color="#e8742a"/>
+              </linearGradient>
+            </defs>
+            <circle class="tf-track" cx="70" cy="70" r="60"/>
+            <circle class="tf-prog"  cx="70" cy="70" r="60"/>
+          </svg>
+          <div class="tf-num">
+            <div class="tf-val">0.83</div>
+            <div class="tf-lbl">Score</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="slide-footer">
+    <div>Trust Stack &middot; service mapping</div>
+    <div>Observability &middot; Governance &middot; Security &middot; Quality &amp; Eval &mdash; all on the Microsoft cloud</div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 3 — BUSINESS VALUE ============ -->
+<section class="slide" id="slide-value">
+  <style>
+    /* Slide 3 scoped animations */
+    @keyframes sv-rise {
+      0% { opacity:0; transform:translateY(18px) scale(0.97); }
+      100% { opacity:1; transform:translateY(0) scale(1); }
+    }
+    @keyframes sv-pop {
+      0% { opacity:0; transform:translateY(10px) scale(0.85); }
+      60% { opacity:1; transform:translateY(-3px) scale(1.05); }
+      100% { opacity:1; transform:translateY(0) scale(1); }
+    }
+    @keyframes sv-icon-bounce {
+      0%, 100% { transform:translateY(0) rotate(0deg); }
+      40% { transform:translateY(-4px) rotate(-6deg); }
+      70% { transform:translateY(-1px) rotate(3deg); }
+    }
+    @keyframes sv-bullet-in {
+      0% { opacity:0; transform:translateX(-8px); }
+      100% { opacity:1; transform:translateX(0); }
+    }
+    @keyframes sv-sweep {
+      0%, 100% { background-position:-150% 0; }
+      50% { background-position:250% 0; }
+    }
+    @keyframes sv-shimmer {
+      0% { left:-60%; } 100% { left:160%; }
+    }
+    #slide-value .value-card {
+      opacity:0;
+      animation: sv-rise 0.7s cubic-bezier(0.2,0.8,0.2,1) forwards;
+    }
+    #slide-value .value-card.cto  { animation-delay:0.15s; }
+    #slide-value .value-card.plat { animation-delay:0.35s; }
+    #slide-value .value-card.ciso { animation-delay:0.55s; }
+    #slide-value .value-card .vc-icon {
+      display:inline-block;
+      animation: sv-icon-bounce 1.2s ease-out 1.0s 2;
+    }
+    #slide-value .value-card ul li {
+      opacity:0;
+      animation: sv-bullet-in 0.5s ease-out forwards;
+    }
+    #slide-value .value-card.cto  ul li:nth-child(1) { animation-delay:0.55s; }
+    #slide-value .value-card.cto  ul li:nth-child(2) { animation-delay:0.65s; }
+    #slide-value .value-card.cto  ul li:nth-child(3) { animation-delay:0.75s; }
+    #slide-value .value-card.cto  ul li:nth-child(4) { animation-delay:0.85s; }
+    #slide-value .value-card.plat ul li:nth-child(1) { animation-delay:0.75s; }
+    #slide-value .value-card.plat ul li:nth-child(2) { animation-delay:0.85s; }
+    #slide-value .value-card.plat ul li:nth-child(3) { animation-delay:0.95s; }
+    #slide-value .value-card.plat ul li:nth-child(4) { animation-delay:1.05s; }
+    #slide-value .value-card.ciso ul li:nth-child(1) { animation-delay:0.95s; }
+    #slide-value .value-card.ciso ul li:nth-child(2) { animation-delay:1.05s; }
+    #slide-value .value-card.ciso ul li:nth-child(3) { animation-delay:1.15s; }
+    #slide-value .value-card.ciso ul li:nth-child(4) { animation-delay:1.25s; }
+
+    #slide-value .metrics-band {
+      opacity:0;
+      animation: sv-rise 0.7s cubic-bezier(0.2,0.8,0.2,1) 1.3s forwards;
+      position:relative; overflow:hidden;
+    }
+    #slide-value .metrics-band::after {
+      content:""; position:absolute; top:0; left:-60%; width:40%; height:100%;
+      background:linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+      transform:skewX(-20deg);
+      animation: sv-shimmer 2.8s ease-in-out 2.0s 1;
+      pointer-events:none;
+    }
+    #slide-value .metric {
+      opacity:0;
+      animation: sv-pop 0.55s cubic-bezier(0.2,1.2,0.4,1) forwards;
+    }
+    #slide-value .metric:nth-child(1) { animation-delay:1.55s; }
+    #slide-value .metric:nth-child(2) { animation-delay:1.70s; }
+    #slide-value .metric:nth-child(3) { animation-delay:1.85s; }
+    #slide-value .metric:nth-child(4) { animation-delay:2.00s; }
+    #slide-value .metric:nth-child(5) { animation-delay:2.15s; }
+    #slide-value .metric:nth-child(6) { animation-delay:2.30s; }
+    #slide-value .metric .mico {
+      display:inline-block;
+      animation: sv-icon-bounce 1.0s ease-out 2.6s 1;
+    }
+
+    #slide-value .value-tagline {
+      opacity:0;
+      animation: sv-rise 0.7s cubic-bezier(0.2,0.8,0.2,1) 2.5s forwards;
+      background-size:200% 100%;
+    }
+    #slide-value .value-tagline .vt-icon {
+      display:inline-block;
+      animation: sv-icon-bounce 1.4s ease-in-out 3.0s infinite;
+    }
+
+    /* === Click-staged reveals (overrides above) ===
+       stage 0 (load)  : CTO visible
+       stage 1 (click) : + Platform
+       stage 2 (click) : + CISO, metrics band, tagline                         */
+    #slide-value .value-card.plat,
+    #slide-value .value-card.ciso,
+    #slide-value .metrics-band,
+    #slide-value .value-tagline {
+      animation:none !important;
+      opacity:0;
+      transform:translateY(18px) scale(0.97);
+      transition:opacity 0.55s cubic-bezier(0.2,0.8,0.2,1),
+                 transform 0.55s cubic-bezier(0.2,0.8,0.2,1);
+      pointer-events:none;
+    }
+    #slide-value[data-stage="1"] .value-card.plat,
+    #slide-value[data-stage="2"] .value-card.plat,
+    #slide-value[data-stage="2"] .value-card.ciso,
+    #slide-value[data-stage="2"] .metrics-band,
+    #slide-value[data-stage="2"] .value-tagline {
+      opacity:1;
+      transform:translateY(0) scale(1);
+      pointer-events:auto;
+    }
+    #slide-value .stage-hint {
+      position:absolute; right:0.55in; bottom:0.42in;
+      font-size:8.5pt; color:var(--muted); font-style:italic;
+      background:rgba(255,255,255,0.85); padding:3px 9px; border-radius:14px;
+      border:1px solid var(--line);
+      pointer-events:none; user-select:none;
+      transition:opacity 0.3s;
+    }
+    #slide-value[data-stage="2"] .stage-hint { opacity:0; }
+  </style>
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 4 of 7</div>
+      <h1 class="slide-title">Business Value — Trust &amp; Cost Become SLAs</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge">BUSINESS VALUE</span>
+    </div>
+  </div>
+
+  <div class="body" style="flex-direction:column;">
+    <div class="value-grid">
+      <div class="value-card cto">
+        <div class="vc-head">
+          <div class="vc-icon">🎯</div>
+          <h4>CTO / Data Leader</h4>
+        </div>
+        <div class="role">Pilot → production unlock</div>
+        <ul>
+          <li><strong>AnswerTrust SLA</strong> per agent, per domain</li>
+          <li><strong>$/answer</strong> as a steerable metric</li>
+          <li>Unblocks scale in regulated BUs</li>
+          <li>No new platform — composes Microsoft stack</li>
+        </ul>
+      </div>
+
+      <div class="value-card plat">
+        <div class="vc-head">
+          <div class="vc-icon">⚙️</div>
+          <h4>Data Platform Team</h4>
+        </div>
+        <div class="role">First end-to-end pattern</div>
+        <ul>
+          <li>Native obs for <strong>Fabric + multi-agent + MCP</strong></li>
+          <li>Regression on <strong>golden questions</strong></li>
+          <li><strong>DQ-linked answers</strong> via shared <code>run_id</code></li>
+          <li>Reuses KQL + Eventstream substrate</li>
+        </ul>
+      </div>
+
+      <div class="value-card ciso">
+        <div class="vc-head">
+          <div class="vc-icon">🔒</div>
+          <h4>CISO / Compliance</h4>
+        </div>
+        <div class="role">Audit-ready forensics</div>
+        <ul>
+          <li>Every answer = a <strong>forensic record</strong></li>
+          <li>DLP, DQ, red-team, IRM on one trace</li>
+          <li><strong>The artifact regulators ask for</strong></li>
+          <li>DSPM + Sentinel + IRM, one source of truth</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="metrics-band">
+      <div class="mb-title">Success metrics<span class="mb-sub">Coverage · Eval · Speed</span></div>
+      <div class="metrics">
+        <div class="metric cat-coverage"><div class="mico">🔗</div><div class="v">100%</div><div class="l">Trace coverage</div></div>
+        <div class="metric cat-coverage"><div class="mico">📜</div><div class="v">100%</div><div class="l">Provenance</div></div>
+        <div class="metric cat-coverage"><div class="mico">✅</div><div class="v">100%</div><div class="l">DQ coverage</div></div>
+        <div class="metric cat-eval"><div class="mico">🏆</div><div class="v">&ge;30</div><div class="l">Golden questions</div></div>
+        <div class="metric cat-speed"><div class="mico">⚡</div><div class="v">&lt;5<span style="font-size:10pt; font-weight:700; margin-left:2px;">min</span></div><div class="l">MTTD drift</div></div>
+        <div class="metric cat-speed"><div class="mico">🔧</div><div class="v">&lt;10<span style="font-size:10pt; font-weight:700; margin-left:2px;">min</span></div><div class="l">MTTR wrong answer</div></div>
+      </div>
+    </div>
+
+    <div class="value-tagline">
+      <span class="vt-icon">✨</span>Governance × Quality × Observability × Evaluation × Security &mdash; one ledger row, one number per answer.
+    </div>
+  </div>
+
+
+  <div class="slide-footer">
+    <div>Business Value</div>
+    <div>CTO &middot; Platform &middot; CISO &mdash; one artifact, three audiences</div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 4 — TRUST DASHBOARD MOCKUP ============ -->
+<section class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 5 of 7</div>
+      <h1 class="slide-title">Trust Dashboard — AnswerTrust in Production</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge" style="background:var(--purple);">WHAT YOU SEE</span>
+    </div>
+  </div>
+
+  <div class="body" style="padding-bottom:0.4in; align-items:stretch;">
+    <div style="flex:1; display:flex; flex-direction:column; gap:10px; min-height:0;">
+      <div style="flex:1; min-height:0; display:flex; align-items:center; justify-content:center; overflow:hidden;">
+        <img src="images/answertrust_dashboard_mockup.png" alt="AnswerTrust dashboard mockup" style="max-width:100%; max-height:100%; object-fit:contain; border:1px solid var(--line); border-radius:6px; box-shadow:0 4px 14px rgba(40,40,80,0.14);">
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>Trust Dashboard</div>
+    <div>Composite score &middot; DQ posture &middot; cost &middot; handoffs &middot; oversharing &middot; ledger feed</div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 5 — MODULES & NEXT STEPS ============ -->
+<section class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 6 of 7</div>
+      <h1 class="slide-title">Solution Modules &amp; Next Steps</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge">NEXT STEPS</span>
+    </div>
+  </div>
+
+  <div class="body" style="flex-direction:column; gap:4px;">
+    <div class="section-label"><span class="sl-icon">🧱</span>Solution Modules<span class="sl-rule"></span></div>
+    <div class="modules">
+      <div class="mod cat-foundation">
+        <div class="mhead"><span class="mnum">M1</span><span class="mico">🏗️</span></div>
+        <h4>Foundation &amp; identity passthrough</h4>
+        <p>Orchestrator + specialist skeleton with end-to-end OBO.</p>
+        <div class="tech">Agent Framework &middot; Entra OBO &middot; <code>azd up</code></div>
+      </div>
+      <div class="mod cat-governance">
+        <div class="mhead"><span class="mnum">M2</span><span class="mico">🏷️</span></div>
+        <h4>Governance gates + Label-Suggestion Agent</h4>
+        <p>Agent recommends labels on workspace items; one-click apply.</p>
+        <div class="tech">Purview Data Map &middot; Bulk Set Labels API</div>
+      </div>
+      <div class="mod cat-trace">
+        <div class="mhead"><span class="mnum">M3</span><span class="mico">🔗</span></div>
+        <h4>Unified trace fabric (OTel + MCP)</h4>
+        <p>W3C <code>traceparent</code> end-to-end through every hop.</p>
+        <div class="tech">OTel GenAI semconv &middot; App Insights</div>
+      </div>
+      <div class="mod cat-ledger">
+        <div class="mhead"><span class="mnum">M4</span><span class="mico">📒</span></div>
+        <h4>AnswerLedger (provenance store)</h4>
+        <p>One KQL row per answer — single source of truth.</p>
+        <div class="tech">Fabric Eventstream → KQL DB</div>
+      </div>
+      <div class="mod cat-dq">
+        <div class="mhead"><span class="mnum">M5</span><span class="mico">🔍</span></div>
+        <h4>Data Quality gate</h4>
+        <p>Failed-Rows drill-down joined to every answer.</p>
+        <div class="tech">Fabric DQ &middot; OneLake metadata</div>
+      </div>
+      <div class="mod cat-runtime">
+        <div class="mhead"><span class="mnum">M6</span><span class="mico">⚙️</span></div>
+        <h4>Runtime DLP + Continuous Eval + AnswerTrust score</h4>
+        <p>EXTRACT enforced at inference; nightly evals; composite score.</p>
+        <div class="tech">DLP for OneLake &middot; Foundry CE &middot; Real-Time Dashboard</div>
+      </div>
+      <div class="mod cat-security">
+        <div class="mhead"><span class="mnum">M7</span><span class="mico">🛡️</span></div>
+        <h4>Security overlay + Steward alerts</h4>
+        <p>Red-team, Sentinel, IRM, DSPM — all on the same trace.</p>
+        <div class="tech">AI Red Teaming Agent &middot; Sentinel &middot; IRM &middot; DSPM</div>
+      </div>
+      <div class="mod optional">
+        <span class="o-ico">✨</span>
+        <span class="mnum">OPT</span>
+        <h4>Optional hardening</h4>
+        <p>Entra Agent ID &middot; APIM AI Gateway &middot; private endpoints + CMK &middot; second vertical.</p>
+      </div>
+    </div>
+
+    <div class="section-label" style="margin-top:4px;"><span class="sl-icon">🚀</span>Next Steps<span class="sl-rule"></span></div>
+    <div class="pipeline">
+      <div class="pstep">
+        <div class="pn">Step 1</div>
+        <h4><span class="picon">🤝</span>Align</h4>
+        <p>Confirm scope, demo vertical, and module owners with sponsoring teams.</p>
+      </div>
+      <div class="pstep">
+        <div class="pn">Step 2</div>
+        <h4><span class="picon">🧱</span>Build modules</h4>
+        <p>Develop M1–M7 in parallel where dependencies allow; integrate against shared <code>trace_id</code>.</p>
+      </div>
+      <div class="pstep">
+        <div class="pn">Step 3</div>
+        <h4><span class="picon">🧪</span>Test &amp; harden</h4>
+        <p>Golden-set eval, red-team passes, end-to-end demo on healthcare or insurance data.</p>
+      </div>
+      <div class="pstep">
+        <div class="pn">Step 4</div>
+        <h4><span class="picon">📦</span>Ship as toolkit</h4>
+        <p>Package as one Fabric workspace item — <code>azd up</code> install, reusable across domains.</p>
+      </div>
+    </div>
+
+    <div class="leadership-ask">
+      <div class="la-icon">📣</div>
+      <div class="la-body">
+        <h4>What we need from leadership</h4>
+        <p><strong>Sponsorship and a roadmap preview</strong> from the Fabric Data Agent, Foundry, Purview, and Agent Framework engineering teams — so we build on the same trajectory and <strong>do not duplicate effort</strong>.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>Solution Modules &amp; Next Steps</div>
+    <div>Seven composable modules · shipped as one Fabric toolkit</div>
+  </div>
+</section>
+
+
+<!-- ============ SLIDE 6 — SOLUTION ARCHITECTURE ============ -->
+<section class="slide">
+  <div class="slide-header">
+    <div>
+      <div class="slide-eyebrow">Slide 7 of 7</div>
+      <h1 class="slide-title">AnswerTrust Blueprint — End-to-End Flow</h1>
+    </div>
+    <div class="slide-meta">
+      <span class="badge">HOW IT WORKS</span>
+    </div>
+  </div>
+
+  <div class="body">
+    <div class="arch-image">
+      <img src="images/answertrust-flow.svg" alt="AnswerTrust reference architecture">
+    </div>
+
+    <div class="arch-sidebar">
+      <div class="arch-pillar p1"><span class="pnum">P1</span><span class="ph"><span class="pico">🔐</span>Governance gates</span><div class="pd">6 Purview gates inline · Label-Suggestion Agent · OBO end-to-end.</div></div>
+      <div class="arch-pillar p2"><span class="pnum">P2</span><span class="ph"><span class="pico">🔍</span>Data Quality gate</span><div class="pd">Fabric DQ notebook · Failed-Rows drill-down · steward alerts.</div></div>
+      <div class="arch-pillar p3"><span class="pnum">P3</span><span class="ph"><span class="pico">🔗</span>Unified trace fabric</span><div class="pd">W3C <code>traceparent</code> through every hop · one App Insights.</div></div>
+      <div class="arch-pillar p4"><span class="pnum">P4</span><span class="ph"><span class="pico">📒</span>AnswerLedger</span><div class="pd">KQL store · one row per answer · Eventstream feed.</div></div>
+      <div class="arch-pillar p5"><span class="pnum">P5</span><span class="ph"><span class="pico">🧪</span>Continuous eval</span><div class="pd">Foundry evaluators · golden-set harness · drift alarms.</div></div>
+      <div class="arch-pillar p6"><span class="pnum small">P6–8</span><span class="ph"><span class="pico">📊</span>Score · Security · Package</span><div class="pd">Dashboard · Red Team + Sentinel + IRM + DSPM · <code>azd up</code>.</div></div>
+
+      <div class="formula">
+        AnswerTrust = w<sub>e</sub>·Eval + w<sub>d</sub>·DQ + w<sub>l</sub>·LabelCompliance<br>
+        + w<sub>f</sub>·Freshness − w<sub>r</sub>·RedTeamFlags
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div>AnswerTrust Blueprint</div>
+    <div>One trace &middot; one ledger &middot; one score</div>
+  </div>
+</section>
+
+<script>
+  // Click-to-toggle service tooltips on the Trust Stack slide.
+  document.querySelectorAll('#slide-stack .svc').forEach(el => {
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const wasOpen = el.classList.contains('open');
+      document.querySelectorAll('#slide-stack .svc.open').forEach(o => o.classList.remove('open'));
+      if (!wasOpen) el.classList.add('open');
+    });
+  });
+  document.addEventListener('click', () => {
+    document.querySelectorAll('#slide-stack .svc.open').forEach(o => o.classList.remove('open'));
+  });
+
+  // Click-staged reveal on Slide 3 (Business Value).
+  // stage 0: CTO only · stage 1: + Platform · stage 2: + CISO + metrics + tagline · then resets.
+  (function () {
+    const sv = document.getElementById('slide-value');
+    if (!sv) return;
+    sv.setAttribute('data-stage', '0');
+    sv.style.cursor = 'pointer';
+    sv.addEventListener('click', e => {
+      // Don't advance if user clicked something interactive inside the slide.
+      if (e.target.closest('a, button, input, select, textarea')) return;
+      const cur = parseInt(sv.getAttribute('data-stage') || '0', 10);
+      const next = (cur + 1) % 3;
+      sv.setAttribute('data-stage', String(next));
+    });
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,81 @@
+// answer_ledger.kql — AnswerTrust M4 provenance store.
+// Run inside Eventhouse KQL database `answer_ledger_db`.
+// One row per answer, keyed by trace_id (the M3 trace fabric trace_id).
+
+//--------------------------------------------------------------------------------------
+// 1. AnswerLedger table
+//--------------------------------------------------------------------------------------
+.create-merge table AnswerLedger (
+    trace_id: string,
+    timestamp: datetime,
+    user_upn: string,
+    agent_id: string,
+    prompt: string,
+    generated_query: string,
+    source_tables: dynamic,
+    sensitivity_labels: dynamic,
+    dlp_decision: string,
+    dq_score: real,
+    dq_dimensions: dynamic,
+    row_count: int,
+    rows_masked: int,
+    model: string,
+    tokens_used: int,
+    cost_usd: real,
+    latency_ms: int,
+    eval_scores: dynamic,
+    red_team_flags: dynamic,
+    irm_signals: dynamic,
+    answertrust_score: real,
+    trustworthy: bool
+)
+
+//--------------------------------------------------------------------------------------
+// 2. JSON ingestion mapping (Eventstream custom-endpoint payload -> columns)
+//--------------------------------------------------------------------------------------
+.create-or-alter table AnswerLedger ingestion json mapping "provenance_mapping"
+```
+[
+    {"column":"trace_id","Properties":{"Path":"$.trace_id"}},
+    {"column":"timestamp","Properties":{"Path":"$.timestamp"}},
+    {"column":"user_upn","Properties":{"Path":"$.user_upn"}},
+    {"column":"agent_id","Properties":{"Path":"$.agent_id"}},
+    {"column":"prompt","Properties":{"Path":"$.prompt"}},
+    {"column":"generated_query","Properties":{"Path":"$.generated_query"}},
+    {"column":"source_tables","Properties":{"Path":"$.source_tables"}},
+    {"column":"sensitivity_labels","Properties":{"Path":"$.sensitivity_labels"}},
+    {"column":"dlp_decision","Properties":{"Path":"$.dlp_decision"}},
+    {"column":"dq_score","Properties":{"Path":"$.dq_score"}},
+    {"column":"dq_dimensions","Properties":{"Path":"$.dq_dimensions"}},
+    {"column":"row_count","Properties":{"Path":"$.row_count"}},
+    {"column":"rows_masked","Properties":{"Path":"$.rows_masked"}},
+    {"column":"model","Properties":{"Path":"$.model"}},
+    {"column":"tokens_used","Properties":{"Path":"$.tokens_used"}},
+    {"column":"cost_usd","Properties":{"Path":"$.cost_usd"}},
+    {"column":"latency_ms","Properties":{"Path":"$.latency_ms"}},
+    {"column":"eval_scores","Properties":{"Path":"$.eval_scores"}},
+    {"column":"red_team_flags","Properties":{"Path":"$.red_team_flags"}},
+    {"column":"irm_signals","Properties":{"Path":"$.irm_signals"}},
+    {"column":"answertrust_score","Properties":{"Path":"$.answertrust_score"}},
+    {"column":"trustworthy","Properties":{"Path":"$.trustworthy"}}
+]
+```
+
+//--------------------------------------------------------------------------------------
+// 3. Retention (90 days hot) — adjust to taste
+//--------------------------------------------------------------------------------------
+.alter-merge table AnswerLedger policy retention softdelete = 90d
+
+//--------------------------------------------------------------------------------------
+// 4. Convenience function — most recent answer per trace_id (dedupes re-emits)
+//--------------------------------------------------------------------------------------
+.create-or-alter function LatestAnswers() {
+    AnswerLedger
+    | summarize arg_max(timestamp, *) by trace_id
+}
+
+//--------------------------------------------------------------------------------------
+// 5. Verification query (run after emitting test events)
+//--------------------------------------------------------------------------------------
+// AnswerLedger | take 10
+// AnswerLedger | summarize answers=count(), avg_trust=avg(answertrust_score) by agent_id

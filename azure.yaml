@@ -1,0 +1,48 @@
+# azure.yaml — azd configuration for the AnswerTrust control plane.
+#
+# The control plane (App Insights, Log Analytics, Sentinel, RBAC) is provisioned with
+# Bicep under ./infra. The Fabric data plane (notebooks under ./modules) is deployed
+# separately via the Fabric pipeline in ./pipelines.
+
+name: answertrust-accelerator
+metadata:
+  template: answertrust-accelerator@0.1.0
+
+# Infrastructure provisioning (control plane).
+infra:
+  provider: bicep
+  path: infra
+  module: main
+
+# AnswerTrust has no app code services to host on azd compute — the data plane runs
+# inside Fabric. The `services` block is intentionally empty for the control-plane-only
+# deployment model.
+services: {}
+
+# After `azd up` provisions the Bicep control plane, the postprovision hook uploads the
+# module notebooks to the target Fabric workspace, imports AnswerTrust_Deploy_Pipeline,
+# and triggers a run — provisioning the data plane in one command.
+hooks:
+  postprovision:
+    posix:
+      shell: sh
+      run: bash scripts/deploy-fabric-pipeline.sh
+      interactive: false
+      continueOnError: false
+    windows:
+      shell: pwsh
+      run: pwsh -File scripts/deploy-fabric-pipeline.ps1
+      interactive: false
+      continueOnError: false
+
+# Parameters surfaced to the user at `azd up` time. These reference EXISTING Fabric /
+# Foundry / Purview resources (AnswerTrust is an add-on, not a greenfield platform).
+pipeline:
+  variables:
+    - FABRIC_WORKSPACE_ID
+    - FOUNDRY_PROJECT_ID
+    - FOUNDRY_ACCOUNT_NAME
+    - PURVIEW_ACCOUNT_NAME
+    - FABRIC_PRINCIPAL_ID
+    - FOUNDRY_PRINCIPAL_ID
+    - AT_ADMIN_PRINCIPAL_ID

@@ -1,0 +1,28 @@
+// M7 Analytic Rule 5: Red-Team Signal Correlation
+// Correlates AI Red Teaming findings with live answer traces sharing the same trace_id /
+// prompt signature, so an offline red-team hit is surfaced against real production answers.
+// Sources (workspace-based App Insights surfaces customEvents as AppEvents):
+//   - AppEvents Name == "RedTeamFinding"  (AI Red Teaming Agent output)
+//   - AppEvents Name == "AnswerResult"    (M5 production answers)
+//   customDimensions->Properties, timestamp->TimeGenerated, name->Name.
+let lookback = 1d;
+let findings =
+    AppEvents
+    | where TimeGenerated > ago(lookback)
+    | where Name == "RedTeamFinding"
+    | extend trace_id  = tostring(Properties.trace_id),
+             attack    = tostring(Properties.attack_strategy),
+             severity  = tostring(Properties.severity),
+             risk      = tostring(Properties.risk_category);
+let answers =
+    AppEvents
+    | where TimeGenerated > ago(lookback)
+    | where Name == "AnswerResult"
+    | extend trace_id = tostring(Properties.trace_id),
+             user_id  = tostring(Properties.user_id),
+             question = tostring(Properties.question);
+findings
+| join kind=inner answers on trace_id
+| where severity in ("High", "Critical")
+| project TimeGenerated, trace_id, attack, risk, severity, user_id, question
+| order by severity asc, TimeGenerated desc
