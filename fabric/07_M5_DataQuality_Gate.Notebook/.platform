@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "07_M5_DataQuality_Gate"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "33a1523b-774c-a5fe-4c9a-d3577bb37af5"
+  }
+}

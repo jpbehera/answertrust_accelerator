@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "05_M3_Trace_Fabric"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "09b3152f-8d89-90b9-4cf4-53de75702832"
+  }
+}
