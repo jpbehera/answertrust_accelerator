@@ -19,21 +19,26 @@ infra:
 # deployment model.
 services: {}
 
-# After `azd up` provisions the Bicep control plane, the postprovision hook uploads the
-# module notebooks to the target Fabric workspace, imports AnswerTrust_Deploy_Pipeline,
-# and triggers a run — provisioning the data plane in one command.
-hooks:
-  postprovision:
-    posix:
-      shell: sh
-      run: bash scripts/deploy-fabric-pipeline.sh
-      interactive: false
-      continueOnError: false
-    windows:
-      shell: pwsh
-      run: pwsh -File scripts/deploy-fabric-pipeline.ps1
-      interactive: false
-      continueOnError: false
+# Control-plane-only deployment: `azd up` provisions the Bicep control plane and stops.
+# The Fabric data plane (module notebooks + pipeline) is delivered via native Fabric Git
+# integration — the workspace is connected to this repo and syncs the items under
+# ./fabric (see fabric/README.md). The postprovision REST push is therefore DISABLED to
+# avoid conflicting with Git-synced item definitions.
+#
+# To re-enable the one-command REST push instead of Git sync, uncomment the block below
+# (and consider disconnecting Git integration so the two paths don't fight over items).
+# hooks:
+#   postprovision:
+#     posix:
+#       shell: sh
+#       run: bash scripts/deploy-fabric-pipeline.sh
+#       interactive: false
+#       continueOnError: false
+#     windows:
+#       shell: pwsh
+#       run: pwsh -File scripts/deploy-fabric-pipeline.ps1
+#       interactive: false
+#       continueOnError: false
 
 # Parameters surfaced to the user at `azd up` time. These reference EXISTING Fabric /
 # Foundry / Purview resources (AnswerTrust is an add-on, not a greenfield platform).
