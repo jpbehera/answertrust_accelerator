@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "06_M4_AnswerLedger"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2189e052-2e7f-a849-4914-ae96e2af295c"
+  }
+}
