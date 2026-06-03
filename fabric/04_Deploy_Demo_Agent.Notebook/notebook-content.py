@@ -24,10 +24,9 @@
 # Assistants APIs). Requires an F2+ capacity with the AI/Copilot tenant switches enabled.
 # 
 # **High-concurrency note:** `%pip install` is **not supported in High Concurrency sessions**.
-# Either (a) run this notebook in a **Standard** session, or (b) attach a Fabric **Environment**
-# that includes the PyPI library **`fabric-data-agent-sdk`** (Environment ▸ Public libraries ▸
-# Add from PyPI), then run on HC. The cell below auto-skips `%pip` when the SDK is already
-# provided by an attached Environment, so it works in both modes.
+# Attach a Fabric **Environment** that includes the PyPI library
+# **`fabric-data-agent-sdk`** (Environment -> Public libraries -> Add from PyPI),
+# then run this notebook on HC.
 
 # CELL ********************
 
@@ -44,16 +43,17 @@ smoke_model           = "gpt-4o" # orchestration model for the smoke test invoca
 
 # CELL ********************
 
-# Ensure the Fabric Data Agent SDK is available.
-# - High Concurrency sessions: %pip is NOT supported -> attach a Fabric Environment that
-#   includes the PyPI package "fabric-data-agent-sdk"; this cell then just confirms it.
-# - Standard sessions: if the SDK isn't already present, install it inline with %pip.
+# Ensure the Fabric Data Agent SDK is available from the attached Fabric Environment.
+# High Concurrency does not support inline library management (%pip / conda).
 try:
     import fabric.dataagent.client  # noqa: F401  (provided by an attached Environment)
-    print("fabric-data-agent-sdk already available (Environment or prior install).")
+    print("fabric-data-agent-sdk available from attached Environment.")
 except ImportError:
-    # Standard session only — %pip install fails in High Concurrency mode.
-    %pip install -q -U fabric-data-agent-sdk
+    raise RuntimeError(
+        "Missing required package 'fabric-data-agent-sdk'. "
+        "Add it to the Fabric Environment (Public libraries -> PyPI), publish the Environment, "
+        "attach it to this notebook, and rerun."
+    )
 
 # CELL ********************
 

@@ -36,11 +36,33 @@ test_question                  = "What was total revenue in Q1 2026?"
 
 # MARKDOWN ********************
 
-# ## 1. Install Azure Monitor OpenTelemetry Distro & configure export
+# ## 1. Validate Environment packages & configure export
 
 # CELL ********************
 
-%pip install azure-monitor-opentelemetry opentelemetry-api --quiet
+# Validate required Python packages are available from the attached Fabric Environment.
+# High Concurrency does not support inline library management (%pip / conda).
+missing_packages = []
+
+try:
+    import opentelemetry  # noqa: F401
+except ImportError:
+    missing_packages.append("opentelemetry-api")
+
+try:
+    import azure.monitor.opentelemetry  # noqa: F401
+except ImportError:
+    missing_packages.append("azure-monitor-opentelemetry")
+
+if missing_packages:
+    raise RuntimeError(
+        "Missing required packages: "
+        + ", ".join(missing_packages)
+        + ". Add them to your Fabric Environment (Public libraries -> PyPI), "
+        + "publish the Environment, attach it to this notebook, and rerun."
+    )
+
+print("Required OpenTelemetry packages are available from attached Environment.")
 
 # CELL ********************
 
